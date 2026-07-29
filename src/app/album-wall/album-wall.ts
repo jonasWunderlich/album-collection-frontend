@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AlbumTile } from "../album-tile/album-tile";
-import { Album } from '../api';
+import { Album } from '../../../api';
 
 @Component({
   selector: 'app-album-wall',
@@ -9,7 +9,6 @@ import { Album } from '../api';
   styleUrl: './album-wall.scss',
 })
 export class AlbumWall {
-
 
   album: Album = {
     id: 28629,
