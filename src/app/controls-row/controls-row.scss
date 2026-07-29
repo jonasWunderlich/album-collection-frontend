@@ -1,9 +1,12 @@
-.controls-row {
+:host {
     display: flex;
     align-items: center;
     gap: 10px;
     margin: 12px 0 0 0;
     flex-wrap: wrap;
+    padding-left: var(--padding-horizontal-md);
+    padding-right: var(--padding-horizontal-md);
+    padding-bottom: var(--padding-horizontal-md);
 }
 
 .search-container {
@@ -25,11 +28,11 @@
     font-size: 16px;
     box-sizing: border-box;
     transition: border-color 0.3s;
-}
 
-#myInput:focus {
-    border-color: var(--text-color-link-hover);
-    outline: none;
+    &:focus {
+        border-color: var(--text-color-link-hover);
+        outline: none;
+    }
 }
 
 .clear-icon {
@@ -41,11 +44,12 @@
     font-weight: bold;
     display: none;
     /* hidden by default */
+
+    &:hover {
+        color: var(--text-color-link-hover);
+    }
 }
 
-.clear-icon:hover {
-    color: var(--text-color-link-hover);
-}
 
 .sort-controls {
     display: flex;
@@ -79,25 +83,26 @@
 .sort-button {
     background: var(--text-color-link);
     color: var(--text-color-light);
+
+    &:hover {
+        background: var(--text-color-link-hover);
+    }
+
+    &.active {
+        background: var(--text-color-link-active);
+    }
 }
 
-.sort-button:hover {
-    background: var(--text-color-link-hover);
-}
-
-.sort-button.active {
-    background: var(--text-color-link-active);
-}
 
 .filter-button {
     background: var(--text-color-link);
     color: var(--text-color-light);
-}
 
-.filter-button:hover {
-    background: var(--text-color-link-hover);
-}
+    &:hover {
+        background: var(--text-color-link-hover);
+    }
 
-.filter-button.active {
-    background: var(--text-color-link-active);
+    &.active {
+        background: var(--text-color-link-active);
+    }
 }

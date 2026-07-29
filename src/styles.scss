@@ -19,6 +19,8 @@
     --label-color-legacy: #276fff;
     --origin-color-legacy: #ff5900;
 
+    --padding-horizontal-md: 12px;
+
 }
 
 body {
@@ -45,14 +47,6 @@ a {
     &.active {
         color: var(--text-color-link-active);
     }
-}
-
-
-.site-nav,
-.controls-row,
-.poster-wall {
-    padding-left: 12px;
-    padding-right: 12px;
 }
 
 .scroll-top-btn {

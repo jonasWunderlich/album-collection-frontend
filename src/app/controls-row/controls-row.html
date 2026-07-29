@@ -1,19 +1,16 @@
-<div class="controls-row">
-    <div class="search-container">
-        <input type="text" id="myInput" onkeyup="searchPosters()" placeholder="Search &amp; Filter Records ..">
-        <span class="clear-icon" onclick="clearSearch()" title="Clear">✖</span>
-    </div>
+<div class="search-container">
+    <input type="text" id="myInput" onkeyup="searchPosters()" placeholder="Search &amp; Filter Records ..">
+    <span class="clear-icon" onclick="clearSearch()" title="Clear">✖</span>
+</div>
 
-    <div class="sort-controls">
-        <div class="sort-group">
-            <button class="sort-button" onclick="sortPosters('rating', this)">Bewertung</button>
-            <button class="sort-button" onclick="sortPosters('artist', this)">Artist</button>
-            <button class="sort-button active" onclick="sortPosters('added', this)">Hinzugefügt ↓</button>
-        </div>
-        <div class="filter-group">
-            <button class="filter-button" data-filter="tino" onclick="toggleFilter('tino', this)">Tino</button>
-            <button class="filter-button" data-filter="wire" onclick="toggleFilter('wire', this)">Wire</button>
-        </div>
+<div class="sort-controls">
+    <div class="sort-group">
+        <button class="sort-button" onclick="sortPosters('rating', this)">Bewertung</button>
+        <button class="sort-button" onclick="sortPosters('artist', this)">Artist</button>
+        <button class="sort-button active" onclick="sortPosters('added', this)">Hinzugefügt ↓</button>
     </div>
-
+    <div class="filter-group">
+        <button class="filter-button" data-filter="tino" onclick="toggleFilter('tino', this)">Tino</button>
+        <button class="filter-button" data-filter="wire" onclick="toggleFilter('wire', this)">Wire</button>
+    </div>
 </div>

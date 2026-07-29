@@ -23,15 +23,23 @@
             <div class="bookmark-wire" title="The Wire"></div>
             }
         </div>
-        <div class="album-artist"><a [href]="album.bandcampUrl" target="_blank">{{
+        <div class="album-artist">
+            @if (album.bandcampUrl) {
+            <a [href]="album.bandcampUrl" target="_blank">{{
                 album.artist }}</a>
+            } @else {
+            {{ album.artist }}
+            }
             @if (album.fan) {
             <span class="inline-icon" title="Fan/Favorite">❤️</span>
             }
         </div>
         <div class="album-title">
+            @if (album.bandcampUrl) {
             <a [href]="album.bandcampUrl" target="_blank">{{ album.title }}</a>
-
+            } @else {
+            {{ album.title }}
+            }
         </div>
         <div class="album-label" [title]="album.publisher">{{ album.publisher }}</div>
         <div class="album-meta">
