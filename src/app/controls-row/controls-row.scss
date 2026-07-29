@@ -1,0 +1,103 @@
+.controls-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0 0 0;
+    flex-wrap: wrap;
+}
+
+.search-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+#myInput {
+    flex: 1;
+    width: 100%;
+    height: 40px;
+    padding: 0 40px 0 14px;
+    background: #ffffff;
+    border: 2px solid var(--text-color-link);
+    color: var(--text-color-dark);
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+#myInput:focus {
+    border-color: var(--text-color-link-hover);
+    outline: none;
+}
+
+.clear-icon {
+    position: absolute;
+    right: 12px;
+    color: var(--text-color-link);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: none;
+    /* hidden by default */
+}
+
+.clear-icon:hover {
+    color: var(--text-color-link-hover);
+}
+
+.sort-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.sort-group,
+.filter-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.sort-button,
+.filter-button {
+    border: 0;
+    height: 40px;
+    padding: 0 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.sort-button {
+    background: var(--text-color-link);
+    color: var(--text-color-light);
+}
+
+.sort-button:hover {
+    background: var(--text-color-link-hover);
+}
+
+.sort-button.active {
+    background: var(--text-color-link-active);
+}
+
+.filter-button {
+    background: var(--text-color-link);
+    color: var(--text-color-light);
+}
+
+.filter-button:hover {
+    background: var(--text-color-link-hover);
+}
+
+.filter-button.active {
+    background: var(--text-color-link-active);
+}
