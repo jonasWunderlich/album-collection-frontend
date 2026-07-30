@@ -1,6 +1,5 @@
+@for (album of albums(); track album.id) {
 <app-album-tile [album]="album" />
-<app-album-tile [album]="album" />
-<app-album-tile [album]="album" />
-<app-album-tile [album]="album" />
-<app-album-tile [album]="album" />
-<app-album-tile [album]="album" />
+} @empty {
+<div class="no-albums">No albums found for this period.</div>
+}

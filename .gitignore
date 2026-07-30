@@ -48,4 +48,5 @@ Thumbs.db
 
 # Placeholder stuff
 public/placeholder.png
+public/thumbs
 openapi-generator-cli.jar

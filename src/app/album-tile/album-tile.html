@@ -1,5 +1,5 @@
 <div class="album-poster">
-    <img src="placeholder.png" [alt]="album.title" loading="lazy">
+    <img [src]="album.imageUrl" [alt]="album.title">
     @if(album.owned) {
     <div class="vinyl-overlay" title="Owned (Vinyl)"></div>
     }
@@ -12,7 +12,9 @@
         }
     </div>
     <div class="top-right-icons">
+        @if (album.rating) {
         <div class="rating-circle" title="">{{ album.rating }}</div>
+        }
     </div>
     <div class="album-overlay">
         <div class="overlay-bookmarks">

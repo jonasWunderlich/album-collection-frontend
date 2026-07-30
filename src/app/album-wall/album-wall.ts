@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, DestroyRef, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AlbumTile } from "../album-tile/album-tile";
-import { Album } from '../../../api';
+import { Album, AlbumControllerService, PageAlbum } from '../../../api';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-album-wall',
@@ -8,28 +10,48 @@ import { Album } from '../../../api';
   templateUrl: './album-wall.html',
   styleUrl: './album-wall.scss',
 })
-export class AlbumWall {
+export class AlbumWall implements OnInit {
+  private route = inject(ActivatedRoute);
+  private albumService = inject(AlbumControllerService);
+  private destroyRef = inject(DestroyRef);
 
-  album: Album = {
-    id: 28629,
-    addedDate: "2026-04-17",
-    title: "All Clouds Bring Not Rain",
-    releaseYear: 2026,
-    publisher: "Fire Records",
-    genre: "Rock, Pop",
-    style: "Indie Rock, Indie Pop, Psychedelic Rock, Experimental",
-    reissue: false,
-    artist: "Memorials",
-    fan: true,
-    country: "UK",
-    city: "Brighton, East Sussex",
-    rating: 9,
-    owned: true,
-    tino: false,
-    wire: false,
-    hidden: false,
-    videoUrl: "https://www.youtube.com/watch?v=jGofSjCykh8",
-    bandcampUrl: "https://memorialsmusic.bandcamp.com/track/reimagined-river",
+  albums = signal<Album[]>([]);
+  page = 0;
+  size = 40;
+
+  ngOnInit() {
+    this.route.paramMap
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(params => {
+        const yearParam = params.get('year');
+        const decadeParam = params.get('decade');
+
+        const releaseYear = yearParam ? parseInt(yearParam, 10) : undefined;
+        const decade = decadeParam ? parseInt(decadeParam, 10) : undefined;
+
+        this.fetchAlbums(releaseYear, decade);
+      });
   }
 
+  fetchAlbums(releaseYear?: number, decade?: number) {
+    this.albumService.getAlbums(
+      undefined, // artist
+      undefined, // genre
+      releaseYear,
+      undefined, // title
+      this.page,
+      this.size,
+      'addedDate', // sortBy
+      'asc' // direction
+    )
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (pageAlbum: PageAlbum) => {
+          this.albums.set(pageAlbum.content || []);
+        },
+        error: (err) => {
+          console.error('Error fetching albums:', err);
+        }
+      });
+  }
 }
