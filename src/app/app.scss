@@ -1,0 +1,11 @@
+@mixin app-button() {
+    border: 0;
+    height: 40px;
+    padding: 0 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+    white-space: nowrap;
+    cursor: pointer;
+}

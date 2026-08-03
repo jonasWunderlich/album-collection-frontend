@@ -1,3 +1,5 @@
+@use '../app.scss' as app;
+
 :host {
     display: flex;
     align-items: center;
@@ -67,34 +69,9 @@
     align-items: center;
 }
 
-.sort-button,
 .filter-button {
-    border: 0;
-    height: 40px;
-    padding: 0 18px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.3s;
-    white-space: nowrap;
-}
+    @include app.app-button();
 
-.sort-button {
-    background: var(--text-color-link);
-    color: var(--text-color-light);
-
-    &:hover {
-        background: var(--text-color-link-hover);
-    }
-
-    &.active {
-        background: var(--text-color-link-active);
-    }
-}
-
-
-.filter-button {
     background: var(--text-color-link);
     color: var(--text-color-light);
 

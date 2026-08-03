@@ -1,12 +1,14 @@
-import { Component, inject, OnInit, DestroyRef, signal } from '@angular/core';
+import { Component, inject, OnInit, DestroyRef, signal, ElementRef, viewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlbumTile } from "../album-tile/album-tile";
 import { Album, AlbumControllerService, PageAlbum } from '../../../api';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ControlsRow } from "../controls-row/controls-row";
+import { FilterSettings } from '../types/types';
 
 @Component({
   selector: 'app-album-wall',
-  imports: [AlbumTile],
+  imports: [AlbumTile, ControlsRow],
   templateUrl: './album-wall.html',
   styleUrl: './album-wall.scss',
 })
@@ -15,9 +17,26 @@ export class AlbumWall implements OnInit {
   private albumService = inject(AlbumControllerService);
   private destroyRef = inject(DestroyRef);
 
+  // Wichtig: ViewChild greift auf den Scroll-Trigger am Ende des Templates zu
+  scrollAnchor = viewChild<ElementRef<HTMLDivElement>>('scrollAnchor');
+
+  filterSettings: FilterSettings = {
+    search: '',
+    searchBy: 'addedDate',
+    filterBy: [],
+    direction: 'asc'
+  };
+
   albums = signal<Album[]>([]);
   page = 0;
-  size = 40;
+  size = 20;
+
+  isLoading = signal<boolean>(false);
+  isLastPage = signal<boolean>(false);
+
+  private activeYear?: number;
+  private activeDecade?: number;
+  private observer?: IntersectionObserver;
 
   ngOnInit() {
     this.route.paramMap
@@ -26,32 +45,78 @@ export class AlbumWall implements OnInit {
         const yearParam = params.get('year');
         const decadeParam = params.get('decade');
 
-        const releaseYear = yearParam ? parseInt(yearParam, 10) : undefined;
-        const decade = decadeParam ? parseInt(decadeParam, 10) : undefined;
+        this.activeYear = yearParam ? parseInt(yearParam, 10) : undefined;
+        this.activeDecade = decadeParam ? parseInt(decadeParam, 10) : undefined;
 
-        this.fetchAlbums(releaseYear, decade);
+        // Reset bei Parameter-Wechsel
+        this.resetAndFetch();
       });
+
+    this.setupIntersectionObserver();
   }
 
-  fetchAlbums(releaseYear?: number, decade?: number) {
+  private resetAndFetch() {
+    this.page = 0;
+    this.isLastPage.set(false);
+    this.albums.set([]);
+    this.fetchAlbums();
+  }
+
+  fetchAlbums() {
+    if (this.isLoading() || this.isLastPage()) return;
+
+    this.isLoading.set(true);
+
     this.albumService.getAlbums(
       undefined, // artist
       undefined, // genre
-      releaseYear,
+      this.activeYear,
       undefined, // title
       this.page,
       this.size,
-      'addedDate', // sortBy
-      'asc' // direction
+      this.filterSettings.searchBy, // sortBy
+      this.filterSettings.direction, // direction
     )
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (pageAlbum: PageAlbum) => {
-          this.albums.set(pageAlbum.content || []);
+          const newContent = pageAlbum.content || [];
+          this.albums.update(prev => [...prev, ...newContent]);
+          // Paginierungs-Ende prüfen
+          this.isLastPage.set(pageAlbum.last ?? (newContent.length < this.size));
+          this.page++;
+          this.isLoading.set(false);
         },
         error: (err) => {
           console.error('Error fetching albums:', err);
+          this.isLoading.set(false);
         }
       });
+  }
+
+  private setupIntersectionObserver() {
+    // Der Observer schlägt an, sobald das Anker-Element unten im Viewport sichtbar wird
+    this.observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !this.isLoading() && !this.isLastPage()) {
+        this.fetchAlbums();
+      }
+    }, { rootMargin: '600px' }); // Lädt 200px vor Erreichen des Bildschirmendes bereits nach
+
+    // Anker beobachten sobald er gerendert ist
+    setTimeout(() => {
+      const anchorEl = this.scrollAnchor()?.nativeElement;
+      if (anchorEl) {
+        this.observer?.observe(anchorEl);
+      }
+    });
+
+    this.destroyRef.onDestroy(() => {
+      this.observer?.disconnect();
+    });
+  }
+
+  updateFilter(filterSettings: FilterSettings) {
+    this.filterSettings = filterSettings;
+    this.resetAndFetch();
   }
 }

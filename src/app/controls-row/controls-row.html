@@ -5,12 +5,17 @@
 
 <div class="sort-controls">
     <div class="sort-group">
-        <button class="sort-button" onclick="sortPosters('rating', this)">Bewertung</button>
-        <button class="sort-button" onclick="sortPosters('artist', this)">Artist</button>
-        <button class="sort-button active" onclick="sortPosters('added', this)">Hinzugefügt ↓</button>
+        <app-sort-button [active]="filterSettings.searchBy === 'rating'" [direction]="filterSettings.direction"
+            label="Bewertung" (click)="updateSort('rating')" />
+        <app-sort-button [active]="filterSettings.searchBy === 'artist'" [direction]="filterSettings.direction"
+            label="Artist" (click)="updateSort('artist')" />
+        <app-sort-button [active]="filterSettings.searchBy === 'addedDate'" [direction]="filterSettings.direction"
+            label="Hinzugefügt" (click)="updateSort('addedDate')" />
     </div>
     <div class="filter-group">
-        <button class="filter-button" data-filter="tino" onclick="toggleFilter('tino', this)">Tino</button>
-        <button class="filter-button" data-filter="wire" onclick="toggleFilter('wire', this)">Wire</button>
+        <button class="filter-button" [class.active]="filterSettings.filterBy.includes('tino')"
+            (click)="updateFilter('tino')">Tino</button>
+        <button class="filter-button" [class.active]="filterSettings.filterBy.includes('wire')"
+            (click)="updateFilter('wire')">Wire</button>
     </div>
 </div>

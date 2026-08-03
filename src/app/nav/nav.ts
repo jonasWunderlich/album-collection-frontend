@@ -12,7 +12,7 @@ import { RouterLink, Router } from '@angular/router';
 export class Nav {
   albumMetaService = inject(AlbumMetaService);
   router = inject(Router);
-  menuHidden = false;
+  menuHidden = true;
 
   get currentPeriod(): string {
     const url = this.router.url;
