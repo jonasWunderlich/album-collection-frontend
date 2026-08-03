@@ -1,7 +1,7 @@
 @use '../../app.scss' as app;
 
 .sort-button {
-    @include app.app-button();
+    @include app.filter-button();
     border: 0;
     height: 40px;
     padding: 0 18px;

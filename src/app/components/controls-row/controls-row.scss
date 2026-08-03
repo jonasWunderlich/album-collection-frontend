@@ -1,4 +1,4 @@
-@use '../app.scss' as app;
+@use '../../app.scss' as app;
 
 :host {
     display: flex;
@@ -70,7 +70,7 @@
 }
 
 .filter-button {
-    @include app.app-button();
+    @include app.filter-button();
 
     background: var(--text-color-link);
     color: var(--text-color-light);

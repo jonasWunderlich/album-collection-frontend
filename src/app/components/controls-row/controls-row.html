@@ -1,0 +1,22 @@
+<div class="search-container">
+    <input type="text" id="myInput" (keyup)="updateSearch($event.target.value)"
+        placeholder="Search &amp; Filter Records ..">
+    <span class="clear-icon" (click)="clearSearch()" title="Clear">✖</span>
+</div>
+
+<div class="sort-controls">
+    <div class="sort-group">
+        <app-sort-button [active]="filterSettings.sortBy === SortOptions.rating" [direction]="filterSettings.direction"
+            label="Bewertung" (click)="updateSort(SortOptions.rating)" />
+        <app-sort-button [active]="filterSettings.sortBy === SortOptions.artist" [direction]="filterSettings.direction"
+            label="Artist" (click)="updateSort(SortOptions.artist)" />
+        <app-sort-button [active]="filterSettings.sortBy === SortOptions.addedDate"
+            [direction]="filterSettings.direction" label="Hinzugefügt" (click)="updateSort(SortOptions.addedDate)" />
+    </div>
+    <div class="filter-group">
+        <button class="filter-button" [class.active]="filterSettings.filterBy.includes(FilterOptions.tino)"
+            (click)="updateFilter(FilterOptions.tino)">Tino</button>
+        <button class="filter-button" [class.active]="filterSettings.filterBy.includes(FilterOptions.wire)"
+            (click)="updateFilter(FilterOptions.wire)">Wire</button>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Direction } from '../../types/types';
+import { Direction } from '../types';
 
 @Component({
   selector: 'app-sort-button',

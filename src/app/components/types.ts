@@ -1,19 +1,12 @@
 
 export type Direction = 'asc' | 'desc';
-export type SearchBy = 'title' | 'artist' | 'genre' | 'country' | 'city' | 'publisher' | 'releaseYear' | 'rating' | 'addedDate' | 'dateAdded';
 
-export type FilterSettings = {
-    search: string;
-    sortBy: SearchBy;
-    filterBy: string[];
-    direction: Direction;
-}
-
-export enum SortBy {
+export enum SortOptions {
     addedDate = 'addedDate',
     title = 'title',
     artist = 'artist',
     genre = 'genre',
+    style = 'style',
     country = 'country',
     city = 'city',
     publisher = 'publisher',
@@ -21,11 +14,18 @@ export enum SortBy {
     releaseYear = 'releaseYear'
 }
 
-export enum FilterBy {
+export enum FilterOptions {
     tino = 'tino',
     wire = 'wire',
     fan = 'fan',
     wishlist = 'wishlist',
     favorite = 'favorite',
     owned = 'owned'
+}
+
+export type FilterSettings = {
+    search: string;
+    sortBy: SortOptions;
+    filterBy: FilterOptions[];
+    direction: Direction;
 }

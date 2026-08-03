@@ -1,10 +1,10 @@
 import { Component, inject, OnInit, DestroyRef, signal, ElementRef, viewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlbumTile } from "../album-tile/album-tile";
-import { Album, AlbumControllerService, PageAlbum } from '../../../api';
+import { Album, AlbumControllerService, PageAlbum } from '../../../../api';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlsRow } from "../controls-row/controls-row";
-import { FilterSettings } from '../types/types';
+import { FilterOptions, FilterSettings, SortOptions } from '../types';
 
 @Component({
   selector: 'app-album-wall',
@@ -22,7 +22,7 @@ export class AlbumWall implements OnInit {
 
   filterSettings: FilterSettings = {
     search: '',
-    sortBy: 'addedDate',
+    sortBy: SortOptions.addedDate,
     filterBy: [],
     direction: 'asc'
   };
@@ -62,7 +62,7 @@ export class AlbumWall implements OnInit {
     this.fetchAlbums();
   }
 
-  isFiltered(filter: string): true | undefined {
+  isFiltered(filter: FilterOptions): true | undefined {
     return this.filterSettings.filterBy.includes(filter) || undefined;
   }
 
@@ -75,17 +75,17 @@ export class AlbumWall implements OnInit {
       {
         search: this.filterSettings.search,
         releaseYear: this.activeYear,
-        decade: undefined,
+        decade: this.activeDecade,
         title: undefined,
         artist: undefined,
         albumArtist: undefined,
         genre: undefined,
         style: undefined,
-        fan: this.isFiltered('fan'),
-        favorite: this.isFiltered('favorite'),
-        owned: this.isFiltered('owned'),
-        tino: this.isFiltered('tino'),
-        wire: this.isFiltered('wire'),
+        fan: this.isFiltered(FilterOptions.fan),
+        favorite: this.isFiltered(FilterOptions.favorite),
+        owned: this.isFiltered(FilterOptions.owned),
+        tino: this.isFiltered(FilterOptions.tino),
+        wire: this.isFiltered(FilterOptions.wire),
         page: this.page,
         size: this.size,
         sortBy: this.filterSettings.sortBy,

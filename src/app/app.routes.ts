@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AlbumWall } from './album-wall/album-wall';
+import { AlbumWall } from './components/album-wall/album-wall';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'year/2026', pathMatch: 'full' },

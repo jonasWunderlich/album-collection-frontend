@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Album } from '../../../api';
+import { Album } from '../../../../api';
 
 @Component({
   selector: 'app-album-tile',
