@@ -11,25 +11,30 @@ import { SortButton } from "./sort-button/sort-button";
 export class ControlsRow {
 
   filterSettings: FilterSettings = {
-    search: '',
-    searchBy: 'addedDate',
     filterBy: [],
-    direction: 'desc'
+    direction: 'desc',
+    search: '',
+    sortBy: 'addedDate'
   };
 
   @Output() filter = new EventEmitter<FilterSettings>();
 
+  updateSearch(search: string) {
+    this.filterSettings.search = search;
+    this.filter.emit(this.filterSettings);
+  }
+
   updateSort(sortBy: SearchBy) {
-    if (this.filterSettings.searchBy === sortBy) {
+    if (this.filterSettings.sortBy === sortBy) {
       this.filterSettings.direction = this.filterSettings.direction === 'asc' ? 'desc' : 'asc';
     } else {
-      this.filterSettings.searchBy = sortBy;
+      this.filterSettings.sortBy = sortBy;
       this.filterSettings.direction = 'desc';
     }
     this.filter.emit(this.filterSettings);
   }
 
-  updateFilter(filter: String) {
+  updateFilter(filter: string) {
     if (this.filterSettings.filterBy.includes(filter)) {
       this.filterSettings.filterBy = this.filterSettings.filterBy.filter(f => f !== filter);
     } else {

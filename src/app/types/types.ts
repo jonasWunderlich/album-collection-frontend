@@ -1,10 +1,11 @@
 
 export type Direction = 'asc' | 'desc';
 export type SearchBy = 'title' | 'artist' | 'genre' | 'country' | 'city' | 'publisher' | 'releaseYear' | 'rating' | 'addedDate' | 'dateAdded';
+
 export type FilterSettings = {
-    search: String;
-    searchBy: SearchBy;
-    filterBy: String[];
+    search: string;
+    sortBy: SearchBy;
+    filterBy: string[];
     direction: Direction;
 }
 

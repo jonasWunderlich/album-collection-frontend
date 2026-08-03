@@ -1,15 +1,16 @@
 <div class="search-container">
-    <input type="text" id="myInput" onkeyup="searchPosters()" placeholder="Search &amp; Filter Records ..">
-    <span class="clear-icon" onclick="clearSearch()" title="Clear">✖</span>
+    <input type="text" id="myInput" (keyup)="updateSearch($event.target.value)"
+        placeholder="Search &amp; Filter Records ..">
+    <span class="clear-icon" (click)="clearSearch()" title="Clear">✖</span>
 </div>
 
 <div class="sort-controls">
     <div class="sort-group">
-        <app-sort-button [active]="filterSettings.searchBy === 'rating'" [direction]="filterSettings.direction"
+        <app-sort-button [active]="filterSettings.sortBy === 'rating'" [direction]="filterSettings.direction"
             label="Bewertung" (click)="updateSort('rating')" />
-        <app-sort-button [active]="filterSettings.searchBy === 'artist'" [direction]="filterSettings.direction"
+        <app-sort-button [active]="filterSettings.sortBy === 'artist'" [direction]="filterSettings.direction"
             label="Artist" (click)="updateSort('artist')" />
-        <app-sort-button [active]="filterSettings.searchBy === 'addedDate'" [direction]="filterSettings.direction"
+        <app-sort-button [active]="filterSettings.sortBy === 'addedDate'" [direction]="filterSettings.direction"
             label="Hinzugefügt" (click)="updateSort('addedDate')" />
     </div>
     <div class="filter-group">

@@ -22,14 +22,14 @@ export class AlbumWall implements OnInit {
 
   filterSettings: FilterSettings = {
     search: '',
-    searchBy: 'addedDate',
+    sortBy: 'addedDate',
     filterBy: [],
     direction: 'asc'
   };
 
   albums = signal<Album[]>([]);
   page = 0;
-  size = 20;
+  size = 30;
 
   isLoading = signal<boolean>(false);
   isLastPage = signal<boolean>(false);
@@ -62,20 +62,35 @@ export class AlbumWall implements OnInit {
     this.fetchAlbums();
   }
 
+  isFiltered(filter: string): true | undefined {
+    return this.filterSettings.filterBy.includes(filter) || undefined;
+  }
+
   fetchAlbums() {
     if (this.isLoading() || this.isLastPage()) return;
 
     this.isLoading.set(true);
 
-    this.albumService.getAlbums(
-      undefined, // artist
-      undefined, // genre
-      this.activeYear,
-      undefined, // title
-      this.page,
-      this.size,
-      this.filterSettings.searchBy, // sortBy
-      this.filterSettings.direction, // direction
+    this.albumService.getAlbumsFiltered(
+      {
+        search: this.filterSettings.search,
+        releaseYear: this.activeYear,
+        decade: undefined,
+        title: undefined,
+        artist: undefined,
+        albumArtist: undefined,
+        genre: undefined,
+        style: undefined,
+        fan: this.isFiltered('fan'),
+        favorite: this.isFiltered('favorite'),
+        owned: this.isFiltered('owned'),
+        tino: this.isFiltered('tino'),
+        wire: this.isFiltered('wire'),
+        page: this.page,
+        size: this.size,
+        sortBy: this.filterSettings.sortBy,
+        direction: this.filterSettings.direction,
+      }
     )
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
