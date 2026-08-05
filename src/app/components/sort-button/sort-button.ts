@@ -8,7 +8,7 @@ import { Direction } from '../types';
   styleUrl: './sort-button.scss',
 })
 export class SortButton {
-  @Input() active: boolean = false;
+  @Input() active = false;
   @Input() direction: Direction = 'desc';
   @Input() label: string = '';
 }

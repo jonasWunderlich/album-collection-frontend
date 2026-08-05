@@ -1,69 +1,75 @@
-import { Component, inject, OnInit, DestroyRef, signal, ElementRef, viewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AlbumTile } from "../album-tile/album-tile";
-import { Album, AlbumControllerService, PageAlbum } from '../../../../api';
+import {
+  Component,
+  DestroyRef,
+  effect,
+  ElementRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ControlsRow } from "../controls-row/controls-row";
+import { ActivatedRoute } from '@angular/router';
+import { Album, AlbumControllerService } from '../../../../api';
+import { Nav } from '../../nav/nav';
+import { AlbumTile } from '../album-tile/album-tile';
+import { ControlsRow } from '../controls-row/controls-row';
 import { FilterOptions, FilterSettings, SortOptions } from '../types';
 
 @Component({
   selector: 'app-album-wall',
-  imports: [AlbumTile, ControlsRow],
+  imports: [AlbumTile, ControlsRow, Nav],
   templateUrl: './album-wall.html',
   styleUrl: './album-wall.scss',
 })
-export class AlbumWall implements OnInit {
-  private route = inject(ActivatedRoute);
-  private albumService = inject(AlbumControllerService);
-  private destroyRef = inject(DestroyRef);
+export class AlbumWall {
+  private readonly route = inject(ActivatedRoute);
+  private readonly albumService = inject(AlbumControllerService);
+  private readonly destroyRef = inject(DestroyRef);
+  readonly scrollAnchor = viewChild<ElementRef<HTMLDivElement>>('scrollAnchor');
+  private activeYear?: number;
+  private activeDecade?: number;
+  private owned?: boolean;
+  private favorite?: boolean;
+  private observer?: IntersectionObserver;
 
-  // Wichtig: ViewChild greift auf den Scroll-Trigger am Ende des Templates zu
-  scrollAnchor = viewChild<ElementRef<HTMLDivElement>>('scrollAnchor');
-
-  filterSettings: FilterSettings = {
+  readonly filterSettings = signal<FilterSettings>({
     search: '',
     sortBy: SortOptions.addedDate,
     filterBy: [],
-    direction: 'asc'
-  };
+    direction: 'asc',
+  });
+  readonly albums = signal<Album[]>([]);
+  readonly page = signal<number>(0);
+  readonly isLoading = signal<boolean>(false);
+  readonly isLastPage = signal<boolean>(false);
+  readonly size = 30;
 
-  albums = signal<Album[]>([]);
-  page = 0;
-  size = 30;
+  constructor() {
+    // Route-Params sauber und sicher abonnieren (Triggert NUR bei ECHTEM URL-Wechsel)
+    this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
+      const yearParam = params.get('year');
+      const decadeParam = params.get('decade');
+      this.owned = params.get('owned') === 'true' ? true : undefined;
+      this.favorite = params.get('favorite') === 'true' ? true : undefined;
+      this.activeYear = yearParam ? parseInt(yearParam, 10) : undefined;
+      this.activeDecade = decadeParam ? parseInt(decadeParam, 10) : undefined;
+      this.resetAndFetch();
+    });
 
-  isLoading = signal<boolean>(false);
-  isLastPage = signal<boolean>(false);
-
-  private activeYear?: number;
-  private activeDecade?: number;
-  private observer?: IntersectionObserver;
-
-  ngOnInit() {
-    this.route.paramMap
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(params => {
-        const yearParam = params.get('year');
-        const decadeParam = params.get('decade');
-
-        this.activeYear = yearParam ? parseInt(yearParam, 10) : undefined;
-        this.activeDecade = decadeParam ? parseInt(decadeParam, 10) : undefined;
-
-        // Reset bei Parameter-Wechsel
-        this.resetAndFetch();
-      });
-
-    this.setupIntersectionObserver();
+    // IntersectionObserver an das Anker Element binden (Keine Signal-Schleifen!)
+    effect(() => {
+      const anchorEl = this.scrollAnchor()?.nativeElement;
+      if (anchorEl) {
+        this.setupIntersectionObserver(anchorEl);
+      }
+    });
   }
 
   private resetAndFetch() {
-    this.page = 0;
+    this.page.set(0);
     this.isLastPage.set(false);
     this.albums.set([]);
     this.fetchAlbums();
-  }
-
-  isFiltered(filter: FilterOptions): true | undefined {
-    return this.filterSettings.filterBy.includes(filter) || undefined;
   }
 
   fetchAlbums() {
@@ -71,67 +77,71 @@ export class AlbumWall implements OnInit {
 
     this.isLoading.set(true);
 
-    this.albumService.getAlbumsFiltered(
-      {
-        search: this.filterSettings.search,
-        releaseYear: this.activeYear,
-        decade: this.activeDecade,
-        title: undefined,
-        artist: undefined,
-        albumArtist: undefined,
-        genre: undefined,
-        style: undefined,
-        fan: this.isFiltered(FilterOptions.fan),
-        favorite: this.isFiltered(FilterOptions.favorite),
-        owned: this.isFiltered(FilterOptions.owned),
-        tino: this.isFiltered(FilterOptions.tino),
-        wire: this.isFiltered(FilterOptions.wire),
-        page: this.page,
+    const currentFilter = this.filterSettings();
+
+    this.albumService
+      .getAlbums({
+        page: this.page(),
         size: this.size,
-        sortBy: this.filterSettings.sortBy,
-        direction: this.filterSettings.direction,
-      }
-    )
-      .pipe(takeUntilDestroyed(this.destroyRef))
+        sortBy: currentFilter.sortBy,
+        direction: currentFilter.direction,
+        filterSettings: {
+          search: currentFilter.search,
+          releaseYear: this.activeYear,
+          decade: this.activeDecade,
+          albumArtist: undefined,
+          genre: undefined,
+          style: undefined,
+          favorite: this.favorite,
+          owned: this.owned,
+          fan: this.isFiltered(FilterOptions.fan),
+          tino: this.isFiltered(FilterOptions.tino),
+          wire: this.isFiltered(FilterOptions.wire),
+        },
+      })
       .subscribe({
-        next: (pageAlbum: PageAlbum) => {
+        next: pageAlbum => {
           const newContent = pageAlbum.content || [];
+
           this.albums.update(prev => [...prev, ...newContent]);
-          // Paginierungs-Ende prüfen
-          this.isLastPage.set(pageAlbum.last ?? (newContent.length < this.size));
-          this.page++;
+          this.isLastPage.set(pageAlbum.last ?? newContent.length < this.size);
+          this.page.update(p => p + 1);
           this.isLoading.set(false);
         },
-        error: (err) => {
+        error: err => {
           console.error('Error fetching albums:', err);
           this.isLoading.set(false);
-        }
+        },
       });
   }
 
-  private setupIntersectionObserver() {
-    // Der Observer schlägt an, sobald das Anker-Element unten im Viewport sichtbar wird
-    this.observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !this.isLoading() && !this.isLastPage()) {
-        this.fetchAlbums();
-      }
-    }, { rootMargin: '600px' }); // Lädt 200px vor Erreichen des Bildschirmendes bereits nach
+  private setupIntersectionObserver(element: HTMLElement) {
+    this.observer?.disconnect();
 
-    // Anker beobachten sobald er gerendert ist
-    setTimeout(() => {
-      const anchorEl = this.scrollAnchor()?.nativeElement;
-      if (anchorEl) {
-        this.observer?.observe(anchorEl);
-      }
-    });
+    this.observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !this.isLoading() && !this.isLastPage()) {
+          this.fetchAlbums();
+        }
+      },
+      {
+        rootMargin: '500px 0px',
+      },
+    );
+
+    this.observer.observe(element);
 
     this.destroyRef.onDestroy(() => {
       this.observer?.disconnect();
     });
   }
 
-  updateFilter(filterSettings: FilterSettings) {
-    this.filterSettings = filterSettings;
+  updateFilter(newSettings: FilterSettings) {
+    this.filterSettings.set(newSettings);
     this.resetAndFetch();
+  }
+
+  private isFiltered(filter: FilterOptions): true | undefined {
+    return this.filterSettings().filterBy.includes(filter) || undefined;
   }
 }

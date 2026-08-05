@@ -1,58 +1,50 @@
 <div class="album-poster">
-    <img [src]="album.imageUrl" [alt]="album.title" loading="lazy" decoding="async" />
-    @if(album.owned) {
-    <div class="vinyl-overlay" title="Owned (Vinyl)"></div>
+  <img [src]="album.imageUrl" [alt]="album.title" loading="lazy" decoding="async" />
+  @if(album.owned) {
+  <div class="vinyl-overlay" title="Owned (Vinyl)"></div>
+  }
+  <div class="top-left-icons">
+    @if (album.videoUrl) {
+    <a [href]="album.videoUrl" target="_blank" class="video-icon" title="Watch Video"></a>
+    } @if (album.wikiUrl) {
+    <a [href]="album.wikiUrl" target="_blank" class="wikipedia-icon" title="Wikipedia Article"></a>
     }
-    <div class="top-left-icons">
-        @if (album.videoUrl) {
-        <a [href]="album.videoUrl" target="_blank" class="video-icon" title="Watch Video"></a>
-        }
-        @if (album.wikiUrl) {
-        <a [href]="album.wikiUrl" target="_blank" class="wikipedia-icon" title="Wikipedia Article"></a>
-        }
+  </div>
+  <div class="top-right-icons">
+    @if (album.rating) {
+    <div class="rating-circle" title="">{{ album.rating }}</div>
+    }
+  </div>
+  <div class="album-overlay">
+    <div class="overlay-bookmarks">
+      @if (album.tino) {
+      <div class="bookmark-tino" title="Tino's Tip"></div>
+      } @if (album.wire) {
+      <div class="bookmark-wire" title="The Wire"></div>
+      }
     </div>
-    <div class="top-right-icons">
-        @if (album.rating) {
-        <div class="rating-circle" title="">{{ album.rating }}</div>
-        }
+    <div class="album-artist">
+      @if (album.bandcampUrl) {
+      <a [href]="album.bandcampUrl" target="_blank">{{ album.artist }}</a>
+      } @else { {{ album.artist }} } @if (album.fan) {
+      <span class="inline-icon" title="Fan/Favorite">❤️</span>
+      }
     </div>
-    <div class="album-overlay">
-        <div class="overlay-bookmarks">
-            @if (album.tino) {
-            <div class="bookmark-tino" title="Tino's Tip"></div>
-            }
-            @if (album.wire) {
-            <div class="bookmark-wire" title="The Wire"></div>
-            }
-        </div>
-        <div class="album-artist">
-            @if (album.bandcampUrl) {
-            <a [href]="album.bandcampUrl" target="_blank">{{
-                album.artist }}</a>
-            } @else {
-            {{ album.artist }}
-            }
-            @if (album.fan) {
-            <span class="inline-icon" title="Fan/Favorite">❤️</span>
-            }
-        </div>
-        <div class="album-title">
-            @if (album.bandcampUrl) {
-            <a [href]="album.bandcampUrl" target="_blank">{{ album.title }}</a>
-            } @else {
-            {{ album.title }}
-            }
-        </div>
-        <div class="album-label" [title]="album.publisher">{{ album.publisher }}</div>
-        <div class="album-meta">
-            <div class="location">
-                <div class="album-country">{{ album.country }}</div>
-                <div class="album-city">{{ album.city }}</div>
-            </div>
-            <div class="genre">
-                <div class="album-genre">{{ album.genre }}</div>
-                <div class="album-style">{{ album.style }}</div>
-            </div>
-        </div>
+    <div class="album-title">
+      @if (album.bandcampUrl) {
+      <a [href]="album.bandcampUrl" target="_blank">{{ album.title }}</a>
+      } @else { {{ album.title }} }
     </div>
+    <div class="album-label" [title]="album.publisher">{{ album.publisher }}</div>
+    <div class="album-meta">
+      <div class="location">
+        <div class="album-country">{{ album.country }}</div>
+        <div class="album-city">{{ album.city }}</div>
+      </div>
+      <div class="genre">
+        <div class="album-genre">{{ album.genre }}</div>
+        <div class="album-style">{{ album.style }}</div>
+      </div>
+    </div>
+  </div>
 </div>

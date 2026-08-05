@@ -1,8 +1,3 @@
 <button class="sort-button" [class.active]="active">
-    {{ label }}
-    @if (active && direction === 'asc') {
-    ↓
-    } @else if (active && direction === 'desc') {
-    ↑
-    }
+  {{ label }} @if (active && direction === 'asc') { ↓ } @else if (active && direction === 'desc') { ↑ }
 </button>

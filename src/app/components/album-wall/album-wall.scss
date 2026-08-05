@@ -1,7 +1,7 @@
 .album-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: var(--padding-horizontal-md);
-    padding-left: var(--padding-horizontal-md);
-    padding-right: var(--padding-horizontal-md);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--padding-horizontal-md);
+  padding-left: var(--padding-horizontal-md);
+  padding-right: var(--padding-horizontal-md);
 }

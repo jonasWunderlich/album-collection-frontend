@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
+import { SortButton } from '../sort-button/sort-button';
 import { FilterOptions, FilterSettings, SortOptions } from '../types';
-import { SortButton } from "../sort-button/sort-button";
 
 @Component({
   selector: 'app-controls-row',
@@ -9,44 +9,68 @@ import { SortButton } from "../sort-button/sort-button";
   styleUrl: './controls-row.scss',
 })
 export class ControlsRow {
+  readonly filter = output<FilterSettings>();
+  readonly SortOptions = SortOptions;
+  readonly FilterOptions = FilterOptions;
 
-  filterSettings: FilterSettings = {
+  readonly filterSettings = signal<FilterSettings>({
     filterBy: [],
     direction: 'desc',
     search: '',
-    sortBy: SortOptions.addedDate
-  };
+    sortBy: SortOptions.addedDate,
+  });
 
-  @Output() filter = new EventEmitter<FilterSettings>();
-  SortOptions = SortOptions;
-  FilterOptions = FilterOptions;
+  updateSearch(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const search = inputElement.value;
 
-  updateSearch(search: string) {
-    this.filterSettings.search = search;
-    this.filter.emit(this.filterSettings);
-  }
-
-  updateSort(sortBy: SortOptions) {
-    if (this.filterSettings.sortBy === sortBy) {
-      this.filterSettings.direction = this.filterSettings.direction === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.filterSettings.sortBy = sortBy;
-      this.filterSettings.direction = 'desc';
-    }
-    this.filter.emit(this.filterSettings);
-  }
-
-  updateFilter(filter: FilterOptions) {
-    if (this.filterSettings.filterBy.includes(filter)) {
-      this.filterSettings.filterBy = this.filterSettings.filterBy.filter(f => f !== filter);
-    } else {
-      this.filterSettings.filterBy.push(filter);
-    }
-    this.filter.emit(this.filterSettings);
+    this.filterSettings.update(prev => ({
+      ...prev,
+      search,
+    }));
+    
+    this.emitChange();
   }
 
   clearSearch() {
-    this.filterSettings.search = '';
-    this.filter.emit(this.filterSettings);
+    this.filterSettings.update(prev => ({
+      ...prev,
+      search: '',
+    }));
+    
+    this.emitChange();
+  }
+
+  updateSort(value: SortOptions) {
+    this.filterSettings.update(prev => {
+      const isSameSort = prev.sortBy === value;
+      return {
+        ...prev,
+        sortBy: value,
+        direction: isSameSort && prev.direction === 'asc' ? 'desc' : isSameSort ? 'asc' : 'desc',
+      };
+    });
+
+    this.emitChange();
+  }
+
+  updateFilter(filter: FilterOptions) {
+    this.filterSettings.update(prev => {
+      const exists = prev.filterBy.includes(filter);
+      const newFilterBy = exists
+        ? prev.filterBy.filter(f => f !== filter)
+        : [...prev.filterBy, filter];
+
+      return {
+        ...prev,
+        filterBy: newFilterBy,
+      };
+    });
+
+    this.emitChange();
+  }
+
+  private emitChange() {
+    this.filter.emit(this.filterSettings());
   }
 }
