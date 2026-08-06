@@ -28,7 +28,7 @@ export class ControlsRow {
       ...prev,
       search,
     }));
-    
+
     this.emitChange();
   }
 
@@ -37,29 +37,46 @@ export class ControlsRow {
       ...prev,
       search: '',
     }));
-    
+
     this.emitChange();
   }
 
-  updateSort(value: SortOptions) {
+  setSort(value: SortOptions) {
     this.filterSettings.update(prev => {
       const isSameSort = prev.sortBy === value;
-      return {
-        ...prev,
-        sortBy: value,
-        direction: isSameSort && prev.direction === 'asc' ? 'desc' : isSameSort ? 'asc' : 'desc',
-      };
-    });
 
+      if (isSameSort) {
+        return {
+          ...prev,
+          direction: prev.direction === 'asc' ? 'desc' : 'asc',
+        };
+      } else {
+        switch (value) {
+          case SortOptions.artist:
+            return {
+              ...prev,
+              sortBy: value,
+              direction: 'asc',
+            };
+          default: {
+            return {
+              ...prev,
+              sortBy: value,
+              direction: 'desc',
+            };
+          }
+        }
+      }
+    });
     this.emitChange();
   }
 
-  updateFilter(filter: FilterOptions) {
+  setFilter(value: FilterOptions) {
     this.filterSettings.update(prev => {
-      const exists = prev.filterBy.includes(filter);
+      const exists = prev.filterBy.includes(value);
       const newFilterBy = exists
-        ? prev.filterBy.filter(f => f !== filter)
-        : [...prev.filterBy, filter];
+        ? prev.filterBy.filter(f => f !== value)
+        : [...prev.filterBy, value];
 
       return {
         ...prev,

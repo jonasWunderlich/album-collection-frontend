@@ -34,9 +34,9 @@ export class AlbumWall {
 
   readonly filterSettings = signal<FilterSettings>({
     search: '',
-    sortBy: SortOptions.addedDate,
+    sortBy: SortOptions.rating,
     filterBy: [],
-    direction: 'asc',
+    direction: 'desc',
   });
   readonly albums = signal<Album[]>([]);
   readonly page = signal<number>(0);
@@ -47,11 +47,20 @@ export class AlbumWall {
   constructor() {
     // Route-Params sauber und sicher abonnieren (Triggert NUR bei ECHTEM URL-Wechsel)
     this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
-      const yearParam = params.get('year');
+      const yearParam = params.get('releaseYear');
       const decadeParam = params.get('decade');
       this.owned = params.get('owned') === 'true' ? true : undefined;
       this.favorite = params.get('favorite') === 'true' ? true : undefined;
       this.activeYear = yearParam ? parseInt(yearParam, 10) : undefined;
+      if (this.activeYear === 2026) {
+        this.updateFilter({
+          sortBy: SortOptions.addedDate,
+        });
+      } else {
+        this.updateFilter({
+          sortBy: SortOptions.rating,
+        });
+      }
       this.activeDecade = decadeParam ? parseInt(decadeParam, 10) : undefined;
       this.resetAndFetch();
     });
@@ -136,8 +145,11 @@ export class AlbumWall {
     });
   }
 
-  updateFilter(newSettings: FilterSettings) {
-    this.filterSettings.set(newSettings);
+  updateFilter(value: Partial<FilterSettings>) {
+    this.filterSettings.set({
+      ...this.filterSettings(),
+      ...value,
+    });
     this.resetAndFetch();
   }
 

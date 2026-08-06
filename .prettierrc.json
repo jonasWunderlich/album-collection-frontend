@@ -6,16 +6,15 @@
   "useTabs": false,
   "semi": true,
   "bracketSpacing": true,
+  "singleAttributePerLine": true,
   "arrowParens": "avoid",
   "endOfLine": "lf",
-  "plugins": [
-    "prettier-plugin-organize-imports"
-  ],
+  "plugins": ["prettier-plugin-organize-imports"],
   "overrides": [
     {
       "files": "*.html",
       "options": {
-        "parser": "html",
+        "parser": "angular",
         "printWidth": 120
       }
     }

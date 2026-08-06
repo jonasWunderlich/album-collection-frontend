@@ -6,7 +6,7 @@
     (input)="updateSearch($event)"
     placeholder="Search &amp; Filter Records .."
   />
-  
+
   @if (filterSettings().search) {
     <button
       type="button"
@@ -25,19 +25,19 @@
       [active]="filterSettings().sortBy === SortOptions.rating"
       [direction]="filterSettings().direction"
       label="Bewertung"
-      (click)="updateSort(SortOptions.rating)"
+      (click)="setSort(SortOptions.rating)"
     />
     <app-sort-button
       [active]="filterSettings().sortBy === SortOptions.artist"
       [direction]="filterSettings().direction"
       label="Artist"
-      (click)="updateSort(SortOptions.artist)"
+      (click)="setSort(SortOptions.artist)"
     />
     <app-sort-button
       [active]="filterSettings().sortBy === SortOptions.addedDate"
       [direction]="filterSettings().direction"
       label="Hinzugefügt"
-      (click)="updateSort(SortOptions.addedDate)"
+      (click)="setSort(SortOptions.addedDate)"
     />
   </div>
 
@@ -46,7 +46,7 @@
       type="button"
       class="filter-button"
       [class.active]="filterSettings().filterBy.includes(FilterOptions.tino)"
-      (click)="updateFilter(FilterOptions.tino)"
+      (click)="setFilter(FilterOptions.tino)"
     >
       Tino
     </button>
@@ -54,7 +54,7 @@
       type="button"
       class="filter-button"
       [class.active]="filterSettings().filterBy.includes(FilterOptions.wire)"
-      (click)="updateFilter(FilterOptions.wire)"
+      (click)="setFilter(FilterOptions.wire)"
     >
       Wire
     </button>
