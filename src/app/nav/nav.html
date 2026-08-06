@@ -1,20 +1,16 @@
 <a routerLink="/year/2026">Home</a>
 
 @if (activeYear) {
-    <a [routerLink]="['/year', activeYear - 1]">{{ activeYear - 1}}</a>
-    <span class="nav-title">{{ activeYear }}</span>
-    @if (activeYear !== 2026) {
-        <a [routerLink]="['/year', activeYear + 1]">{{ activeYear + 1}}</a>
-    }
-}
-
-@if (activeDecade) {
-    <a [routerLink]="['/decade', activeDecade - 10]">{{ activeDecade - 10}}</a>
-    <span class="nav-title">{{ activeDecade }}</span>
-    @if (activeDecade !== 2020) {
-        <a [routerLink]="['/decade', activeDecade + 10]">{{ activeDecade + 10}}</a>
-    }
-}
+<a [routerLink]="['/year', activeYear - 1]">{{ activeYear - 1}}</a>
+<span class="nav-title">{{ activeYear }}</span>
+@if (activeYear !== 2026) {
+<a [routerLink]="['/year', activeYear + 1]">{{ activeYear + 1}}</a>
+} } @if (activeDecade) {
+<a [routerLink]="['/decade', activeDecade - 10]">{{ activeDecade - 10}}</a>
+<span class="nav-title">{{ activeDecade }}</span>
+@if (activeDecade !== 2020) {
+<a [routerLink]="['/decade', activeDecade + 10]">{{ activeDecade + 10}}</a>
+} }
 
 <div class="hamburger-menu" id="hamburgerMenu">
   <button class="hamburger-btn" id="hamburgerBtn" (click)="menuHidden = !menuHidden" [class.active]="!menuHidden">
@@ -26,21 +22,24 @@
   <div class="menu-content" id="menuContent" [class.hidden]="menuHidden">
     <div class="menu-header">Wähle eine Epoche</div>
 
-    <h2>Sonstige</h2>
+    <h2 class="menu-header">Sonstige</h2>
     <a [routerLink]="['/owned', true]" (click)="menuHidden = true">Sammlung</a>
     <a [routerLink]="['/favorite', true]" (click)="menuHidden = true">Favoriten</a>
 
+    @if (yearsAndDecades.isLoading()) {
+    <p>Lade Dekaden...</p>
+    } @else if (yearsAndDecades.error()) {
+    <p>Fehler beim Laden!</p>
+    } @else {
     <h2 class="menu-header">Dekaden</h2>
-    @for (decade of albumMetaService.releaseYearSummary().decades; track $index) {
-        <a [routerLink]="['/decade', decade]" (click)="menuHidden = true">{{decade}}</a>
+    @for (decade of yearsAndDecades.value().decades; track $index) {
+    <a [routerLink]="['/decade', decade]" (click)="menuHidden = true">{{decade}}</a>
     }
 
     <h2 class="menu-header">Jahre</h2>
-    @for (year of albumMetaService.releaseYearSummary().releaseYears; track $index) {
-        <a [routerLink]="['/year', year]" (click)="menuHidden = true">{{year}}</a>
-    }
-
-
+    @for (year of yearsAndDecades.value().releaseYears; track $index) {
+    <a [routerLink]="['/year', year]" (click)="menuHidden = true">{{year}}</a>
+    } }
   </div>
   }
 </div>

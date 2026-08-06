@@ -1,0 +1,13 @@
+<form>
+  <label
+    >Artist
+    <input type="text" [formField]="albumForm.artist" autocomplete="none" />
+  </label>
+  @if (albumForm.artist().touched() && albumForm.artist().invalid()) {
+  <ul>
+    @for (error of albumForm.artist().errors(); track error.kind) {
+    <li>{{ error.message }}</li>
+    }
+  </ul>
+  }
+</form>

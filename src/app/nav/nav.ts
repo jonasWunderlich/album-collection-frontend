@@ -11,7 +11,7 @@ import { AlbumMetaService } from '../services/album-meta-service';
   styleUrl: './nav.scss',
 })
 export class Nav {
-  albumMetaService = inject(AlbumMetaService);
+  yearsAndDecades = inject(AlbumMetaService).releaseYearSummary;
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
   router = inject(Router);
@@ -23,7 +23,7 @@ export class Nav {
   constructor() {
     // Route-Params sauber und sicher abonnieren (Triggert NUR bei ECHTEM URL-Wechsel)
     this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
-      console.log('active route', params)
+      console.log('active route', params);
       const yearParam = params.get('year');
       const decadeParam = params.get('decade');
       this.activeYear = yearParam ? parseInt(yearParam, 10) : undefined;
@@ -46,4 +46,7 @@ export class Nav {
     }
     return 'Collection';
   }
+}
+function computed(arg0: () => any) {
+  throw new Error('Function not implemented.');
 }
