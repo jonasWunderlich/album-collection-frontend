@@ -1,45 +1,82 @@
-<a routerLink="/year/2026">Home</a>
+<a routerLink="/releaseYear/2026">Home</a>
 
-@if (activeYear) {
-<a [routerLink]="['/year', activeYear - 1]">{{ activeYear - 1}}</a>
-<span class="nav-title">{{ activeYear }}</span>
-@if (activeYear !== 2026) {
-<a [routerLink]="['/year', activeYear + 1]">{{ activeYear + 1}}</a>
-} } @if (activeDecade) {
-<a [routerLink]="['/decade', activeDecade - 10]">{{ activeDecade - 10}}</a>
-<span class="nav-title">{{ activeDecade }}</span>
-@if (activeDecade !== 2020) {
-<a [routerLink]="['/decade', activeDecade + 10]">{{ activeDecade + 10}}</a>
-} }
+@if (routeState.releaseYear()) {
+  @if (routeState.prevYear()) {
+    <a [routerLink]="['/releaseYear', routeState.prevYear()]">{{ routeState.prevYear() }}</a>
+  }
+  <span class="nav-title">Records in {{ routeState.releaseYear() }}</span>
+  @if (routeState.nextYear()) {
+    <a [routerLink]="['/releaseYear', routeState.nextYear()]">{{ routeState.nextYear() }}</a>
+  }
+}
+<!-- Decades -->
+@if (routeState.decade()) {
+  @if (routeState.prevDecade()) {
+    <a [routerLink]="['/decade', routeState.prevDecade()]">{{ routeState.prevDecade() }}</a>
+  }
+  <span class="nav-title">{{ routeState.decade() }}</span>
+  @if (routeState.nextDecade()) {
+    <a [routerLink]="['/decade', routeState.nextDecade()]">{{ routeState.nextDecade() }}</a>
+  }
+}
 
-<div class="hamburger-menu" id="hamburgerMenu">
-  <button class="hamburger-btn" id="hamburgerBtn" (click)="menuHidden = !menuHidden" [class.active]="!menuHidden">
+<div
+  class="hamburger-menu"
+  id="hamburgerMenu"
+>
+  <button
+    class="hamburger-btn"
+    id="hamburgerBtn"
+    (click)="menuHidden = !menuHidden"
+    [class.active]="!menuHidden"
+  >
     <span></span>
     <span></span>
     <span></span>
   </button>
   @if (!menuHidden) {
-  <div class="menu-content" id="menuContent" [class.hidden]="menuHidden">
-    <div class="menu-header">Wähle eine Epoche</div>
+    <div
+      class="menu-content"
+      id="menuContent"
+      [class.hidden]="menuHidden"
+    >
+      <div class="menu-header">Wähle eine Epoche</div>
 
-    <h2 class="menu-header">Sonstige</h2>
-    <a [routerLink]="['/owned', true]" (click)="menuHidden = true">Sammlung</a>
-    <a [routerLink]="['/favorite', true]" (click)="menuHidden = true">Favoriten</a>
+      <h2 class="menu-header">Sonstige</h2>
+      <a
+        [routerLink]="['/owned', true]"
+        (click)="menuHidden = true"
+        >Sammlung</a
+      >
+      <a
+        [routerLink]="['/favorite', true]"
+        (click)="menuHidden = true"
+        >Favoriten</a
+      >
 
-    @if (yearsAndDecades.isLoading()) {
-    <p>Lade Dekaden...</p>
-    } @else if (yearsAndDecades.error()) {
-    <p>Fehler beim Laden!</p>
-    } @else {
-    <h2 class="menu-header">Dekaden</h2>
-    @for (decade of yearsAndDecades.value().decades; track $index) {
-    <a [routerLink]="['/decade', decade]" (click)="menuHidden = true">{{decade}}</a>
-    }
+      @if (yearsAndDecades.isLoading()) {
+        <p>Lade Dekaden...</p>
+      } @else if (yearsAndDecades.error()) {
+        <p>Fehler beim Laden!</p>
+      } @else {
+        <h2 class="menu-header">Dekaden</h2>
+        @for (decade of yearsAndDecades.value().decades; track $index) {
+          <a
+            [routerLink]="['/decade', decade]"
+            (click)="menuHidden = true"
+            >{{ decade }}</a
+          >
+        }
 
-    <h2 class="menu-header">Jahre</h2>
-    @for (year of yearsAndDecades.value().releaseYears; track $index) {
-    <a [routerLink]="['/year', year]" (click)="menuHidden = true">{{year}}</a>
-    } }
-  </div>
+        <h2 class="menu-header">Jahre</h2>
+        @for (releaseYear of yearsAndDecades.value().releaseYears; track $index) {
+          <a
+            [routerLink]="['/releaseYear', releaseYear]"
+            (click)="menuHidden = true"
+            >{{ releaseYear }}</a
+          >
+        }
+      }
+    </div>
   }
 </div>

@@ -5,12 +5,12 @@ import {
   ElementRef,
   inject,
   signal,
+  untracked,
   viewChild,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
 import { Album, AlbumControllerService } from '../../../../api';
 import { Nav } from '../../nav/nav';
+import { RouteStateService } from '../../services/route-state-service';
 import { AlbumTile } from '../album-tile/album-tile';
 import { ControlsRow } from '../controls-row/controls-row';
 import { FilterOptions, FilterSettings, SortOptions } from '../types';
@@ -22,15 +22,11 @@ import { FilterOptions, FilterSettings, SortOptions } from '../types';
   styleUrl: './album-wall.scss',
 })
 export class AlbumWall {
-  private readonly route = inject(ActivatedRoute);
   private readonly albumService = inject(AlbumControllerService);
   private readonly destroyRef = inject(DestroyRef);
+  readonly routeState = inject(RouteStateService);
+
   readonly scrollAnchor = viewChild<ElementRef<HTMLDivElement>>('scrollAnchor');
-  private activeYear?: number;
-  private activeDecade?: number;
-  private owned?: boolean;
-  private favorite?: boolean;
-  private observer?: IntersectionObserver;
 
   readonly filterSettings = signal<FilterSettings>({
     search: '',
@@ -38,34 +34,39 @@ export class AlbumWall {
     filterBy: [],
     direction: 'desc',
   });
+
   readonly albums = signal<Album[]>([]);
   readonly page = signal<number>(0);
   readonly isLoading = signal<boolean>(false);
   readonly isLastPage = signal<boolean>(false);
   readonly size = 30;
 
+  private observer?: IntersectionObserver;
+
   constructor() {
-    // Route-Params sauber und sicher abonnieren (Triggert NUR bei ECHTEM URL-Wechsel)
-    this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
-      const yearParam = params.get('releaseYear');
-      const decadeParam = params.get('decade');
-      this.owned = params.get('owned') === 'true' ? true : undefined;
-      this.favorite = params.get('favorite') === 'true' ? true : undefined;
-      this.activeYear = yearParam ? parseInt(yearParam, 10) : undefined;
-      if (this.activeYear === 2026) {
-        this.updateFilter({
-          sortBy: SortOptions.addedDate,
-        });
-      } else {
-        this.updateFilter({
-          sortBy: SortOptions.rating,
-        });
-      }
-      this.activeDecade = decadeParam ? parseInt(decadeParam, 10) : undefined;
-      this.resetAndFetch();
+    // 1. Reagiert AUSSCHLIESSLICH auf URL-Parameter-Änderungen
+    effect(() => {
+      // Signale lesen, auf die der Effect hören SOLL:
+      const currentYear = this.routeState.releaseYear();
+      this.routeState.decade();
+      this.routeState.owned();
+      this.routeState.favorite();
+
+      // untracked() verhindert, dass filterSettings eine Abhängigkeit für den Effect wird
+      untracked(() => {
+        const defaultSort =
+          currentYear === 2026 ? SortOptions.addedDate : SortOptions.rating;
+
+        this.filterSettings.update(prev => ({
+          ...prev,
+          sortBy: defaultSort,
+        }));
+
+        this.resetAndFetch();
+      });
     });
 
-    // IntersectionObserver an das Anker Element binden (Keine Signal-Schleifen!)
+    /* IntersectionObserver für Inifinite Scroll */
     effect(() => {
       const anchorEl = this.scrollAnchor()?.nativeElement;
       if (anchorEl) {
@@ -86,6 +87,7 @@ export class AlbumWall {
 
     this.isLoading.set(true);
 
+    // FilterSettings lesen (im untracked-Kontext des Effects völlig sicher)
     const currentFilter = this.filterSettings();
 
     this.albumService
@@ -96,13 +98,13 @@ export class AlbumWall {
         direction: currentFilter.direction,
         filterSettings: {
           search: currentFilter.search,
-          releaseYear: this.activeYear,
-          decade: this.activeDecade,
+          releaseYear: this.routeState.releaseYear(),
+          decade: this.routeState.decade(),
           albumArtist: undefined,
           genre: undefined,
           style: undefined,
-          favorite: this.favorite,
-          owned: this.owned,
+          favorite: this.routeState.favorite(),
+          owned: this.routeState.owned(),
           fan: this.isFiltered(FilterOptions.fan),
           tino: this.isFiltered(FilterOptions.tino),
           wire: this.isFiltered(FilterOptions.wire),
