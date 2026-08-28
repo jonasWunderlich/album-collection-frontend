@@ -1,13 +1,17 @@
 import {
   Component,
   DestroyRef,
-  effect,
   ElementRef,
+  computed,
+  effect,
   inject,
+  input,
   signal,
   untracked,
   viewChild,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
 import { Album, AlbumControllerService } from '../../../../api';
 import { Nav } from '../../nav/nav';
 import { RouteStateService } from '../../services/route-state-service';
@@ -22,51 +26,65 @@ import { FilterOptions, FilterSettings, SortOptions } from '../types';
   styleUrl: './album-wall.scss',
 })
 export class AlbumWall {
-  private readonly albumService = inject(AlbumControllerService);
-  private readonly destroyRef = inject(DestroyRef);
+  private readonly route = inject(ActivatedRoute);
   readonly routeState = inject(RouteStateService);
 
+  readonly releaseYearInput = input<string>();
+  readonly decadeInput = input<string>();
+
+  // Endless Scrolling & Data
+  private readonly albumService = inject(AlbumControllerService);
+  private readonly destroyRef = inject(DestroyRef);
+  private observer?: IntersectionObserver;
+
   readonly scrollAnchor = viewChild<ElementRef<HTMLDivElement>>('scrollAnchor');
-
-  readonly filterSettings = signal<FilterSettings>({
-    search: '',
-    sortBy: SortOptions.rating,
-    filterBy: [],
-    direction: 'desc',
-  });
-
   readonly albums = signal<Album[]>([]);
   readonly page = signal<number>(0);
   readonly isLoading = signal<boolean>(false);
   readonly isLastPage = signal<boolean>(false);
   readonly size = 30;
 
-  private observer?: IntersectionObserver;
+  // QueryParams als REAKTIVES Signal umwandeln
+  private readonly queryParams = toSignal(this.route.queryParams, {
+    initialValue: this.route.snapshot.queryParams,
+  });
+
+  // FilterSettings werden deklarativ aus den QueryParams der URL abgeleitet
+  readonly filterSettings = computed<FilterSettings>(() => {
+    const params = this.queryParams(); // Bzw. reaktiv über queryParamMap / RouteStateService
+    const filterByRaw = params['filterBy'];
+    const currentYear = this.routeState.releaseYear();
+
+    const defaultSort = currentYear === 2026 ? SortOptions.addedDate : SortOptions.rating;
+
+    return {
+      search: params['search'] ?? '',
+      sortBy: (params['sortBy'] as SortOptions) ?? defaultSort,
+      direction: (params['direction'] as 'asc' | 'desc') ?? 'desc',
+      filterBy: filterByRaw
+        ? Array.isArray(filterByRaw)
+          ? filterByRaw
+          : [filterByRaw]
+        : [],
+    };
+  });
 
   constructor() {
-    // 1. Reagiert AUSSCHLIESSLICH auf URL-Parameter-Änderungen
+    // 2. Reagiert auf URL-Parameter-Änderungen (sowohl Route State als auch QueryParams)
     effect(() => {
-      // Signale lesen, auf die der Effect hören SOLL:
-      const currentYear = this.routeState.releaseYear();
+      // Signale lesen, auf die der Effect reagieren soll:
+      this.routeState.releaseYear();
       this.routeState.decade();
       this.routeState.owned();
       this.routeState.favorite();
+      this.filterSettings(); // Reagiert sofort, wenn sich Filter in der URL ändern
 
-      // untracked() verhindert, dass filterSettings eine Abhängigkeit für den Effect wird
       untracked(() => {
-        const defaultSort =
-          currentYear === 2026 ? SortOptions.addedDate : SortOptions.rating;
-
-        this.filterSettings.update(prev => ({
-          ...prev,
-          sortBy: defaultSort,
-        }));
-
         this.resetAndFetch();
       });
     });
 
-    /* IntersectionObserver für Inifinite Scroll */
+    /* IntersectionObserver für Infinite Scroll */
     effect(() => {
       const anchorEl = this.scrollAnchor()?.nativeElement;
       if (anchorEl) {
@@ -87,7 +105,7 @@ export class AlbumWall {
 
     this.isLoading.set(true);
 
-    // FilterSettings lesen (im untracked-Kontext des Effects völlig sicher)
+    // Aktuellen Filter-Zustand aus der URL lesen
     const currentFilter = this.filterSettings();
 
     this.albumService
@@ -103,8 +121,8 @@ export class AlbumWall {
           albumArtist: undefined,
           genre: undefined,
           style: undefined,
-          favorite: this.routeState.favorite(),
-          owned: this.routeState.owned(),
+          favorite: this.routeState.favorite() || this.isFiltered(FilterOptions.favorite),
+          owned: this.routeState.owned() || this.isFiltered(FilterOptions.owned),
           fan: this.isFiltered(FilterOptions.fan),
           tino: this.isFiltered(FilterOptions.tino),
           wire: this.isFiltered(FilterOptions.wire),
@@ -145,14 +163,6 @@ export class AlbumWall {
     this.destroyRef.onDestroy(() => {
       this.observer?.disconnect();
     });
-  }
-
-  updateFilter(value: Partial<FilterSettings>) {
-    this.filterSettings.set({
-      ...this.filterSettings(),
-      ...value,
-    });
-    this.resetAndFetch();
   }
 
   private isFiltered(filter: FilterOptions): true | undefined {

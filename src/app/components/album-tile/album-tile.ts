@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Album } from '../../../../api';
 
 @Component({
   selector: 'app-album-tile',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './album-tile.html',
   styleUrl: './album-tile.scss',
 })

@@ -1,4 +1,6 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SortButton } from '../sort-button/sort-button';
 import { FilterOptions, FilterSettings, SortOptions } from '../types';
 
@@ -9,85 +11,79 @@ import { FilterOptions, FilterSettings, SortOptions } from '../types';
   styleUrl: './controls-row.scss',
 })
 export class ControlsRow {
-  readonly filter = output<FilterSettings>();
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+
   readonly SortOptions = SortOptions;
   readonly FilterOptions = FilterOptions;
 
-  readonly filterSettings = signal<FilterSettings>({
-    filterBy: [],
-    direction: 'desc',
-    search: '',
-    sortBy: SortOptions.addedDate,
+  // QueryParams als REAKTIVES Signal umwandeln
+  private readonly queryParams = toSignal(this.route.queryParams, {
+    initialValue: this.route.snapshot.queryParams,
   });
 
+  // filterSettings reagiert jetzt automatisch auf jede URL-Änderung
+  readonly filterSettings = computed<FilterSettings>(() => {
+    const params = this.queryParams();
+    const filterByRaw = params['filterBy'];
+
+    return {
+      search: params['search'] ?? '',
+      sortBy: (params['sortBy'] as SortOptions) ?? SortOptions.addedDate,
+      direction: (params['direction'] as 'asc' | 'desc') ?? 'desc',
+      filterBy: filterByRaw
+        ? Array.isArray(filterByRaw)
+          ? filterByRaw
+          : [filterByRaw]
+        : [],
+    };
+  });
+
+  private updateQueryParams(newParams: Record<string, any>) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: newParams,
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  }
+
   updateSearch(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const search = inputElement.value;
-
-    this.filterSettings.update(prev => ({
-      ...prev,
-      search,
-    }));
-
-    this.emitChange();
+    const search = (event.target as HTMLInputElement).value;
+    this.updateQueryParams({ search: search || null });
   }
 
   clearSearch() {
-    this.filterSettings.update(prev => ({
-      ...prev,
-      search: '',
-    }));
-
-    this.emitChange();
+    this.updateQueryParams({ search: null });
   }
 
   setSort(value: SortOptions) {
-    this.filterSettings.update(prev => {
-      const isSameSort = prev.sortBy === value;
+    const current = this.filterSettings();
+    const isSameSort = current.sortBy === value;
 
-      if (isSameSort) {
-        return {
-          ...prev,
-          direction: prev.direction === 'asc' ? 'desc' : 'asc',
-        };
-      } else {
-        switch (value) {
-          case SortOptions.artist:
-            return {
-              ...prev,
-              sortBy: value,
-              direction: 'asc',
-            };
-          default: {
-            return {
-              ...prev,
-              sortBy: value,
-              direction: 'desc',
-            };
-          }
-        }
-      }
+    let direction: 'asc' | 'desc';
+    if (isSameSort) {
+      direction = current.direction === 'asc' ? 'desc' : 'asc';
+    } else {
+      direction = value === SortOptions.artist ? 'asc' : 'desc';
+    }
+
+    this.updateQueryParams({
+      sortBy: value,
+      direction,
     });
-    this.emitChange();
   }
 
   setFilter(value: FilterOptions) {
-    this.filterSettings.update(prev => {
-      const exists = prev.filterBy.includes(value);
-      const newFilterBy = exists
-        ? prev.filterBy.filter(f => f !== value)
-        : [...prev.filterBy, value];
+    const currentFilterBy = this.filterSettings().filterBy;
+    const exists = currentFilterBy.includes(value);
 
-      return {
-        ...prev,
-        filterBy: newFilterBy,
-      };
+    const newFilterBy = exists
+      ? currentFilterBy.filter(f => f !== value)
+      : [...currentFilterBy, value];
+
+    this.updateQueryParams({
+      filterBy: newFilterBy.length > 0 ? newFilterBy : null,
     });
-
-    this.emitChange();
-  }
-
-  private emitChange() {
-    this.filter.emit(this.filterSettings());
   }
 }
