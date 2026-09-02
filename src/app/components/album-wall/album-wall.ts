@@ -75,6 +75,13 @@ export class AlbumWall {
       // Signale lesen, auf die der Effect reagieren soll:
       this.routeState.releaseYear();
       this.routeState.decade();
+      this.routeState.albumArtist();
+      this.routeState.publisher();
+      this.routeState.country();
+      this.routeState.city();
+      this.routeState.genre();
+      this.routeState.genre();
+      this.routeState.style();
       this.routeState.owned();
       this.routeState.favorite();
       this.filterSettings(); // Reagiert sofort, wenn sich Filter in der URL ändern
@@ -118,9 +125,12 @@ export class AlbumWall {
           search: currentFilter.search,
           releaseYear: this.routeState.releaseYear(),
           decade: this.routeState.decade(),
-          albumArtist: undefined,
-          genre: undefined,
-          style: undefined,
+          albumArtist: this.routeState.albumArtist(),
+          publisher: this.routeState.publisher(),
+          genre: this.routeState.genre(),
+          style: this.routeState.style(),
+          country: this.routeState.country(),
+          city: this.routeState.city(),
           favorite: this.routeState.favorite() || this.isFiltered(FilterOptions.favorite),
           owned: this.routeState.owned() || this.isFiltered(FilterOptions.owned),
           fan: this.isFiltered(FilterOptions.fan),

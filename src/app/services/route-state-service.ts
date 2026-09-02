@@ -63,4 +63,34 @@ export class RouteStateService {
     const d = this.decade();
     return d && d < 2020 ? d + 10 : undefined;
   });
+
+  readonly albumArtist = computed(() => {
+    const val = this.activeParamMap()?.get('albumArtist');
+    return val ?? undefined;
+  });
+
+  readonly publisher = computed(() => {
+    const val = this.activeParamMap()?.get('publisher');
+    return val ?? undefined;
+  });
+
+  readonly genre = computed(() => {
+    const val = this.activeParamMap()?.get('genre');
+    return val ?? undefined;
+  });
+
+  readonly style = computed(() => {
+    const val = this.activeParamMap()?.get('style');
+    return val ?? undefined;
+  });
+
+  readonly country = computed(() => {
+    const val = this.activeParamMap()?.get('country');
+    return val ?? undefined;
+  });
+
+  readonly city = computed(() => {
+    const val = this.activeParamMap()?.get('city');
+    return val ?? undefined;
+  });
 }

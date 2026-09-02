@@ -5,7 +5,12 @@ export const routes: Routes = [
   { path: '', redirectTo: 'releaseYear/2026', pathMatch: 'full' },
   { path: 'releaseYear/:releaseYear', component: AlbumWall },
   { path: 'decade/:decade', component: AlbumWall },
-  { path: 'artist/:artist', component: AlbumWall },
+  { path: 'albumArtist/:albumArtist', component: AlbumWall },
+  { path: 'publisher/:publisher', component: AlbumWall },
+  { path: 'genre/:genre', component: AlbumWall },
+  { path: 'style/:style', component: AlbumWall },
+  { path: 'country/:country', component: AlbumWall },
+  { path: 'city/:city', component: AlbumWall },
   { path: 'owned', component: AlbumWall },
   { path: 'favorite', component: AlbumWall },
 ];

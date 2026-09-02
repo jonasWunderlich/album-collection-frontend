@@ -28,7 +28,12 @@
       }
     </div>
     <div class="album-artist">
-      <a [routerLink]="['artist', album.albumArtist]">{{ album.albumArtist }}</a>
+      @for (item of album.albumArtist?.split(',') || []; track $index) {
+        <a [routerLink]="['/albumArtist', item.trim()]">{{ item.trim() }}</a>
+        @if (!$last) {
+          <span>, </span>
+        }
+      }
       @if (album.fan) {
         <span class="inline-icon" title="Fan/Favorite">❤️</span>
       }
@@ -41,16 +46,41 @@
       }
     </div>
     <div class="album-label" [title]="album.publisher">
-      {{ album.publisher }}
+      (<a [routerLink]="['/releaseYear', album.releaseYear]">{{ album.releaseYear }}</a
+      >)
+      @for (item of album.publisher?.split(',') || []; track $index) {
+        <a [routerLink]="['/publisher', item.trim()]">{{ item.trim() }}</a>
+        @if (!$last) {
+          <span>, </span>
+        }
+      }
     </div>
     <div class="album-meta">
       <div class="location">
-        <div class="album-country">{{ album.country }}</div>
-        <div class="album-city">{{ album.city }}</div>
+        <div class="album-country">
+          <a [routerLink]="['/country', album.country]">{{ album.country }}</a>
+        </div>
+        <div class="album-city">
+          <a [routerLink]="['/city', album.city]">{{ album.city }}</a>
+        </div>
       </div>
       <div class="genre">
-        <div class="album-genre">{{ album.genre }}</div>
-        <div class="album-style">{{ album.style }}</div>
+        <div class="album-genre">
+          @for (item of album.genre?.split(',') || []; track $index) {
+            <a [routerLink]="['/genre', item.trim()]">{{ item.trim() }}</a>
+            @if (!$last) {
+              <span>, </span>
+            }
+          }
+        </div>
+        <div class="album-style">
+          @for (item of album.style?.split(',') || []; track $index) {
+            <a [routerLink]="['/style', item.trim()]">{{ item.trim() }}</a>
+            @if (!$last) {
+              <span>, </span>
+            }
+          }
+        </div>
       </div>
     </div>
   </div>
