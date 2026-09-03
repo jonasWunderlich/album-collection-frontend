@@ -46,9 +46,6 @@ Thumbs.db
 # Generated API
 src/app/api
 
-
-
 # Placeholder stuff
 public/placeholder.png
 public/cover
-openapi-generator-cli.jar

@@ -1,7 +1,9 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideClientHydration } from '@angular/platform-browser';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
-import { provideClientHydration } from '@angular/platform-browser';
+import { environment } from '../environment';
+import { BASE_PATH } from './api/variables';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -9,5 +11,9 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(),
+    {
+      provide: BASE_PATH,
+      useValue: environment.apiBasePath,
+    },
   ],
 };

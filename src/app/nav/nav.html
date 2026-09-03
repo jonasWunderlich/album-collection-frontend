@@ -20,39 +20,19 @@
   }
 }
 
-<div
-  class="hamburger-menu"
-  id="hamburgerMenu"
->
-  <button
-    class="hamburger-btn"
-    id="hamburgerBtn"
-    (click)="menuHidden = !menuHidden"
-    [class.active]="!menuHidden"
-  >
+<div class="hamburger-menu" id="hamburgerMenu">
+  <button class="hamburger-btn" id="hamburgerBtn" (click)="menuHidden = !menuHidden" [class.active]="!menuHidden">
     <span></span>
     <span></span>
     <span></span>
   </button>
   @if (!menuHidden) {
-    <div
-      class="menu-content"
-      id="menuContent"
-      [class.hidden]="menuHidden"
-    >
+    <div class="menu-content" id="menuContent" [class.hidden]="menuHidden">
       <div class="menu-header">Wähle eine Epoche</div>
 
       <h2 class="menu-header">Sonstige</h2>
-      <a
-        [routerLink]="['/owned']"
-        (click)="menuHidden = true"
-        >Sammlung</a
-      >
-      <a
-        [routerLink]="['/favorite']"
-        (click)="menuHidden = true"
-        >Favoriten</a
-      >
+      <a [routerLink]="['/owned']" (click)="menuHidden = true">Sammlung</a>
+      <a [routerLink]="['/favorite']" (click)="menuHidden = true">Favoriten</a>
 
       @if (yearsAndDecades.isLoading()) {
         <p>Lade Dekaden...</p>
@@ -61,20 +41,12 @@
       } @else {
         <h2 class="menu-header">Dekaden</h2>
         @for (decade of yearsAndDecades.value().decades; track $index) {
-          <a
-            [routerLink]="['/decade', decade]"
-            (click)="menuHidden = true"
-            >{{ decade }}</a
-          >
+          <a [routerLink]="['/decade', decade]" (click)="menuHidden = true">{{ decade }}</a>
         }
 
         <h2 class="menu-header">Jahre</h2>
         @for (releaseYear of yearsAndDecades.value().releaseYears; track $index) {
-          <a
-            [routerLink]="['/releaseYear', releaseYear]"
-            (click)="menuHidden = true"
-            >{{ releaseYear }}</a
-          >
+          <a [routerLink]="['/releaseYear', releaseYear]" (click)="menuHidden = true">{{ releaseYear }}</a>
         }
       }
     </div>
