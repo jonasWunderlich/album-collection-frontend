@@ -12,7 +12,8 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { Album, AlbumControllerService } from '../../../../api';
+import { AlbumsService } from '../../api/api/albums.service';
+import { Album } from '../../api/model/album';
 import { Nav } from '../../nav/nav';
 import { RouteStateService } from '../../services/route-state-service';
 import { AlbumTile } from '../album-tile/album-tile';
@@ -33,7 +34,7 @@ export class AlbumWall {
   readonly decadeInput = input<string>();
 
   // Endless Scrolling & Data
-  private readonly albumService = inject(AlbumControllerService);
+  private readonly albumService = inject(AlbumsService);
   private readonly destroyRef = inject(DestroyRef);
   private observer?: IntersectionObserver;
 
@@ -116,34 +117,46 @@ export class AlbumWall {
     const currentFilter = this.filterSettings();
 
     this.albumService
-      .getAlbums({
-        page: this.page(),
-        size: this.size,
-        sortBy: currentFilter.sortBy,
-        direction: currentFilter.direction,
-        filterSettings: {
-          search: currentFilter.search,
-          releaseYear: this.routeState.releaseYear(),
-          decade: this.routeState.decade(),
-          albumArtist: this.routeState.albumArtist(),
-          publisher: this.routeState.publisher(),
-          genre: this.routeState.genre(),
-          style: this.routeState.style(),
-          country: this.routeState.country(),
-          city: this.routeState.city(),
-          favorite: this.routeState.favorite() || this.isFiltered(FilterOptions.favorite),
-          owned: this.routeState.owned() || this.isFiltered(FilterOptions.owned),
-          fan: this.isFiltered(FilterOptions.fan),
-          tino: this.isFiltered(FilterOptions.tino),
-          wire: this.isFiltered(FilterOptions.wire),
-        },
-      })
+      .albumsGet(
+        undefined,
+        undefined,
+        this.routeState.albumArtist(),
+        undefined,
+        this.routeState.city(),
+        this.routeState.country(),
+        this.routeState.decade(),
+        undefined,
+        this.routeState.favorite(),
+        this.routeState.genre(),
+        undefined,
+        this.routeState.owned(),
+        this.page(),
+        this.routeState.publisher(),
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        this.routeState.releaseYear(),
+        currentFilter.search,
+        this.size,
+        currentFilter.sortBy,
+        currentFilter.direction,
+        this.routeState.style(),
+        this.isFiltered(FilterOptions.tino),
+        undefined,
+        this.isFiltered(FilterOptions.wire),
+        this.isFiltered(FilterOptions.wishlist),
+      )
       .subscribe({
         next: pageAlbum => {
           const newContent = pageAlbum.content || [];
-
+          console.log(pageAlbum);
+          const isLastPage =
+            !!pageAlbum.totalPages && pageAlbum.page == pageAlbum?.totalPages - 1;
           this.albums.update(prev => [...prev, ...newContent]);
-          this.isLastPage.set(pageAlbum.last ?? newContent.length < this.size);
+          this.isLastPage.set(isLastPage ?? newContent.length < this.size);
           this.page.update(p => p + 1);
           this.isLoading.set(false);
         },

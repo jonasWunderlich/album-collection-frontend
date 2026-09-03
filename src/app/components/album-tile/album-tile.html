@@ -1,14 +1,14 @@
 <div class="album-poster">
-  <img [src]="album.imageUrl" [alt]="album.title" loading="lazy" decoding="async" />
+  <img [src]="album.urlCover" [alt]="album.title" loading="lazy" decoding="async" />
   @if (album.owned) {
     <div class="vinyl-overlay" title="Owned (Vinyl)"></div>
   }
   <div class="top-left-icons">
-    @if (album.videoUrl) {
-      <a [href]="album.videoUrl" target="_blank" class="video-icon" title="Watch Video"></a>
+    @if (album.urlVideo) {
+      <a [href]="album.urlVideo" target="_blank" class="video-icon" title="Watch Video"></a>
     }
-    @if (album.wikiUrl) {
-      <a [href]="album.wikiUrl" target="_blank" class="wikipedia-icon" title="Wikipedia Article"></a>
+    @if (album.urlWikipedia) {
+      <a [href]="album.urlWikipedia" target="_blank" class="wikipedia-icon" title="Wikipedia Article"></a>
     }
   </div>
   <div class="top-right-icons">
@@ -28,7 +28,7 @@
       }
     </div>
     <div class="album-artist">
-      @for (item of album.albumArtist?.split(',') || []; track $index) {
+      @for (item of album.albumArtist; track $index) {
         <a [routerLink]="['/albumArtist', item.trim()]">{{ item.trim() }}</a>
         @if (!$last) {
           <span>, </span>
@@ -39,8 +39,8 @@
       }
     </div>
     <div class="album-title">
-      @if (album.bandcampUrl) {
-        <a [href]="album.bandcampUrl" target="_blank">{{ album.title }}</a>
+      @if (album.urlAlbum) {
+        <a [href]="album.urlAlbum" target="_blank">{{ album.title }}</a>
       } @else {
         {{ album.title }}
       }
@@ -48,7 +48,7 @@
     <div class="album-label" [title]="album.publisher">
       (<a [routerLink]="['/releaseYear', album.releaseYear]">{{ album.releaseYear }}</a
       >)
-      @for (item of album.publisher?.split(',') || []; track $index) {
+      @for (item of album.publisher; track $index) {
         <a [routerLink]="['/publisher', item.trim()]">{{ item.trim() }}</a>
         @if (!$last) {
           <span>, </span>
@@ -66,7 +66,7 @@
       </div>
       <div class="genre">
         <div class="album-genre">
-          @for (item of album.genre?.split(',') || []; track $index) {
+          @for (item of album.genre; track $index) {
             <a [routerLink]="['/genre', item.trim()]">{{ item.trim() }}</a>
             @if (!$last) {
               <span>, </span>
@@ -74,7 +74,7 @@
           }
         </div>
         <div class="album-style">
-          @for (item of album.style?.split(',') || []; track $index) {
+          @for (item of album.style; track $index) {
             <a [routerLink]="['/style', item.trim()]">{{ item.trim() }}</a>
             @if (!$last) {
               <span>, </span>

@@ -3,7 +3,7 @@
 <app-controls-row />
 
 <div class="album-grid">
-  @for (album of albums(); track album.id) {
+  @for (album of albums(); track album.urlCover) {
     <app-album-tile [album]="album" />
   } @empty {
     @if (!isLoading()) {

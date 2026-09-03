@@ -1,12 +1,17 @@
 import { httpResource } from '@angular/common/http';
-import { Service } from '@angular/core';
-import { ReleaseYearSummaryDto } from '../../../api';
+import { inject, Service, signal } from '@angular/core';
+import { YearsAndDecadesService } from '../api/api/yearsAndDecades.service';
+import { YearsAndDecadesResponse } from '../api/model/yearsAndDecadesResponse';
 
 @Service()
 export class AlbumMetaService {
-  private apiUrl = 'http://localhost:8080/api/albums/release-years';
+  private readonly yearsService = inject(YearsAndDecadesService);
+  private apiUrl = 'http://localhost:8081/yearsAndDecades';
 
-  releaseYearSummary = httpResource<ReleaseYearSummaryDto>(
+  readonly isLoading = signal<boolean>(false);
+  readonly navData = signal<YearsAndDecadesResponse>({ releaseYears: [], decades: [] });
+
+  aggregatedData = httpResource<YearsAndDecadesResponse>(
     () => {
       return this.apiUrl;
     },

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Album } from '../../../../api';
+import { Album } from '../../api/model/album';
 
 @Component({
   selector: 'app-album-tile',
