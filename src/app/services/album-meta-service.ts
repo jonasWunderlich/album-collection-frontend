@@ -1,17 +1,14 @@
 import { httpResource } from '@angular/common/http';
-import { inject, Service, signal } from '@angular/core';
-import { YearsAndDecadesService } from '../api/api/yearsAndDecades.service';
+import { inject, Service } from '@angular/core';
 import { YearsAndDecadesResponse } from '../api/model/yearsAndDecadesResponse';
+import { BASE_PATH } from '../api/variables';
 
 @Service()
 export class AlbumMetaService {
-  private readonly yearsService = inject(YearsAndDecadesService);
-  private apiUrl = 'http://localhost:8081/yearsAndDecades';
+  private readonly basePath = inject(BASE_PATH);
+  private apiUrl = `${this.basePath}/yearsAndDecades`;
 
-  readonly isLoading = signal<boolean>(false);
-  readonly navData = signal<YearsAndDecadesResponse>({ releaseYears: [], decades: [] });
-
-  aggregatedData = httpResource<YearsAndDecadesResponse>(
+  data = httpResource<YearsAndDecadesResponse>(
     () => {
       return this.apiUrl;
     },

@@ -11,6 +11,6 @@ import { RouteStateService } from '../services/route-state-service';
 })
 export class Nav {
   menuHidden = true;
-  readonly yearsAndDecades = inject(AlbumMetaService).aggregatedData;
+  readonly yearsAndDecades = inject(AlbumMetaService).navData();
   readonly routeState = inject(RouteStateService);
 }
