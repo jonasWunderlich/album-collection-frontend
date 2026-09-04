@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AlbumMetaService } from '../services/album-meta-service';
-import { RouteStateService } from '../services/route-state-service';
+import { AlbumMetaService } from '../../services/album-meta-service';
+import { RouteStateService } from '../../services/route-state-service';
 
 @Component({
   selector: 'app-nav',

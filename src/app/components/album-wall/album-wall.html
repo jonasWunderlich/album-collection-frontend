@@ -3,8 +3,8 @@
 <app-controls-row />
 
 <div class="album-grid">
-  @for (album of albums(); track album.urlCover) {
-    <app-album-tile [album]="album" />
+  @for (album of albums(); track album.urlCover; let i = $index) {
+    <app-album-tile [album]="album" [lazy]="i > pageSize" />
   } @empty {
     @if (!isLoading()) {
       <div class="no-albums">No albums found for this period.</div>
@@ -18,3 +18,5 @@
     <div class="loading-spinner">Loading more albums...</div>
   }
 </div>
+
+<app-scroll-top-button />

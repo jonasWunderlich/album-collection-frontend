@@ -61,32 +61,6 @@ a {
   padding-right: 12px;
 }
 
-.scroll-top-btn {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--text-color-link);
-  color: var(--text-color-light);
-  border: 0;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  font-size: 24px;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: none;
-  /* Hidden by default */
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-}
-
-.scroll-top-btn:hover {
-  background: var(--text-color-link-hover);
-}
-
 @media (max-width: 600px) {
   .album-wall {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));

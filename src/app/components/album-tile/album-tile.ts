@@ -10,4 +10,5 @@ import { Album } from '../../api/model/album';
 })
 export class AlbumTile {
   @Input() album!: Album;
+  @Input() lazy = true;
 }

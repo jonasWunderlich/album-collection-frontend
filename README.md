@@ -1,59 +1,51 @@
-# MusicAngularApp
+# Album-Collection-Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.9.
+This is the Angular frontend for the album-collection-backend.
 
-## Development server
+It is a further development of a static website originally generated using a Python crawle (music_crawler).
 
-To start a local development server, run:
+## Project Context & Evolution
 
-```bash
-ng serve
-```
+The project started as a complete rewrite of the static solution created by the Python script. It maintains the original look and feel while inheriting all of its core functionality.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The original static version relied heavily on AI code generation, making it increasingly difficult to refactor or change implementation details across a growing and complex codebase. While the new backend and this Angular frontend adapt many solutions from the Python prototype, the codebase has now been written primarily by hand.
 
-## Code scaffolding
+The previous static version pre-rendered HTML pages for release years, decades, and specific curated lists (owned vinyl, favorite records, personal samplers, and wishlists).
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Why a Modern Frontend?
 
-```bash
-ng generate component component-name
-```
+Moving away from a purely static approach to a modern frontend framework opens up much greater flexibility—particularly when it comes to dynamically connecting, filtering, and displaying the extensive metadata collected for each album.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## New Key Features
 
-```bash
-ng generate --help
-```
+Enhanced Filtering: Advanced options to filter through the album collection efficiently.
 
-## Building
+Optimized Performance: Drastically reduced data traffic and faster load times via server-side pagination.
 
-To build the project run:
+## Dynamic Views
 
-```bash
-ng build
-```
+This Single Page Application dynamically links and presents rich album metadata. Dedicated views are generated for:
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- Entities & Metadata: Individual Artists, Labels, Genres, Styles, Cities, and Countries.
 
-## Running unit tests
+- Special Filters: Special pages for boolean filters (e.g., Wire recommendations, Tino's picks).
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+As the metadata within the collection grows, cross-references and connections between records are established automatically.
 
-```bash
-ng test
-```
+## Roadmap & Planned Features
 
-## Running end-to-end tests
+- Improved Navigation
+- Advanced Filtering UI: Combining multiple filter parameters with an intuitive user experience.
+- Custom Collections: Ability to create and manually sort custom album lists.
 
-For end-to-end (e2e) testing, run:
+## Connected Projects
 
-```bash
-ng e2e
-```
+### Pyhton Crawler
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+— for Metadata retrieval and processing.
+https://github.com/jonasWunderlich/music_crawler
 
-## Additional Resources
+### Quarkus Backend
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- REST API and backend services
+  https://github.com/jonasWunderlich/album-collection-backend
