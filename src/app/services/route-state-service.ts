@@ -38,25 +38,4 @@ export class RouteStateService {
   readonly style = computed(() => this.getParam('style'));
   readonly country = computed(() => this.getParam('country'));
   readonly city = computed(() => this.getParam('city'));
-
-  // --- Derived Signals (Navigation) ---
-  readonly prevYear = computed(() => {
-    const y = this.releaseYear();
-    return y && y > 1900 ? y - 1 : undefined;
-  });
-
-  readonly nextYear = computed(() => {
-    const y = this.releaseYear();
-    return y && y < 2026 ? y + 1 : undefined;
-  });
-
-  readonly prevDecade = computed(() => {
-    const d = this.decade();
-    return d ? d - 10 : undefined;
-  });
-
-  readonly nextDecade = computed(() => {
-    const d = this.decade();
-    return d && d < 2020 ? d + 10 : undefined;
-  });
 }

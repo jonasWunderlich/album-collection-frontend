@@ -56,13 +56,25 @@ export class AlbumFilterService {
     });
   }
 
+    replaceFilters(newFilters: Partial<AlbumFilter>): void {
+    
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: newFilters,
+      queryParamsHandling: 'replace', // Behält bestehende Params bei
+      replaceUrl: false, // Setzt Navigation-History-Eintrag (Browser Back button funktioniert)
+    });
+  }
+
   private parseParams(params: Record<string, any>): AlbumFilter {
     return {
       sortBy: params['sortBy'] || 'rating',
       sortDir: params['sortDir'] || undefined,
-      search: params['search'] || undefined,
+      search: params['search'] || null,
       releaseYear: params['releaseYear'] ? Number(params['releaseYear']) : undefined,
       decade: params['decade'] ? Number(params['decade']) : undefined,
+      albumArtist: params['albumArtist'] || undefined,
+      publisher: params['publisher'] || undefined,
       genre: params['genre'] || undefined,
       style: params['style'] || undefined,
       city: params['city'] || undefined,

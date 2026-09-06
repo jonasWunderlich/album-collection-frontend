@@ -1,31 +1,31 @@
 <a [routerLink]="['/']" [queryParams]="{ releaseYear: 2026 }">Home</a>
 
 <!-- Years Navigation -->
-@if (routeState.releaseYear()) {
-  @if (routeState.prevYear()) {
-    <a [routerLink]="['/']" [queryParams]="{ releaseYear: routeState.prevYear() }" queryParamsHandling="merge">
-      {{ routeState.prevYear() }}
+@if (filterParams().releaseYear) {
+  @if (prevYear()) {
+    <a [routerLink]="['/']" [queryParams]="{ releaseYear: prevYear() }" queryParamsHandling="merge">
+      {{ prevYear() }}
     </a>
   }
-  <span class="nav-title">Records in {{ routeState.releaseYear() }}</span>
-  @if (routeState.nextYear()) {
-    <a [routerLink]="['/']" [queryParams]="{ releaseYear: routeState.nextYear() }" queryParamsHandling="merge">
-      {{ routeState.nextYear() }}
+  <span class="nav-title">Records in {{ filterParams().releaseYear }}</span>
+  @if (nextYear()) {
+    <a [routerLink]="['/']" [queryParams]="{ releaseYear: nextYear() }" queryParamsHandling="merge">
+      {{ nextYear() }}
     </a>
   }
 }
 
 <!-- Decades Navigation -->
-@if (routeState.decade()) {
-  @if (routeState.prevDecade()) {
-    <a [routerLink]="['/']" [queryParams]="{ decade: routeState.prevDecade() }" queryParamsHandling="merge">
-      {{ routeState.prevDecade() }}
+@if (filterParams().decade) {
+  @if (prevDecade()) {
+    <a [routerLink]="['/']" [queryParams]="{ decade: prevDecade() }" queryParamsHandling="merge">
+      {{ prevDecade() }}
     </a>
   }
-  <span class="nav-title">{{ routeState.decade() }}s</span>
-  @if (routeState.nextDecade()) {
-    <a [routerLink]="['/']" [queryParams]="{ decade: routeState.nextDecade() }" queryParamsHandling="merge">
-      {{ routeState.nextDecade() }}
+  <span class="nav-title">{{ filterParams().decade }}s</span>
+  @if (nextDecade()) {
+    <a [routerLink]="['/']" [queryParams]="{ decade: nextDecade() }" queryParamsHandling="merge">
+      {{ nextDecade() }}
     </a>
   }
 }

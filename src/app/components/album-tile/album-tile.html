@@ -48,7 +48,7 @@
     </div>
     <div class="album-artist">
       @for (item of album.albumArtist; track $index) {
-        <a [routerLink]="['/albumArtist', item.trim()]">{{ item.trim() }}</a>
+        <a (click)="setFilter('albumArtist', item.trim()); $event.stopPropagation()">{{ item.trim() }}</a>
         @if (!$last) {
           <span>, </span>
         }
@@ -65,10 +65,10 @@
       }
     </div>
     <div class="album-label" [title]="album.publisher">
-      (<a [routerLink]="['/releaseYear', album.releaseYear]">{{ album.releaseYear }}</a
+      (<a (click)="setFilter('releaseYear', album.releaseYear); $event.stopPropagation()">{{ album.releaseYear }}</a
       >)
       @for (item of album.publisher; track $index) {
-        <a [routerLink]="['/publisher', item.trim()]">{{ item.trim() }}</a>
+        <a (click)="setFilter('publisher', item.trim()); $event.stopPropagation()">{{ item.trim() }}</a>
         @if (!$last) {
           <span>, </span>
         }
@@ -77,16 +77,16 @@
     <div class="album-meta">
       <div class="location">
         <div class="album-country">
-          <a [routerLink]="['/country', album.country]">{{ album.country }}</a>
+          <a (click)="setFilter('country', album.country); $event.stopPropagation()">{{ album.country }}</a>
         </div>
         <div class="album-city">
-          <a [routerLink]="['/city', album.city]">{{ album.city }}</a>
+          <a (click)="setFilter('city', album.city); $event.stopPropagation()">{{ album.city }}</a>
         </div>
       </div>
       <div class="genre">
         <div class="album-genre">
           @for (item of album.genre; track $index) {
-            <a [routerLink]="['/genre', item.trim()]">{{ item.trim() }}</a>
+            <a (click)="setFilter('genre', item.trim()); $event.stopPropagation()">{{ item.trim() }}</a>
             @if (!$last) {
               <span>, </span>
             }
@@ -94,7 +94,7 @@
         </div>
         <div class="album-style">
           @for (item of album.style; track $index) {
-            <a [routerLink]="['/style', item.trim()]">{{ item.trim() }}</a>
+            <a (click)="setFilter('style', item.trim()); $event.stopPropagation()">{{ item.trim() }}</a>
             @if (!$last) {
               <span>, </span>
             }
