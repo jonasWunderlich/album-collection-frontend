@@ -2,6 +2,7 @@ export type Direction = 'asc' | 'desc';
 
 export enum SortOptions {
   addedDate = 'addedDate',
+  lastPlayedDate = 'lastPlayedDate',
   title = 'title',
   artist = 'artist',
   genre = 'genre',

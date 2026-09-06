@@ -141,7 +141,7 @@ export class AlbumWall {
         undefined,
         this.routeState.releaseYear(),
         currentFilter.search,
-        this.size,
+        this.pageSize,
         currentFilter.sortBy,
         currentFilter.direction,
         this.routeState.style(),
@@ -156,7 +156,7 @@ export class AlbumWall {
           const isLastPage =
             !!pageAlbum.totalPages && pageAlbum.page == pageAlbum?.totalPages - 1;
           this.albums.update(prev => [...prev, ...newContent]);
-          this.isLastPage.set(isLastPage ?? newContent.length < this.size);
+          this.isLastPage.set(isLastPage ?? newContent.length < this.pageSize);
           this.page.update(p => p + 1);
           this.isLoading.set(false);
         },

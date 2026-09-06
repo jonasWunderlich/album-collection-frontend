@@ -24,13 +24,11 @@ Optimized Performance: Drastically reduced data traffic and faster load times vi
 
 ## Dynamic Views
 
-This Single Page Application dynamically links and presents rich album metadata. Dedicated views are generated for:
+As the metadata within the collection grows, cross-references and connections between records are established automatically.
+The new implementation links and presents rich album metadata. Dedicated views are generated for:
 
 - Entities & Metadata: Individual Artists, Labels, Genres, Styles, Cities, and Countries.
-
 - Special Filters: Special pages for boolean filters (e.g., Wire recommendations, Tino's picks).
-
-As the metadata within the collection grows, cross-references and connections between records are established automatically.
 
 ## Roadmap & Planned Features
 
@@ -42,10 +40,10 @@ As the metadata within the collection grows, cross-references and connections be
 
 ### Pyhton Crawler
 
-— for Metadata retrieval and processing.
-https://github.com/jonasWunderlich/music_crawler
+- for Metadata retrieval and processing.
+- https://github.com/jonasWunderlich/music_crawler
 
 ### Quarkus Backend
 
 - REST API and backend services
-  https://github.com/jonasWunderlich/album-collection-backend
+- https://github.com/jonasWunderlich/album-collection-backend

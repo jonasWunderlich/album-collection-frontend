@@ -8,14 +8,7 @@
   />
 
   @if (filterSettings().search) {
-    <button
-      type="button"
-      class="reset-btn"
-      (click)="clearSearch()"
-      aria-label="Suchfeld zurücksetzen"
-    >
-      ✖
-    </button>
+    <button type="button" class="reset-btn" (click)="clearSearch()" aria-label="Suchfeld zurücksetzen">✖</button>
   }
 </div>
 
@@ -38,6 +31,12 @@
       [direction]="filterSettings().direction"
       label="Hinzugefügt"
       (click)="setSort(SortOptions.addedDate)"
+    />
+    <app-sort-button
+      [active]="filterSettings().sortBy === SortOptions.lastPlayedDate"
+      [direction]="filterSettings().direction"
+      label="Played"
+      (click)="setSort(SortOptions.lastPlayedDate)"
     />
   </div>
 

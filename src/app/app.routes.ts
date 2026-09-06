@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { AlbumWall } from './components/album-wall/album-wall';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'releaseYear/2026', pathMatch: 'full' },
+  { path: '', component: AlbumWall },
   { path: 'releaseYear/:releaseYear', component: AlbumWall },
   { path: 'decade/:decade', component: AlbumWall },
   { path: 'albumArtist/:albumArtist', component: AlbumWall },
