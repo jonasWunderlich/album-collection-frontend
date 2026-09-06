@@ -1,8 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
 import { SortButton } from '../sort-button/sort-button';
-import { FilterOptions, FilterSettings, SortOptions } from '../types';
+import { SortOptions } from '../types';
+import { AlbumFilterService } from '../../services/album-filter-service';
 
 @Component({
   selector: 'app-controls-row',
@@ -11,79 +10,30 @@ import { FilterOptions, FilterSettings, SortOptions } from '../types';
   styleUrl: './controls-row.scss',
 })
 export class ControlsRow {
-  private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
-
+  private readonly albumFilterService = inject(AlbumFilterService);
   readonly SortOptions = SortOptions;
-  readonly FilterOptions = FilterOptions;
 
-  // QueryParams als REAKTIVES Signal umwandeln
-  private readonly queryParams = toSignal(this.route.queryParams, {
-    initialValue: this.route.snapshot.queryParams,
-  });
+  readonly filters = computed(() => this.albumFilterService.filterParams());
 
-  // filterSettings reagiert jetzt automatisch auf jede URL-Änderung
-  readonly filterSettings = computed<FilterSettings>(() => {
-    const params = this.queryParams();
-    const filterByRaw = params['filterBy'];
-
-    return {
-      search: params['search'] ?? '',
-      sortBy: (params['sortBy'] as SortOptions) ?? SortOptions.addedDate,
-      direction: (params['direction'] as 'asc' | 'desc') ?? 'desc',
-      filterBy: filterByRaw
-        ? Array.isArray(filterByRaw)
-          ? filterByRaw
-          : [filterByRaw]
-        : [],
-    };
-  });
-
-  private updateQueryParams(newParams: Record<string, any>) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: newParams,
-      queryParamsHandling: 'merge',
-      replaceUrl: true,
-    });
-  }
-
-  updateSearch(event: Event) {
+  updateSearch(event: Event): void {
     const search = (event.target as HTMLInputElement).value;
-    this.updateQueryParams({ search: search || null });
+    this.albumFilterService.updateFilters({ search: search || undefined });
   }
 
-  clearSearch() {
-    this.updateQueryParams({ search: null });
+  clearSearch(): void {
+    this.albumFilterService.updateFilters({ search: undefined });
   }
 
-  setSort(value: SortOptions) {
-    const current = this.filterSettings();
-    const isSameSort = current.sortBy === value;
-
-    let direction: 'asc' | 'desc';
-    if (isSameSort) {
-      direction = current.direction === 'asc' ? 'desc' : 'asc';
-    } else {
-      direction = value === SortOptions.artist ? 'asc' : 'desc';
-    }
-
-    this.updateQueryParams({
+  setSort(value: SortOptions): void {
+    this.albumFilterService.updateFilters({
       sortBy: value,
-      direction,
     });
   }
 
-  setFilter(value: FilterOptions) {
-    const currentFilterBy = this.filterSettings().filterBy;
-    const exists = currentFilterBy.includes(value);
-
-    const newFilterBy = exists
-      ? currentFilterBy.filter(f => f !== value)
-      : [...currentFilterBy, value];
-
-    this.updateQueryParams({
-      filterBy: newFilterBy.length > 0 ? newFilterBy : null,
+  toggleFilter(key: 'tino' | 'wire'): void {
+    const isActive = this.albumFilterService.filterParams()[key];
+    this.albumFilterService.updateFilters({
+      [key]: !isActive ? 'true' : undefined,
     });
   }
 }

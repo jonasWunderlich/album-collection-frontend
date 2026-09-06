@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Direction } from '../types';
+import { SortDirection } from '../types';
 
 @Component({
   selector: 'app-sort-button',
@@ -9,6 +9,6 @@ import { Direction } from '../types';
 })
 export class SortButton {
   @Input() active = false;
-  @Input() direction: Direction = 'desc';
-  @Input() label: string = '';
+  @Input() direction?: SortDirection;
+  @Input() label = '';
 }

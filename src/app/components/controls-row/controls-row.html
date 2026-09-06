@@ -2,12 +2,12 @@
   <input
     type="text"
     id="myInput"
-    [value]="filterSettings().search"
+    [value]="filters().search"
     (input)="updateSearch($event)"
     placeholder="Search &amp; Filter Records .."
   />
 
-  @if (filterSettings().search) {
+  @if (filters().search) {
     <button type="button" class="reset-btn" (click)="clearSearch()" aria-label="Suchfeld zurücksetzen">✖</button>
   }
 </div>
@@ -15,46 +15,36 @@
 <div class="sort-controls">
   <div class="sort-group">
     <app-sort-button
-      [active]="filterSettings().sortBy === SortOptions.rating"
-      [direction]="filterSettings().direction"
+      [active]="filters().sortBy === SortOptions.rating"
+      [direction]="filters().sortDir"
       label="Bewertung"
       (click)="setSort(SortOptions.rating)"
     />
     <app-sort-button
-      [active]="filterSettings().sortBy === SortOptions.artist"
-      [direction]="filterSettings().direction"
+      [active]="filters().sortBy === SortOptions.artist"
+      [direction]="filters().sortDir"
       label="Artist"
       (click)="setSort(SortOptions.artist)"
     />
     <app-sort-button
-      [active]="filterSettings().sortBy === SortOptions.addedDate"
-      [direction]="filterSettings().direction"
+      [active]="filters().sortBy === SortOptions.addedDate"
+      [direction]="filters().sortDir"
       label="Hinzugefügt"
       (click)="setSort(SortOptions.addedDate)"
     />
     <app-sort-button
-      [active]="filterSettings().sortBy === SortOptions.lastPlayedDate"
-      [direction]="filterSettings().direction"
+      [active]="filters().sortBy === SortOptions.lastPlayedDate"
+      [direction]="filters().sortDir"
       label="Played"
       (click)="setSort(SortOptions.lastPlayedDate)"
     />
   </div>
 
   <div class="filter-group">
-    <button
-      type="button"
-      class="filter-button"
-      [class.active]="filterSettings().filterBy.includes(FilterOptions.tino)"
-      (click)="setFilter(FilterOptions.tino)"
-    >
+    <button type="button" class="filter-button" [class.active]="filters().tino" (click)="toggleFilter('tino')">
       Tino
     </button>
-    <button
-      type="button"
-      class="filter-button"
-      [class.active]="filterSettings().filterBy.includes(FilterOptions.wire)"
-      (click)="setFilter(FilterOptions.wire)"
-    >
+    <button type="button" class="filter-button" [class.active]="filters().wire" (click)="toggleFilter('wire')">
       Wire
     </button>
   </div>

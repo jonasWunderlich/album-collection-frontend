@@ -1,22 +1,32 @@
-<a routerLink="/releaseYear/2026">Home</a>
+<a [routerLink]="['/']" [queryParams]="{ releaseYear: 2026 }">Home</a>
 
+<!-- Years Navigation -->
 @if (routeState.releaseYear()) {
   @if (routeState.prevYear()) {
-    <a [routerLink]="['/releaseYear', routeState.prevYear()]">{{ routeState.prevYear() }}</a>
+    <a [routerLink]="['/']" [queryParams]="{ releaseYear: routeState.prevYear() }" queryParamsHandling="merge">
+      {{ routeState.prevYear() }}
+    </a>
   }
   <span class="nav-title">Records in {{ routeState.releaseYear() }}</span>
   @if (routeState.nextYear()) {
-    <a [routerLink]="['/releaseYear', routeState.nextYear()]">{{ routeState.nextYear() }}</a>
+    <a [routerLink]="['/']" [queryParams]="{ releaseYear: routeState.nextYear() }" queryParamsHandling="merge">
+      {{ routeState.nextYear() }}
+    </a>
   }
 }
-<!-- Decades -->
+
+<!-- Decades Navigation -->
 @if (routeState.decade()) {
   @if (routeState.prevDecade()) {
-    <a [routerLink]="['/decade', routeState.prevDecade()]">{{ routeState.prevDecade() }}</a>
+    <a [routerLink]="['/']" [queryParams]="{ decade: routeState.prevDecade() }" queryParamsHandling="merge">
+      {{ routeState.prevDecade() }}
+    </a>
   }
-  <span class="nav-title">{{ routeState.decade() }}</span>
+  <span class="nav-title">{{ routeState.decade() }}s</span>
   @if (routeState.nextDecade()) {
-    <a [routerLink]="['/decade', routeState.nextDecade()]">{{ routeState.nextDecade() }}</a>
+    <a [routerLink]="['/']" [queryParams]="{ decade: routeState.nextDecade() }" queryParamsHandling="merge">
+      {{ routeState.nextDecade() }}
+    </a>
   }
 }
 
@@ -26,13 +36,13 @@
     <span></span>
     <span></span>
   </button>
-  @if (!menuHidden) {
-    <div class="menu-content" id="menuContent" [class.hidden]="menuHidden">
-      <div class="menu-header">Wähle eine Epoche</div>
 
+  @if (!menuHidden) {
+    <div class="menu-content" id="menuContent">
       <h2 class="menu-header">Sonstige</h2>
-      <a [routerLink]="['/owned']" (click)="menuHidden = true">Sammlung</a>
-      <a [routerLink]="['/favorite']" (click)="menuHidden = true">Favoriten</a>
+      <a [routerLink]="['/']" [queryParams]="{ owned: true }" (click)="menuHidden = true">Sammlung</a>
+      <a [routerLink]="['/']" [queryParams]="{ favorite: true }" (click)="menuHidden = true">Favoriten</a>
+      <a [routerLink]="['/']" [queryParams]="{ wishlist: true }" (click)="menuHidden = true">Wunschliste</a>
 
       @if (yearsAndDecades.isLoading()) {
         <p>Lade Dekaden...</p>
@@ -40,13 +50,15 @@
         <p>Fehler beim Laden!</p>
       } @else {
         <h2 class="menu-header">Dekaden</h2>
-        @for (decade of yearsAndDecades.value().decades; track $index) {
-          <a [routerLink]="['/decade', decade]" (click)="menuHidden = true">{{ decade }}</a>
+        @for (decade of yearsAndDecades.value().decades; track decade) {
+          <a [routerLink]="['/']" [queryParams]="{ decade: decade }" (click)="menuHidden = true">{{ decade }}s</a>
         }
 
         <h2 class="menu-header">Jahre</h2>
-        @for (releaseYear of yearsAndDecades.value().releaseYears; track $index) {
-          <a [routerLink]="['/releaseYear', releaseYear]" (click)="menuHidden = true">{{ releaseYear }}</a>
+        @for (releaseYear of yearsAndDecades.value().releaseYears; track releaseYear) {
+          <a [routerLink]="['/']" [queryParams]="{ releaseYear: releaseYear }" (click)="menuHidden = true">{{
+            releaseYear
+          }}</a>
         }
       }
     </div>

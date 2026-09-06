@@ -1,49 +1,45 @@
 import { Injectable, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RouteStateService {
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
-  private activeParamMap = toSignal(
-    this.router.events.pipe(
-      filter(e => e instanceof NavigationEnd),
-      map(() => {
-        let current = this.route;
-        while (current.firstChild) {
-          current = current.firstChild;
-        }
-        return current.snapshot.paramMap;
-      }),
-    ),
-  );
+  // Reaktiv abgelegtes ParamMap-Signal
+  private readonly params = toSignal(this.route.paramMap);
 
-  // Basissignale für Jahr und Dekade
-  readonly releaseYear = computed(() => {
-    const val = this.activeParamMap()?.get('releaseYear');
+  // Helper für sauberen Zugriff ohne Boilerplate
+  private getParam(key: string): string | undefined {
+    return this.params()?.get(key) ?? undefined;
+  }
+
+  private getNumberParam(key: string): number | undefined {
+    const val = this.getParam(key);
     return val ? parseInt(val, 10) : undefined;
-  });
+  }
 
-  readonly decade = computed(() => {
-    const val = this.activeParamMap()?.get('decade');
-    return val ? parseInt(val, 10) : undefined;
-  });
+  private getBoolParam(key: string): boolean | undefined {
+    const val = this.getParam(key);
+    return val !== undefined ? val === 'true' : undefined;
+  }
 
-  readonly owned = computed(() => {
-    const val = this.activeParamMap()?.get('owned');
-    return val ? val === 'true' : undefined;
-  });
+  // --- Parameter Signals ---
+  readonly releaseYear = computed(() => this.getNumberParam('releaseYear'));
+  readonly decade = computed(() => this.getNumberParam('decade'));
+  readonly owned = computed(() => this.getBoolParam('owned'));
+  readonly favorite = computed(() => this.getBoolParam('favorite'));
+  readonly wishlist = computed(() => this.getBoolParam('wishlist'));
+  readonly albumArtist = computed(() => this.getParam('albumArtist'));
+  readonly publisher = computed(() => this.getParam('publisher'));
+  readonly genre = computed(() => this.getParam('genre'));
+  readonly style = computed(() => this.getParam('style'));
+  readonly country = computed(() => this.getParam('country'));
+  readonly city = computed(() => this.getParam('city'));
 
-  readonly favorite = computed(() => {
-    const val = this.activeParamMap()?.get('favorite');
-    return val ? val === 'true' : undefined;
-  });
-
+  // --- Derived Signals (Navigation) ---
   readonly prevYear = computed(() => {
     const y = this.releaseYear();
     return y && y > 1900 ? y - 1 : undefined;
@@ -62,35 +58,5 @@ export class RouteStateService {
   readonly nextDecade = computed(() => {
     const d = this.decade();
     return d && d < 2020 ? d + 10 : undefined;
-  });
-
-  readonly albumArtist = computed(() => {
-    const val = this.activeParamMap()?.get('albumArtist');
-    return val ?? undefined;
-  });
-
-  readonly publisher = computed(() => {
-    const val = this.activeParamMap()?.get('publisher');
-    return val ?? undefined;
-  });
-
-  readonly genre = computed(() => {
-    const val = this.activeParamMap()?.get('genre');
-    return val ?? undefined;
-  });
-
-  readonly style = computed(() => {
-    const val = this.activeParamMap()?.get('style');
-    return val ?? undefined;
-  });
-
-  readonly country = computed(() => {
-    const val = this.activeParamMap()?.get('country');
-    return val ?? undefined;
-  });
-
-  readonly city = computed(() => {
-    const val = this.activeParamMap()?.get('city');
-    return val ?? undefined;
   });
 }

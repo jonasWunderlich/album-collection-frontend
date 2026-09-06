@@ -34,7 +34,7 @@ The new implementation links and presents rich album metadata. Dedicated views a
 
 - Improved Navigation
 - Advanced Filtering UI: Combining multiple filter parameters with an intuitive user experience.
-- Custom Collections: Ability to create and manually sort custom album lists.
+- Custom Collections: Ability to import curated custom sorted album lists.
 
 ## Connected Projects
 
