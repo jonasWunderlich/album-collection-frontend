@@ -8,15 +8,39 @@ export class AlbumFilterService {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-// 1. queryParams statt paramMap nutzen (inkl. snapshot für initialen Wert)
-  private readonly queryParamsSignal = toSignal(this.route.queryParams, {
+  private readonly routeQueryParams = toSignal(this.route.queryParams, {
     initialValue: this.route.snapshot.queryParams,
   });
 
-  // 2. Parsen direkt aus dem QueryParams-Objekt
-  public readonly filterParams = computed(() =>
-    this.parseParams(this.queryParamsSignal() ?? {})
+  public readonly parsedQueryParams = computed(() =>
+    this.parseParams(this.routeQueryParams() ?? {})
   );
+
+  private parseParams(params: Record<string, any>): AlbumFilter {
+    return {
+      // Sort Params
+      sortBy: params['sortBy'] || 'rating',
+      sortDir: params['sortDir'] || undefined,
+      // String Params
+      albumArtist: params['albumArtist'] || undefined,
+      city: params['city'] || undefined,
+      country: params['country'] || undefined,
+      genre: params['genre'] || undefined,
+      publisher: params['publisher'] || undefined,
+      search: params['search'] || null,
+      style: params['style'] || undefined,
+      // Numerical Params
+      decade: params['decade'] ? Number(params['decade']) : undefined,
+      ratingMin: params['minRating'] ? Number(params['minRating']) : undefined,
+      releaseYear: params['releaseYear'] ? Number(params['releaseYear']) : undefined,
+      // Boolean Params
+      favorite: params['favorite'] === 'true' ? true : undefined,
+      owned: params['owned'] === 'true' ? true : undefined,
+      tino: params['tino'] === 'true' ? true : undefined,
+      wire: params['wire'] === 'true' ? true : undefined,
+      wishlist: params['wishlist'] === 'true' ? true : undefined,
+    };
+  }
 
   removeFilter(key: keyof AlbumFilter): void {
     this.updateFilters({ [key]: undefined });
@@ -29,14 +53,21 @@ export class AlbumFilterService {
     });
   }
 
-  updateFilters(newFilters: Partial<AlbumFilter>): void {
-    
-    const currentFilters = this.filterParams();
+  replaceFilters(newFilters: Partial<AlbumFilter>): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: newFilters,
+      queryParamsHandling: 'replace',
+      replaceUrl: false,
+    });
+  }
 
-    if (newFilters.sortBy) {
+  updateFilters(newFilters: Partial<AlbumFilter>): void {
+    // Handle Sort Direction if only sortBy is provided
+    if (newFilters.sortBy && Object.keys(newFilters).length === 1) {
+      const currentFilters = this.parsedQueryParams();
       const isSameSort = currentFilters.sortBy === newFilters.sortBy;
       const isAsc = currentFilters.sortDir === 'asc';
-
       if (isSameSort) {
         newFilters.sortDir = isAsc ? 'desc' : 'asc';
       } else {
@@ -47,44 +78,11 @@ export class AlbumFilterService {
         }
       }
     }
-
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: newFilters,
-      queryParamsHandling: 'merge', // Behält bestehende Params bei
-      replaceUrl: false, // Setzt Navigation-History-Eintrag (Browser Back button funktioniert)
+      queryParamsHandling: 'merge',
+      replaceUrl: false,
     });
-  }
-
-    replaceFilters(newFilters: Partial<AlbumFilter>): void {
-    
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: newFilters,
-      queryParamsHandling: 'replace', // Behält bestehende Params bei
-      replaceUrl: false, // Setzt Navigation-History-Eintrag (Browser Back button funktioniert)
-    });
-  }
-
-  private parseParams(params: Record<string, any>): AlbumFilter {
-    return {
-      sortBy: params['sortBy'] || 'rating',
-      sortDir: params['sortDir'] || undefined,
-      search: params['search'] || null,
-      releaseYear: params['releaseYear'] ? Number(params['releaseYear']) : undefined,
-      decade: params['decade'] ? Number(params['decade']) : undefined,
-      albumArtist: params['albumArtist'] || undefined,
-      publisher: params['publisher'] || undefined,
-      genre: params['genre'] || undefined,
-      style: params['style'] || undefined,
-      city: params['city'] || undefined,
-      country: params['country'] || undefined,
-      owned: params['owned'] === 'true',
-      favorite: params['favorite'] === 'true',
-      tino: params['tino'] === 'true',
-      wire: params['wire'] === 'true',
-      wishlist: params['wishlist'] === 'true',
-      ratingMin: params['minRating'] ? Number(params['minRating']) : undefined,
-    };
   }
 }

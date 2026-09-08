@@ -13,7 +13,7 @@ export class ControlsRow {
   private readonly albumFilterService = inject(AlbumFilterService);
   readonly SortOptions = SortOptions;
 
-  readonly filters = computed(() => this.albumFilterService.filterParams());
+  readonly filters = computed(() => this.albumFilterService.parsedQueryParams());
 
   updateSearch(event: Event): void {
     const search = (event.target as HTMLInputElement).value;
@@ -31,9 +31,9 @@ export class ControlsRow {
   }
 
   toggleFilter(key: 'tino' | 'wire'): void {
-    const isActive = this.albumFilterService.filterParams()[key];
+    const isActive = this.albumFilterService.parsedQueryParams()[key];
     this.albumFilterService.updateFilters({
-      [key]: !isActive ? 'true' : undefined,
+      [key]: !isActive ? 'true' : null,
     });
   }
 }

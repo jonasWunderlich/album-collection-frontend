@@ -1,6 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { Album } from '../../api/model/album';
 import { AlbumFilterService } from '../../services/album-filter-service';
+import { SortOptions } from '../types';
 
 @Component({
   selector: 'app-album-tile',
@@ -37,6 +38,8 @@ export class AlbumTile {
     if (value) {
       this.albumFilterService.replaceFilters({
         [filter]: value,
+        sortBy: SortOptions.releaseYear,
+        sortDir: 'desc'
       });
     }
   }

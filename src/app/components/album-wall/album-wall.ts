@@ -37,7 +37,7 @@ export class AlbumWall {
   readonly pageSize = 30;
 
   private readonly filterParams = computed(() => {
-    return this.albumFilterService.filterParams();
+    return this.albumFilterService.parsedQueryParams();
   });
 
   private resetAndFetch() {

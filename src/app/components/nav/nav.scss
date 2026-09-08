@@ -28,9 +28,11 @@
     letter-spacing: 1px;
     color: var(--text-color-dark);
     white-space: nowrap;
+    cursor: pointer;
 
     &:hover {
       color: var(--text-color-link-hover);
+      text-decoration: none;
     }
   }
 }

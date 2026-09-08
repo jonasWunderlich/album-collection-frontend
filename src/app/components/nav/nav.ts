@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AlbumMetaService } from '../../services/album-meta-service';
 import { AlbumFilterService } from '../../services/album-filter-service';
+import { SortOptions } from '../types';
 
 @Component({
   selector: 'app-nav',
@@ -15,7 +16,7 @@ export class Nav {
   menuHidden = true;
 
   public readonly filterParams = computed(() => {
-    return this.albumFilterService.filterParams();
+    return this.albumFilterService.parsedQueryParams();
   });
 
   public readonly prevYear = computed(() => {
@@ -37,4 +38,28 @@ export class Nav {
     const d = this.filterParams().decade;
     return d && d < 2020 ? d + 10 : undefined;
   });
+
+  setReleaseYear(releaseYear?: number): void {
+    if (!releaseYear) {
+      return;
+    }
+
+    this.albumFilterService.replaceFilters({
+      releaseYear,
+      sortBy: releaseYear === 2026 ? SortOptions.addedDate : SortOptions.rating,
+      sortDir: 'desc',
+    });
+  }
+
+  setDecade(decade?: number): void {
+    if (!decade) {
+      return;
+    }
+
+    this.albumFilterService.replaceFilters({
+      decade,
+      sortBy: SortOptions.rating,
+      sortDir: 'asc',
+    });
+  }
 }

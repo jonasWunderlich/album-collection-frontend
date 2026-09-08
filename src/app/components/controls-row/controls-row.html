@@ -21,6 +21,12 @@
       (click)="setSort(SortOptions.rating)"
     />
     <app-sort-button
+      [active]="filters().sortBy === SortOptions.releaseYear"
+      [direction]="filters().sortDir"
+      label="Datum"
+      (click)="setSort(SortOptions.releaseYear)"
+    />
+    <app-sort-button
       [active]="filters().sortBy === SortOptions.artist"
       [direction]="filters().sortDir"
       label="Artist"

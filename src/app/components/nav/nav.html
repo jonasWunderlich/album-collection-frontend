@@ -1,15 +1,15 @@
-<a [routerLink]="['/']" [queryParams]="{ releaseYear: 2026 }">Home</a>
+<a (click)="setReleaseYear(2026)">Home</a>
 
 <!-- Years Navigation -->
 @if (filterParams().releaseYear) {
   @if (prevYear()) {
-    <a [routerLink]="['/']" [queryParams]="{ releaseYear: prevYear() }" queryParamsHandling="merge">
+    <a (click)="setReleaseYear(prevYear())">
       {{ prevYear() }}
     </a>
   }
   <span class="nav-title">Records in {{ filterParams().releaseYear }}</span>
   @if (nextYear()) {
-    <a [routerLink]="['/']" [queryParams]="{ releaseYear: nextYear() }" queryParamsHandling="merge">
+    <a (click)="setReleaseYear(nextYear())">
       {{ nextYear() }}
     </a>
   }
@@ -18,13 +18,13 @@
 <!-- Decades Navigation -->
 @if (filterParams().decade) {
   @if (prevDecade()) {
-    <a [routerLink]="['/']" [queryParams]="{ decade: prevDecade() }" queryParamsHandling="merge">
+    <a (click)="setDecade(prevDecade())">
       {{ prevDecade() }}
     </a>
   }
   <span class="nav-title">{{ filterParams().decade }}s</span>
   @if (nextDecade()) {
-    <a [routerLink]="['/']" [queryParams]="{ decade: nextDecade() }" queryParamsHandling="merge">
+    <a (click)="setDecade(nextDecade())">
       {{ nextDecade() }}
     </a>
   }
@@ -40,6 +40,7 @@
   @if (!menuHidden) {
     <div class="menu-content" id="menuContent">
       <h2 class="menu-header">Sonstige</h2>
+      <a [routerLink]="['/']" [queryParams]="{}" (click)="menuHidden = true">Alles</a>
       <a [routerLink]="['/']" [queryParams]="{ owned: true }" (click)="menuHidden = true">Sammlung</a>
       <a [routerLink]="['/']" [queryParams]="{ favorite: true }" (click)="menuHidden = true">Favoriten</a>
       <a [routerLink]="['/']" [queryParams]="{ wishlist: true }" (click)="menuHidden = true">Wunschliste</a>
