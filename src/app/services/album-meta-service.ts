@@ -1,12 +1,11 @@
 import { httpResource } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
+import { Service } from '@angular/core';
 import { YearsAndDecadesResponse } from '../api/model/yearsAndDecadesResponse';
-import { BASE_PATH } from '../api/variables';
+import { environment } from '../../environments/environment.dev';
 
 @Service()
 export class AlbumMetaService {
-  private readonly basePath = inject(BASE_PATH);
-  private apiUrl = `${this.basePath}/yearsAndDecades`;
+  private readonly apiUrl = `${environment.apiBasePath}/yearsAndDecades`;
 
   data = httpResource<YearsAndDecadesResponse>(
     () => {

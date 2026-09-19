@@ -1,0 +1,7 @@
+{
+  "/cover": {
+    "target": "http://localhost:4200/cover",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

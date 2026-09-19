@@ -48,16 +48,14 @@ export class AlbumWall {
   }
 
 constructor() {
-    // Reagiert automatisch, sobald sich filterParams() im Service ändert
     effect(() => {
-      this.filterParams(); // Signal-Dependency registrieren
+      this.filterParams();
 
       untracked(() => {
         this.resetAndFetch();
       });
     });
 
-    // Observer für ScrollAnchor
     effect(() => {
       const anchorEl = this.scrollAnchor()?.nativeElement;
       if (anchorEl) {
