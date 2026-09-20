@@ -52,12 +52,12 @@
       } @else {
         <h2 class="menu-header">Dekaden</h2>
         @for (decade of yearsAndDecades.value().decades; track decade) {
-          <a [routerLink]="['/']" [queryParams]="{ decade: decade }" (click)="menuHidden = true">{{ decade }}s</a>
+          <a (click)="setDecade(decade)">{{ decade }}s</a>
         }
 
         <h2 class="menu-header">Jahre</h2>
         @for (releaseYear of yearsAndDecades.value().releaseYears; track releaseYear) {
-          <a [routerLink]="['/']" [queryParams]="{ releaseYear: releaseYear }" (click)="menuHidden = true">{{
+          <a (click)="setReleaseYear(releaseYear)">{{
             releaseYear
           }}</a>
         }

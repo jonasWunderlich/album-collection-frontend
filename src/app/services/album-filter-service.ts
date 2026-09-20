@@ -20,7 +20,7 @@ export class AlbumFilterService {
     return {
       // Sort Params
       sortBy: params['sortBy'] || 'rating',
-      sortDir: params['sortDir'] || undefined,
+      sortDir: params['sortDir'] || 'desc',
       // String Params
       albumArtist: params['albumArtist'] || undefined,
       city: params['city'] || undefined,

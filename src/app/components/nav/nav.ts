@@ -39,27 +39,32 @@ export class Nav {
     return d && d < 2020 ? d + 10 : undefined;
   });
 
-  setReleaseYear(releaseYear?: number): void {
-    if (!releaseYear) {
+  setReleaseYear(value?: string | number): void {
+    if (!value) {
       return;
     }
 
+    const releaseYear: number = Number(value);
+    const sortBy = releaseYear === 2026 ? SortOptions.addedDate : SortOptions.rating;
+
     this.albumFilterService.replaceFilters({
       releaseYear,
-      sortBy: releaseYear === 2026 ? SortOptions.addedDate : SortOptions.rating,
+      sortBy,
       sortDir: 'desc',
     });
+    this.menuHidden = true;
   }
 
-  setDecade(decade?: number): void {
+  setDecade(decade?: number | string): void {
     if (!decade) {
       return;
     }
 
     this.albumFilterService.replaceFilters({
-      decade,
+      decade: Number(decade),
       sortBy: SortOptions.rating,
-      sortDir: 'asc',
+      sortDir: 'desc',
     });
+    this.menuHidden = true;
   }
 }

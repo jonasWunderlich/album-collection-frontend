@@ -16,6 +16,7 @@ import { ControlsRow } from '../controls-row/controls-row';
 import { Nav } from '../nav/nav';
 import { ScrollTopButton } from '../scroll-top-button/scroll-top-button';
 import { AlbumFilterService } from '../../services/album-filter-service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-album-wall',
@@ -24,6 +25,10 @@ import { AlbumFilterService } from '../../services/album-filter-service';
   styleUrl: './album-wall.scss',
 })
 export class AlbumWall {
+
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+
   private readonly albumFilterService = inject(AlbumFilterService);
   private readonly albumService = inject(AlbumsService);
   private readonly destroyRef = inject(DestroyRef);
@@ -35,7 +40,8 @@ export class AlbumWall {
   readonly isLoading = signal<boolean>(false);
   readonly isLastPage = signal<boolean>(false);
   readonly pageSize = 30;
-
+  
+  private readonly initialised = signal(false);
   private readonly filterParams = computed(() => {
     return this.albumFilterService.parsedQueryParams();
   });
@@ -47,8 +53,32 @@ export class AlbumWall {
     this.fetchAlbums();
   }
 
-constructor() {
+  constructor() {
+    const params = this.route.snapshot.queryParams;
+
+    if (Object.keys(params).length === 0) {
+      this.router
+        .navigate([], {
+          relativeTo: this.route,
+          queryParams: {
+            releaseYear: new Date().getFullYear(),
+            sortBy: 'addedDate',
+            sortDir: 'desc',
+          },
+          replaceUrl: true,
+        })
+        .then(() => {
+          this.initialised.set(true);
+        });
+    } else {
+      this.initialised.set(true);
+    }
+
     effect(() => {
+      if (!this.initialised()) {
+        return;
+      }
+
       this.filterParams();
 
       untracked(() => {
@@ -58,6 +88,7 @@ constructor() {
 
     effect(() => {
       const anchorEl = this.scrollAnchor()?.nativeElement;
+
       if (anchorEl) {
         this.setupIntersectionObserver(anchorEl);
       }
