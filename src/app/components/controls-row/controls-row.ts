@@ -14,6 +14,7 @@ export class ControlsRow {
   readonly SortOptions = SortOptions;
 
   readonly filters = computed(() => this.albumFilterService.parsedQueryParams());
+  readonly showYearFilter = computed(() => !this.filters().releaseYear);
 
   updateSearch(event: Event): void {
     const search = (event.target as HTMLInputElement).value;
