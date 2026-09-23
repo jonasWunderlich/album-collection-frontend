@@ -119,3 +119,17 @@ body.hide-info .album-poster .vinyl-overlay {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+
+.reset-btn {
+  color: var(--text-color-link);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--text-color-link-hover);
+  }
+}

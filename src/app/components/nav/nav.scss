@@ -26,7 +26,7 @@
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--text-color-dark);
+    color: var(--text-color-link);
     white-space: nowrap;
     cursor: pointer;
 
@@ -42,11 +42,25 @@
 }
 
 .nav-title {
-  color: var(--text-color-link-active);
   font-weight: bold;
   font-size: 1.5em;
   letter-spacing: 1px;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-title-label {
+  color: black
+}
+
+.nav-title-value {
+  color: var(--text-color-link-active);
+}
+
+.reset-btn {
+  font-size: 18px;
 }
 
 @media (max-width: 600px) {
@@ -162,3 +176,4 @@
     transform: translateX(3px);
   }
 }
+

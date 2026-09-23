@@ -67,4 +67,15 @@ export class Nav {
     });
     this.menuHidden = true;
   }
+
+  resetFilters(filter: string) {
+    this.albumFilterService.replaceFilters({
+      [filter]: undefined,
+    });
+  }
+
+  noFiltersActive(): boolean {
+    const filter = this.filterParams();
+    return filter.albumArtist === undefined && filter.publisher === undefined && filter.genre === undefined && filter.style === undefined && filter.country === undefined && filter.city === undefined && filter.releaseYear === undefined && filter.decade === undefined;
+  }
 }

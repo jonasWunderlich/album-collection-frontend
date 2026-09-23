@@ -7,12 +7,74 @@
       {{ prevYear() }}
     </a>
   }
-  <span class="nav-title">Records in {{ filterParams().releaseYear }}</span>
+  <div class="nav-title">
+    <span class="nav-title-label">Records in</span>
+    <span class="nav-title-value">{{ filterParams().releaseYear }}</span>
+    <button type="button" class="reset-btn" (click)="resetFilters('publisher')" aria-label="Suchfeld zurücksetzen">✖</button>
+  </div>
   @if (nextYear()) {
     <a (click)="setReleaseYear(nextYear())">
       {{ nextYear() }}
     </a>
   }
+}
+
+@if (noFiltersActive()) {
+  <div class="nav-title">
+    <span class="nav-title-label">Complete</span>
+  </div>
+}
+
+@if (filterParams().albumArtist) {
+  <div class="nav-title">
+    <span class="nav-title-label">Artist</span>
+    <span class="nav-title-value">{{ filterParams().albumArtist }}</span>
+    <button type="button" class="reset-btn" (click)="resetFilters('albumArtist')" aria-label="Suchfeld zurücksetzen">✖</button>
+  </div>
+}
+
+@if (filterParams().publisher) {
+  <div class="nav-title">
+    <span class="nav-title-label">Label</span>
+    <span class="nav-title-value">{{ filterParams().publisher }}</span>
+    <button type="button" class="reset-btn" (click)="resetFilters('publisher')" aria-label="Suchfeld zurücksetzen">✖</button>
+  </div>
+}
+
+@if (filterParams().genre) {
+  <div class="nav-title">
+    <span class="nav-title-label">
+      Genre:
+    </span>
+    <span class="nav-title-value">
+      {{ filterParams().genre }}
+    </span>
+    <button type="button" class="reset-btn" (click)="resetFilters('genre')" aria-label="Suchfeld zurücksetzen">✖</button>
+  </div>
+}
+
+@if (filterParams().style) {
+  <div class="nav-title">
+    <span class="nav-title-label">Style</span>
+    <span class="nav-title-value">{{ filterParams().style }}</span>
+    <button type="button" class="reset-btn" (click)="resetFilters('style')" aria-label="Suchfeld zurücksetzen">✖</button>
+  </div>
+}
+
+@if (filterParams().country) {
+  <div class="nav-title">
+    <span class="nav-title-label">Country</span>
+    <span class="nav-title-value">{{ filterParams().country }}</span>
+    <button type="button" class="reset-btn" (click)="resetFilters('country')" aria-label="Suchfeld zurücksetzen">✖</button>
+  </div>
+}
+
+@if (filterParams().city) {
+  <div class="nav-title">
+    <span class="nav-title-label">City</span>
+    <span class="nav-title-value">{{ filterParams().city }}</span>
+    <button type="button" class="reset-btn" (click)="resetFilters('city')" aria-label="Suchfeld zurücksetzen">✖</button>
+  </div>
 }
 
 <!-- Decades Navigation -->
@@ -44,6 +106,8 @@
       <a [routerLink]="['/']" [queryParams]="{ owned: true }" (click)="menuHidden = true">Sammlung</a>
       <a [routerLink]="['/']" [queryParams]="{ favorite: true }" (click)="menuHidden = true">Favoriten</a>
       <a [routerLink]="['/']" [queryParams]="{ wishlist: true }" (click)="menuHidden = true">Wunschliste</a>
+      <a [routerLink]="['/']" [queryParams]="{ wishlist: true }" (click)="menuHidden = true">Wunschliste</a>
+      <a [routerLink]="['/']" [queryParams]="{ albumArtist: 'Wunderlich', hidden: true }" (click)="menuHidden = true">Sampler</a>
 
       @if (yearsAndDecades.isLoading()) {
         <p>Lade Dekaden...</p>
