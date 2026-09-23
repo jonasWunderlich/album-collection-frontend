@@ -5,3 +5,10 @@
   padding-left: var(--padding-horizontal-md);
   padding-right: var(--padding-horizontal-md);
 }
+
+
+@media (max-width: 768px) {
+  .album-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
