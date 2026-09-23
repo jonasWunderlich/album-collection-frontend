@@ -30,9 +30,7 @@
   @if (album.urlWikipedia) {
     <a [href]="album.urlWikipedia" target="_blank" class="wikipedia-icon" title="Wikipedia Article"></a>
   }
-  <a [href]="googleImageSearchUrl(album)" target="_blank" rel="noopener noreferrer" title="Google Bildersuche">
-    <span>C</span>
-  </a>
+  
 </div>
 <div class="top-right-icons">
   @if (album.rating) {
@@ -43,6 +41,9 @@
 </div>
 <div class="album-overlay">
   <div class="overlay-bookmarks">
+    <a class="search-image" [href]="googleImageSearchUrl(album)" target="_blank" rel="noopener noreferrer" title="Google Bildersuche">
+      ⚫
+    </a>
     @if (album.tino) {
       <div class="bookmark-tino" title="Tino's Tip"></div>
     }

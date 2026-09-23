@@ -21,7 +21,7 @@ export class AlbumTile {
 
   hasValidCover(): boolean {
     return (
-      !!this.album?.urlCover && this.album.urlCover.trim() !== '' && !this.imageError
+      !!this.album?.urlCover && this.album.urlCover !== '' && !this.imageError
     );
   }
 

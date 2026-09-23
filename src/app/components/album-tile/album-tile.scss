@@ -75,9 +75,10 @@ img {
     no-repeat center / contain;
 }
 
-.google-image-icon {
-  @include icon();
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Ctext x='50%25' y='82%25' font-family='Georgia, serif' font-size='28' font-weight='bold' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E")
+.search-image {
+  position: relative;
+  padding-top: 6px;
+  opacity: .3;
 }
 
 .bookmark-tino,
