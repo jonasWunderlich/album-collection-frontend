@@ -23,6 +23,7 @@
 @if (album.owned) {
   <div class="vinyl-overlay" title="Owned (Vinyl)"></div>
 }
+@if (showInfos) {
 <div class="top-left-icons">
   @if (album.urlVideo) {
     <a [href]="album.urlVideo" target="_blank" class="video-icon" title="Watch Video"></a>
@@ -111,3 +112,4 @@
     </div>
   </div>
 </div>
+}

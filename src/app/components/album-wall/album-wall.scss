@@ -1,9 +1,47 @@
+@use '../../app.scss' as app;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.back-button {
+  color: var(--text-color-link);
+  background: none;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  width: fit-content;
+  align-self: center;
+  align-content: center;
+  margin: auto;
+  font-size: 60px;
+
+  &:hover {
+    color: var(--text-color-link-hover);
+  }
+
+  &.active {
+    color: var(--text-color-link-active);
+  }
+}
+
+.grid-container {
+  flex: 1;
+  // overflow-y: auto;
+}
+
 .album-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--padding-horizontal-md);
   padding-left: var(--padding-horizontal-md);
   padding-right: var(--padding-horizontal-md);
+
 }
 
 

@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, Input, Output, EventEmitter } from '@angular/core';
 import { SortButton } from '../sort-button/sort-button';
 import { SortOptions } from '../types';
 import { AlbumFilterService } from '../../services/album-filter-service';
@@ -12,6 +12,9 @@ import { AlbumFilterService } from '../../services/album-filter-service';
 export class ControlsRow {
   private readonly albumFilterService = inject(AlbumFilterService);
   readonly SortOptions = SortOptions;
+
+  @Input() showInfos = true;
+  @Output() showInfosChange = new EventEmitter<boolean>();
 
   readonly filters = computed(() => this.albumFilterService.parsedQueryParams());
   readonly showYearFilter = computed(() => !this.filters().releaseYear);

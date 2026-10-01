@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import {
   Component,
   DestroyRef,
@@ -9,14 +10,14 @@ import {
   untracked,
   viewChild,
 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlbumsService } from '../../api/api/albums.service';
 import { Album } from '../../api/model/album';
+import { AlbumFilterService } from '../../services/album-filter-service';
 import { AlbumTile } from '../album-tile/album-tile';
 import { ControlsRow } from '../controls-row/controls-row';
 import { Nav } from '../nav/nav';
 import { ScrollTopButton } from '../scroll-top-button/scroll-top-button';
-import { AlbumFilterService } from '../../services/album-filter-service';
-import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-album-wall',
@@ -25,7 +26,6 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrl: './album-wall.scss',
 })
 export class AlbumWall {
-
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
@@ -40,11 +40,29 @@ export class AlbumWall {
   readonly isLoading = signal<boolean>(false);
   readonly isLastPage = signal<boolean>(false);
   readonly pageSize = 30;
-  
+
   private readonly initialised = signal(false);
   private readonly filterParams = computed(() => {
     return this.albumFilterService.parsedQueryParams();
   });
+
+  showInfos = signal(true);
+
+  private readonly location = inject(Location);
+
+  readonly showBackButton = computed(() => {
+    return (
+      window.history.length > 1 &&
+      this.showInfos() &&
+      !this.filterParams().releaseYear &&
+      !this.filterParams().decade &&
+      this.albums().length > 0
+    );
+  });
+
+  goBack(): void {
+    this.location.back();
+  }
 
   private resetAndFetch() {
     this.page.set(0);

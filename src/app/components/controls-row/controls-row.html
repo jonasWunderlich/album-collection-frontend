@@ -13,47 +13,48 @@
 </div>
 
 <div class="sort-controls">
-  <div class="sort-group">
+  <app-sort-button
+    [active]="filters().sortBy === SortOptions.rating"
+    [direction]="filters().sortDir"
+    label="Rating"
+    (click)="setSort(SortOptions.rating)"
+  />
+  @if (showYearFilter()) {
     <app-sort-button
-      [active]="filters().sortBy === SortOptions.rating"
+      [active]="filters().sortBy === SortOptions.releaseYear"
       [direction]="filters().sortDir"
-      label="Bewertung"
-      (click)="setSort(SortOptions.rating)"
+      label="Jahr"
+      (click)="setSort(SortOptions.releaseYear)"
     />
-    @if (showYearFilter()) {
-      <app-sort-button
-        [active]="filters().sortBy === SortOptions.releaseYear"
-        [direction]="filters().sortDir"
-        label="Jahr"
-        (click)="setSort(SortOptions.releaseYear)"
-      />
-    }
-    <app-sort-button
-      [active]="filters().sortBy === SortOptions.artist"
-      [direction]="filters().sortDir"
-      label="Artist"
-      (click)="setSort(SortOptions.artist)"
-    />
-    <app-sort-button
-      [active]="filters().sortBy === SortOptions.addedDate"
-      [direction]="filters().sortDir"
-      label="Hinzugefügt"
-      (click)="setSort(SortOptions.addedDate)"
-    />
-    <app-sort-button
-      [active]="filters().sortBy === SortOptions.lastPlayedDate"
-      [direction]="filters().sortDir"
-      label="Played"
-      (click)="setSort(SortOptions.lastPlayedDate)"
-    />
-  </div>
+  }
 
-  <div class="filter-group">
-    <button type="button" class="filter-button" [class.active]="filters().tino" (click)="toggleFilter('tino')">
-      Tino
-    </button>
-    <button type="button" class="filter-button" [class.active]="filters().wire" (click)="toggleFilter('wire')">
-      Wire
-    </button>
-  </div>
+  <app-sort-button
+    [active]="filters().sortBy === SortOptions.addedDate"
+    [direction]="filters().sortDir"
+    label="Added"
+    (click)="setSort(SortOptions.addedDate)"
+  />
+  <app-sort-button
+    [active]="filters().sortBy === SortOptions.lastPlayedDate"
+    [direction]="filters().sortDir"
+    label="Played"
+    (click)="setSort(SortOptions.lastPlayedDate)"
+  />
+
+  <app-sort-button
+    [active]="filters().sortBy === SortOptions.artist"
+    [direction]="filters().sortDir"
+    label="Artist"
+    (click)="setSort(SortOptions.artist)"
+  />
+
+  <button type="button" class="filter-button" [class.active]="filters().tino" (click)="toggleFilter('tino')">
+    Tino
+  </button>
+  <button type="button" class="filter-button" [class.active]="filters().wire" (click)="toggleFilter('wire')">
+    Wire
+  </button>
+  <button type="button" class="filter-button" [class.active]="!showInfos" (click)="showInfosChange.emit(!showInfos)">
+    i
+  </button>
 </div>

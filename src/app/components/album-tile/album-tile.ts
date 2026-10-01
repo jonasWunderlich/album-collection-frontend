@@ -12,6 +12,7 @@ export class AlbumTile {
   private readonly albumFilterService = inject(AlbumFilterService);
   @Input() album!: Album;
   @Input() lazy = true;
+  @Input() showInfos = true;
 
   imageError = false;
 
