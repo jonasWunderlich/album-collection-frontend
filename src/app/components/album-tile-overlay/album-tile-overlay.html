@@ -1,0 +1,89 @@
+<div class="marker-wrapper">
+  @if (album.tino) {
+    <div class="marker tino" title="Tino's Tip"></div>
+  }
+  @if (album.wire) {
+    <div class="marker wire" title="The Wire"></div>
+  }
+</div>
+
+<div class="album-artist link-list">
+  @for (item of album.albumArtist; track $index) {
+    <app-album-tile-filter-link filter="albumArtist" [value]="item.trim()" />
+    @if (!$last) {
+      <span class="separator"></span>
+    }
+  }
+  @if (album.albumArtist?.length === 0) {
+    <app-album-tile-filter-link filter="releaseYear" [value]="album.artist" />
+  }
+  @if (album.fan) {
+    <span class="inline-icon" title="Fan/Favorite">❤️</span>
+  }
+</div>
+
+<div class="album-title">
+  @if (album.urlAlbum) {
+    <a [href]="album.urlAlbum" target="_blank">{{ album.title }}</a>
+  } @else {
+    {{ album.title }}
+  }
+</div>
+
+<div class="publishers-and-year" [title]="album.publisher">
+  <app-album-tile-filter-link class="release-year" filter="releaseYear" [value]="album.releaseYear" />
+  @if (album.publisher && album.publisher.length > 0) {
+    <span class="separator-highlight"></span>
+  }
+  <div class="publishers link-list">
+    @for (item of album.publisher; track $index) {
+      <app-album-tile-filter-link filter="publisher" [value]="item.trim()" />
+      @if (!$last) {
+        <span class="separator"></span>
+      }
+    }
+  </div>
+</div>
+
+<div class="album-meta">
+  <div class="country-and-city">
+    <div class="link-list">
+      @if (album.country) {
+        <app-album-tile-filter-link filter="city" [value]="album.country" />
+      } @else {
+        -
+      }
+    </div>
+    <div class="link-list">
+      @if (album.city) {
+        <app-album-tile-filter-link filter="city" [value]="album.city" />
+      } @else {
+        -
+      }
+    </div>
+  </div>
+  <div class="genre-and-style">
+    <div class="link-list end">
+      @for (item of album.genre; track $index) {
+        <app-album-tile-filter-link filter="genre" [value]="item.trim()" />
+        @if (!$last) {
+          <span class="separator"></span>
+        }
+      }
+      @if (album.genre && album.genre.length === 0) {
+        -
+      }
+    </div>
+    <div class="link-list end">
+      @for (item of album.style; track $index) {
+        <app-album-tile-filter-link filter="style" [value]="item.trim()" />
+        @if (!$last) {
+          <span class="separator"></span>
+        }
+      }
+      @if (album.style && album.style.length === 0) {
+        -
+      }
+    </div>
+  </div>
+</div>

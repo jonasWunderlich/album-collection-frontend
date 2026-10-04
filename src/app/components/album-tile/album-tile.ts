@@ -1,47 +1,30 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { Album } from '../../api/model/album';
-import { AlbumFilterService } from '../../services/album-filter-service';
-import { SortOptions } from '../types';
+import { AlbumTileCover } from '../album-tile-cover/album-tile-cover';
+import { AlbumTileOverlay } from '../album-tile-overlay/album-tile-overlay';
 
 @Component({
   selector: 'app-album-tile',
   templateUrl: './album-tile.html',
   styleUrl: './album-tile.scss',
+  imports: [AlbumTileCover, AlbumTileOverlay],
 })
 export class AlbumTile {
-  private readonly albumFilterService = inject(AlbumFilterService);
   @Input() album!: Album;
   @Input() lazy = true;
   @Input() showInfos = true;
 
-  imageError = false;
+  showDetails = signal(false);
 
-  onImageError(): void {
-    this.imageError = true;
+  toggleDetails(): void {
+    this.showDetails.update(visible => !visible);
   }
 
-  hasValidCover(): boolean {
-    return (
-      !!this.album?.urlCover && this.album.urlCover !== '' && !this.imageError
-    );
+  onMouseEnter(): void {
+    this.showDetails.set(true);
   }
 
-  googleImageSearchUrl(value: Album) {
-    if (!value) return '#';
-
-    const artists = value.albumArtist?.map(a => a.trim()).join(', ') ?? '';
-    const searchQuery = `${artists} - ${value.title}`;
-
-    return `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(searchQuery)}`;
-  }
-
-  setFilter(filter: string, value?: string | number): void {
-    if (value) {
-      this.albumFilterService.replaceFilters({
-        [filter]: value,
-        sortBy: SortOptions.releaseYear,
-        sortDir: 'desc'
-      });
-    }
+  onMouseLeave(): void {
+    this.showDetails.set(false);
   }
 }

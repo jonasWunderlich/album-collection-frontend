@@ -1,0 +1,5 @@
+@if (value) {
+  <a (click)="setFilter(); $event.stopPropagation()" (keyup)="setFilter(); $event.stopPropagation()" tabindex="0">
+    {{ value }}
+  </a>
+}
