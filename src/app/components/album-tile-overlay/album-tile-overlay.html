@@ -46,24 +46,8 @@
 </div>
 
 <div class="album-meta">
-  <div class="country-and-city">
-    <div class="link-list">
-      @if (album.country) {
-        <app-album-tile-filter-link filter="city" [value]="album.country" />
-      } @else {
-        -
-      }
-    </div>
-    <div class="link-list">
-      @if (album.city) {
-        <app-album-tile-filter-link filter="city" [value]="album.city" />
-      } @else {
-        -
-      }
-    </div>
-  </div>
   <div class="genre-and-style">
-    <div class="link-list end">
+    <div class="link-list">
       @for (item of album.genre; track $index) {
         <app-album-tile-filter-link filter="genre" [value]="item.trim()" />
         @if (!$last) {
@@ -74,7 +58,7 @@
         -
       }
     </div>
-    <div class="link-list end">
+    <div class="link-list">
       @for (item of album.style; track $index) {
         <app-album-tile-filter-link filter="style" [value]="item.trim()" />
         @if (!$last) {
@@ -82,6 +66,22 @@
         }
       }
       @if (album.style && album.style.length === 0) {
+        -
+      }
+    </div>
+  </div>
+  <div class="country-and-city">
+    <div class="link-list end">
+      @if (album.country) {
+        <app-album-tile-filter-link filter="city" [value]="album.country" />
+      } @else {
+        -
+      }
+    </div>
+    <div class="link-list end">
+      @if (album.city) {
+        <app-album-tile-filter-link filter="city" [value]="album.city" />
+      } @else {
         -
       }
     </div>

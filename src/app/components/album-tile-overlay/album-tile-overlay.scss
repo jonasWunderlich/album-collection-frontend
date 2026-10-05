@@ -81,20 +81,12 @@
   font-size: 0.75em;
   display: flex;
   font-size: 0.85em;
-
-  .release-year {
-    font-weight: normal;
-    color: var(--color-highlight);
-    //vertical-align: baseline;
-    // padding: 0;
-  }
 }
 
 // Metadata Columns
 
 .album-meta {
   display: flex;
-  color: var(--text-color-muted);
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
@@ -108,17 +100,22 @@
     gap: 2px;
   }
 
+  .country-and-city {
+    text-align: right;
+  }
+
   .genre-and-style {
     max-width: 70%;
-    text-align: right;
   }
 }
 
 .separator::after {
+  color: var(--text-color-muted);
   content: '+';
 }
 
 .separator-highlight::after {
+  color: var(--text-color-muted);
   content: ' / ';
   white-space: pre;
   font-size: 0.5em;
