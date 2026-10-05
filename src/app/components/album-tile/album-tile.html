@@ -10,7 +10,7 @@
 >
   <app-album-tile-cover [album]="album" [lazy]="lazy" />
 
-  @if (showInfos || showDetails()) {
+  <div class="meta-data" [class.visible]="showInfos || showDetails()">
     <div class="top-left-icons">
       @if (album.urlVideo) {
         <a [href]="album.urlVideo" target="_blank" class="video-icon" title="Watch Video"></a>
@@ -21,11 +21,11 @@
     </div>
     <div class="top-right-icons">
       @if (album.rating) {
-        <div class="rating-circle" title="">
+        <div class="rating-circle" [attr.title]="getRating(album.rating)">
           {{ album.rating }}
         </div>
       }
     </div>
     <app-album-tile-overlay [album]="album" />
-  }
+  </div>
 </span>

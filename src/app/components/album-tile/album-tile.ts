@@ -27,4 +27,29 @@ export class AlbumTile {
   onMouseLeave(): void {
     this.showDetails.set(false);
   }
+
+  getRating(rating: number): string {
+    switch (rating) {
+      case 10:
+        return 'I fell the universe bending';
+      case 9:
+        return 'Insanely Awesome';
+      case 8:
+        return 'Pretty Awesome';
+      case 7:
+        return 'Very good';
+      case 6:
+        return "Great, but It's missing something";
+      case 5:
+        return 'Good';
+      case 4:
+        return 'Okay';
+      case 3:
+        return 'I feel sleepy';
+      case 2:
+        return 'There is more music in my farts';
+      default:
+        return 'It hurts';
+    }
+  }
 }
