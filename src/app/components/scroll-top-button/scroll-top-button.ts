@@ -1,5 +1,11 @@
-import { Component, HostListener, signal } from '@angular/core';
-
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  signal,
+} from '@angular/core';
 @Component({
   selector: 'app-scroll-top-button',
   imports: [],
@@ -8,6 +14,8 @@ import { Component, HostListener, signal } from '@angular/core';
 })
 export class ScrollTopButton {
   readonly isVisible = signal(false);
+  @Input() showInfos = true;
+  @Output() showInfosChange = new EventEmitter<boolean>();
 
   @HostListener('window:scroll', [])
   onWindowScroll(): void {

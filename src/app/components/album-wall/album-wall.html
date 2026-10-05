@@ -24,6 +24,6 @@
   <div class="loading-spinner">Loading more albums...</div>
 }
 
-<app-scroll-top-button />
+<app-scroll-top-button [showInfos]="showInfos()" (showInfosChange)="showInfos.set(!showInfos())" />
 
 <app-nav />

@@ -1,8 +1,6 @@
-.scroll-to-top-btn {
+@mixin smallButton() {
   position: fixed;
   bottom: 30px;
-  right: 30px;
-  // left: calc(50% - 48px / 2);
   z-index: 9999;
   width: 48px;
   height: 48px;
@@ -14,10 +12,9 @@
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 
-  /* Smooth Fade In / Fade Out & Scale */
   opacity: 0;
   visibility: hidden;
-  transform: translateY(10px) scale(0.9);
+  transform: translateY(50px) scale(0.9);
   transition:
     opacity 0.3s ease,
     transform 0.3s ease,
@@ -31,6 +28,20 @@
 
   &:hover {
     background: var(--text-color-link-hover);
-    transform: translateY(-2px) scale(1.05);
+    transform: translateY(0px) scale(1.1);
   }
+
+  &.active {
+    background: var(--text-color-link-active);
+  }
+}
+
+.scroll-to-top-btn {
+  @include smallButton();
+  right: 30px;
+}
+
+.show-infos-btn {
+  @include smallButton();
+  right: 90px;
 }
