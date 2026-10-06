@@ -1,12 +1,13 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AlbumMetaService } from '../../services/album-meta-service';
 import { AlbumFilterService } from '../../services/album-filter-service';
+import { AlbumMetaService } from '../../services/album-meta-service';
+import { AlbumTileFilterLink } from '../album-tile-filter-link/album-tile-filter-link';
 import { SortOptions } from '../types';
 
 @Component({
   selector: 'app-nav',
-  imports: [RouterLink],
+  imports: [RouterLink, AlbumTileFilterLink],
   templateUrl: './nav.html',
   styleUrl: './nav.scss',
 })
@@ -44,7 +45,7 @@ export class Nav {
       return;
     }
 
-    const releaseYear: number = Number(value);
+    const releaseYear = Number(value);
     const sortBy = releaseYear === 2026 ? SortOptions.addedDate : SortOptions.rating;
 
     this.albumFilterService.replaceFilters({
@@ -76,6 +77,15 @@ export class Nav {
 
   noFiltersActive(): boolean {
     const filter = this.filterParams();
-    return filter.albumArtist === undefined && filter.publisher === undefined && filter.genre === undefined && filter.style === undefined && filter.country === undefined && filter.city === undefined && filter.releaseYear === undefined && filter.decade === undefined;
+    return (
+      filter.albumArtist === undefined &&
+      filter.publisher === undefined &&
+      filter.genre === undefined &&
+      filter.style === undefined &&
+      filter.country === undefined &&
+      filter.city === undefined &&
+      filter.releaseYear === undefined &&
+      filter.decade === undefined
+    );
   }
 }

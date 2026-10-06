@@ -136,3 +136,8 @@ body.hide-info .album-poster .vinyl-overlay {
     color: var(--text-color-link-hover);
   }
 }
+
+.rotate-180 {
+  display: inline-block;
+  transform: rotate(180deg);
+}

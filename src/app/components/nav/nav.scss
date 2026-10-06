@@ -1,40 +1,34 @@
 :host {
+  position: relative;
+}
+
+nav {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  padding: 12px 24px;
-  margin: 0;
-  flex-wrap: nowrap;
-  flex-wrap: wrap;
-  /* Prevent wrapping for nav/hamburger */
-  background: #ffffff;
+  background: #fff;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
-  padding-left: var(--padding-horizontal-md);
-  padding-right: var(--padding-horizontal-md);
+  padding: 12px var(--padding-horizontal-md) 24px var(--padding-horizontal-md);
+}
 
-  > * {
-    flex: 1 1 auto;
+.open-menu-dialog-btn {
+  flex: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+  font-size: 30px;
+
+  &:hover {
+    filter: drop-shadow(0 0 8px #ffe100);
   }
+}
 
-  .hamburger-menu {
-    flex: 0 0 auto;
-  }
-
-  a {
-    font-size: 0.9em;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-color-link);
-    white-space: nowrap;
-    cursor: pointer;
-
-    &:hover {
-      color: var(--text-color-link-hover);
-      text-decoration: none;
-    }
-  }
+app-album-tile-filter-link {
+  font-weight: bold;
+  font-size: 1.2em;
+  text-decoration: none;
 }
 
 .hidden {
@@ -43,7 +37,6 @@
 
 .nav-title {
   font-weight: bold;
-  font-size: 1.5em;
   letter-spacing: 1px;
   white-space: nowrap;
   display: flex;
@@ -52,63 +45,16 @@
 }
 
 .nav-title-label {
-  color: black
+  display: none;
+  color: black;
 }
 
 .nav-title-value {
-  color: var(--text-color-link-active);
+  text-decoration: underline;
 }
 
 .reset-btn {
   font-size: 18px;
-}
-
-@media (max-width: 600px) {
-  :host a:first-child {
-    display: none;
-  }
-
-  .nav-title {
-    font-size: 1em;
-  }
-}
-
-.hamburger-menu {
-  position: relative;
-  flex: 0 0 auto;
-  margin-left: auto;
-}
-
-.hamburger-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  z-index: 1001;
-
-  span {
-    display: block;
-    width: 25px;
-    height: 3px;
-    background: var(--text-color-dark);
-    transition: all 0.3s;
-    border-radius: 2px;
-  }
-
-  &.active span:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
-  }
-
-  &.active span:nth-child(2) {
-    opacity: 0;
-  }
-
-  &.active span:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
-  }
 }
 
 .menu-header {
@@ -120,18 +66,16 @@
   text-align: center;
 }
 
-.menu-content {
-  position: absolute;
-  top: 62px;
-  right: -12px;
-  background-color: var(--text-color-light);
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18);
-  border-radius: 8px;
-  padding: 8px 8px 32px 8px;
-  max-height: 90vh;
-  overflow-y: auto;
-  z-index: 1000;
+.menu-dialog {
   display: block;
+  position: absolute;
+  top: 80px;
+  width: calc(100vw - 32px);
+  background-color: var(--text-color-dark);
+  color: var(--text-color-light);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18);
+  padding: 16px 16px 32px;
+  z-index: 1000;
 
   column-gap: 8px;
   grid-template-columns: repeat(1, 1fr);
@@ -139,41 +83,30 @@
   column-count: 1;
 }
 
-@media (min-width: 480px) {
-  .menu-content {
-    grid-template-columns: repeat(2, 1fr);
-    column-count: 3;
-    width: calc(100vw - 200px);
-  }
-}
-
-@media (min-width: 768px) {
-  .menu-content {
-    width: calc(100vw - 400px);
-    column-count: 5;
-  }
-}
-
-.menu-content a {
+.menu-dialog a {
   padding: 10px 12px;
   color: var(--text-color-link);
-  background-color: var(--text-color-light);
-  letter-spacing: 0 !important;
   transition: all 0.2s;
-  border-radius: 6px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   display: block;
-  break-inside: avoid;
   text-align: center;
   margin-bottom: 8px;
+  cursor: pointer;
 
   &:hover {
     color: var(--text-color-light);
-    background-color: var(--text-color-link-hover);
     text-decoration: none;
-    transform: translateX(3px);
   }
 }
 
+@media (min-width: 480px) {
+  .nav-title {
+    font-size: 1.5em;
+  }
+  .menu-dialog {
+    grid-template-columns: repeat(2, 1fr);
+    column-count: 4;
+  }
+  .nav-title-label {
+    display: inline;
+  }
+}
