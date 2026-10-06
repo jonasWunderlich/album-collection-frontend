@@ -3,11 +3,12 @@ import { RouterLink } from '@angular/router';
 import { AlbumFilterService } from '../../services/album-filter-service';
 import { AlbumMetaService } from '../../services/album-meta-service';
 import { AlbumTileFilterLink } from '../album-tile-filter-link/album-tile-filter-link';
+import { Icon } from '../icon/icon';
 import { SortOptions } from '../types';
 
 @Component({
   selector: 'app-nav',
-  imports: [RouterLink, AlbumTileFilterLink],
+  imports: [RouterLink, AlbumTileFilterLink, Icon],
   templateUrl: './nav.html',
   styleUrl: './nav.scss',
 })

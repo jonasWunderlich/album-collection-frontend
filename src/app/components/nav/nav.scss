@@ -9,7 +9,7 @@ nav {
   justify-content: space-between;
   background: #fff;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
-  padding: 12px var(--padding-horizontal-md) 24px var(--padding-horizontal-md);
+  padding: var(--padding-horizontal-md);
 }
 
 .open-menu-dialog-btn {
@@ -22,6 +22,10 @@ nav {
 
   &:hover {
     filter: drop-shadow(0 0 8px #ffe100);
+  }
+
+  &.active {
+    filter: drop-shadow(0 0 8px var(--text-color-link-active));
   }
 }
 
@@ -69,7 +73,7 @@ app-album-tile-filter-link {
 .menu-dialog {
   display: block;
   position: absolute;
-  top: 80px;
+  top: 68px;
   width: calc(100vw - 32px);
   background-color: var(--text-color-dark);
   color: var(--text-color-light);
@@ -78,9 +82,9 @@ app-album-tile-filter-link {
   z-index: 1000;
 
   column-gap: 8px;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   max-height: none;
-  column-count: 1;
+  column-count: 2;
 }
 
 .menu-dialog a {

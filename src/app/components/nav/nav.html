@@ -5,18 +5,20 @@
   @if (filterParams().releaseYear) {
     @if (prevYear()) {
       <app-album-tile-filter-link filter="releaseYear" [value]="prevYear()">
-        <span class="rotate-180">➜</span>
+        <span class="rotate-180"><app-icon>➜</app-icon></span>
       </app-album-tile-filter-link>
     }
     <div class="nav-title">
       <span class="nav-title-label">Records in</span>
       <span class="nav-title-value">{{ filterParams().releaseYear }}</span>
       <button type="button" class="reset-btn" (click)="resetFilters('publisher')" aria-label="Suchfeld zurücksetzen">
-        ✖
+        <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
     @if (nextYear()) {
-      <app-album-tile-filter-link filter="releaseYear" [value]="nextYear()">➜</app-album-tile-filter-link>
+      <app-album-tile-filter-link filter="releaseYear" [value]="nextYear()"
+        ><app-icon>➜</app-icon></app-album-tile-filter-link
+      >
     }
   }
 
@@ -31,7 +33,7 @@
       <span class="nav-title-label">Artist</span>
       <span class="nav-title-value">{{ filterParams().albumArtist }}</span>
       <button type="button" class="reset-btn" (click)="resetFilters('albumArtist')" aria-label="Suchfeld zurücksetzen">
-        ✖
+        <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
   }
@@ -41,7 +43,7 @@
       <span class="nav-title-label">Label</span>
       <span class="nav-title-value">{{ filterParams().publisher }}</span>
       <button type="button" class="reset-btn" (click)="resetFilters('publisher')" aria-label="Suchfeld zurücksetzen">
-        ✖
+        <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
   }
@@ -53,7 +55,7 @@
         {{ filterParams().genre }}
       </span>
       <button type="button" class="reset-btn" (click)="resetFilters('genre')" aria-label="Suchfeld zurücksetzen">
-        ✖
+        <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
   }
@@ -63,7 +65,7 @@
       <span class="nav-title-label">Style</span>
       <span class="nav-title-value">{{ filterParams().style }}</span>
       <button type="button" class="reset-btn" (click)="resetFilters('style')" aria-label="Suchfeld zurücksetzen">
-        ✖
+        <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
   }
@@ -73,7 +75,7 @@
       <span class="nav-title-label">Country</span>
       <span class="nav-title-value">{{ filterParams().country }}</span>
       <button type="button" class="reset-btn" (click)="resetFilters('country')" aria-label="Suchfeld zurücksetzen">
-        ✖
+        <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
   }
@@ -83,7 +85,7 @@
       <span class="nav-title-label">City</span>
       <span class="nav-title-value">{{ filterParams().city }}</span>
       <button type="button" class="reset-btn" (click)="resetFilters('city')" aria-label="Suchfeld zurücksetzen">
-        ✖
+        <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
   }
@@ -92,12 +94,14 @@
   @if (filterParams().decade) {
     @if (prevDecade()) {
       <app-album-tile-filter-link filter="decade" [value]="prevDecade()"
-        ><span class="rotate-180">➜</span></app-album-tile-filter-link
+        ><span class="rotate-180"><app-icon>➜</app-icon></span></app-album-tile-filter-link
       >
     }
     <span class="nav-title">{{ filterParams().decade }}s</span>
     @if (nextDecade()) {
-      <app-album-tile-filter-link filter="decade" [value]="nextDecade()">➜</app-album-tile-filter-link>
+      <app-album-tile-filter-link filter="decade" [value]="nextDecade()"
+        ><app-icon>➜</app-icon></app-album-tile-filter-link
+      >
     }
   }
 
