@@ -3,6 +3,7 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  HostListener,
   computed,
   effect,
   inject,
@@ -45,6 +46,23 @@ export class AlbumWall {
   private readonly filterParams = computed(() => {
     return this.albumFilterService.parsedQueryParams();
   });
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent): void {
+    const target = event.target as HTMLElement;
+    if (
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.isContentEditable
+    ) {
+      return;
+    }
+
+    if (event.key === 'i' || event.key === 'I') {
+      event.preventDefault();
+      this.showInfos.set(!this.showInfos());
+    }
+  }
 
   showInfos = signal(true);
 
