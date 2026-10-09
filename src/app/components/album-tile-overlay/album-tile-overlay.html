@@ -17,7 +17,7 @@
     }
   }
   @if (album.albumArtist?.length === 0) {
-    <app-album-tile-filter-link filter="releaseYear" [value]="album.artist">{{
+    <app-album-tile-filter-link filter="albumArtist" [value]="album.artist">{{
       album.artist
     }}</app-album-tile-filter-link>
   }
@@ -81,7 +81,7 @@
   <div class="country-and-city">
     <div class="link-list end">
       @if (album.country) {
-        <app-album-tile-filter-link filter="city" [value]="album.country">
+        <app-album-tile-filter-link filter="country" [value]="album.country">
           {{ album.country }}</app-album-tile-filter-link
         >
       } @else {

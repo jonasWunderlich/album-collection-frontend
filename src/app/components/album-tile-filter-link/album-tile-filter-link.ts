@@ -1,6 +1,6 @@
 import { Component, inject, Input } from '@angular/core';
 import { AlbumFilterService } from '../../services/album-filter-service';
-import { SortOptions } from '../types';
+import { AlbumFilter, SortOptions } from '../types';
 
 @Component({
   selector: 'app-album-tile-filter-link',
@@ -13,15 +13,47 @@ export class AlbumTileFilterLink {
 
   @Input() filter!: string;
   @Input() value?: string | number;
-  @Input() sortBy: SortOptions = SortOptions.releaseYear;
+  @Input() sortBy?: SortOptions;
 
   setFilter(): void {
     if (this.value) {
       this.albumFilterService.replaceFilters({
         [this.filter]: this.value,
-        sortBy: this.sortBy,
-        sortDir: 'desc',
+        ...this.getDefaultSorting(this.filter, this.value),
       });
+    }
+  }
+
+  getDefaultSorting(filter: string, value?: string | number): Partial<AlbumFilter> {
+    switch (filter) {
+      case SortOptions.releaseYear:
+        if (value && value === 2026) {
+          return {
+            sortBy: SortOptions.addedDate,
+            sortDir: 'desc',
+          };
+        }
+        return {
+          sortBy: SortOptions.rating,
+          sortDir: 'desc',
+        };
+      case 'albumArtist':
+        return {
+          sortBy: SortOptions.releaseYear,
+          sortDir: 'asc',
+        };
+      case SortOptions.publisher:
+      case SortOptions.city:
+      case SortOptions.country:
+        return {
+          sortBy: SortOptions.releaseYear,
+          sortDir: 'desc',
+        };
+      default:
+        return {
+          sortBy: SortOptions.rating,
+          sortDir: 'desc',
+        };
     }
   }
 }

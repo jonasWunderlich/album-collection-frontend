@@ -1,6 +1,12 @@
 <nav>
   <app-album-tile-filter-link filter="releaseYear" value="2026">Home</app-album-tile-filter-link>
 
+  @if (noFiltersActive()) {
+    <div class="nav-title">
+      <span class="nav-title-label">Complete</span>
+    </div>
+  }
+
   <!-- Years Navigation -->
   @if (filterParams().releaseYear) {
     @if (prevYear()) {
@@ -22,10 +28,20 @@
     }
   }
 
-  @if (noFiltersActive()) {
-    <div class="nav-title">
-      <span class="nav-title-label">Complete</span>
-    </div>
+  <!-- Decades Navigation -->
+  @if (filterParams().decade) {
+    @if (prevDecade()) {
+      <app-album-tile-filter-link filter="decade" [value]="prevDecade()"
+        ><span class="rotate-180"><app-icon>➜</app-icon></span></app-album-tile-filter-link
+      >
+    }
+    <span class="nav-title">{{ filterParams().decade }}s</span>
+
+    @if (nextDecade()) {
+      <app-album-tile-filter-link filter="decade" [value]="nextDecade()"
+        ><app-icon>➜</app-icon></app-album-tile-filter-link
+      >
+    }
   }
 
   @if (filterParams().albumArtist) {
@@ -90,19 +106,31 @@
     </div>
   }
 
-  <!-- Decades Navigation -->
-  @if (filterParams().decade) {
-    @if (prevDecade()) {
-      <app-album-tile-filter-link filter="decade" [value]="prevDecade()"
-        ><span class="rotate-180"><app-icon>➜</app-icon></span></app-album-tile-filter-link
-      >
-    }
-    <span class="nav-title">{{ filterParams().decade }}s</span>
-    @if (nextDecade()) {
-      <app-album-tile-filter-link filter="decade" [value]="nextDecade()"
-        ><app-icon>➜</app-icon></app-album-tile-filter-link
-      >
-    }
+  @if (filterParams().owned) {
+    <div class="nav-title">
+      <span class="nav-title-label">My Vinyl</span>
+      <button type="button" class="reset-btn" (click)="resetFilters('owned')" aria-label="Suchfeld zurücksetzen">
+        <app-icon [cancel]="true">✖</app-icon>
+      </button>
+    </div>
+  }
+
+  @if (filterParams().wishlist) {
+    <div class="nav-title">
+      <span class="nav-title-label">Wishlist</span>
+      <button type="button" class="reset-btn" (click)="resetFilters('wishlist')" aria-label="Suchfeld zurücksetzen">
+        <app-icon [cancel]="true">✖</app-icon>
+      </button>
+    </div>
+  }
+
+  @if (filterParams().favorite) {
+    <div class="nav-title">
+      <span class="nav-title-label">Some Favorites</span>
+      <button type="button" class="reset-btn" (click)="resetFilters('favorites')" aria-label="Suchfeld zurücksetzen">
+        <app-icon [cancel]="true">✖</app-icon>
+      </button>
+    </div>
   }
 
   <button class="open-menu-dialog-btn" (click)="menuHidden = !menuHidden" [class.active]="!menuHidden">🪩</button>
@@ -127,12 +155,14 @@
     } @else {
       <h2 class="menu-header">Dekaden</h2>
       @for (decade of yearsAndDecades.value().decades; track decade) {
-        <a (click)="setDecade(decade)">{{ decade }}s</a>
+        <a (click)="setDecade(decade)" (keydown)="setDecade(decade)" tabindex="0">{{ decade }}s</a>
       }
 
       <h2 class="menu-header">Jahre</h2>
       @for (releaseYear of yearsAndDecades.value().releaseYears; track releaseYear) {
-        <a (click)="setReleaseYear(releaseYear)">{{ releaseYear }}</a>
+        <a (click)="setReleaseYear(releaseYear)" (keydown)="setReleaseYear(releaseYear)" tabindex="0">{{
+          releaseYear
+        }}</a>
       }
     }
   </div>

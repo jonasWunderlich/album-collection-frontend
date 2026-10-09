@@ -1,5 +1,9 @@
 @if (value) {
-  <a (click)="setFilter(); $event.stopPropagation()" (keyup)="setFilter(); $event.stopPropagation()" tabindex="0">
+  <a
+    (click)="setFilter(); $event.stopPropagation()"
+    (keydown.enter)="setFilter(); $event.stopPropagation()"
+    tabindex="0"
+  >
     <ng-content />
   </a>
 }

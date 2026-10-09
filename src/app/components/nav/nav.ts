@@ -86,7 +86,10 @@ export class Nav {
       filter.country === undefined &&
       filter.city === undefined &&
       filter.releaseYear === undefined &&
-      filter.decade === undefined
+      filter.decade === undefined &&
+      filter.owned === undefined &&
+      filter.favorite === undefined &&
+      filter.wishlist === undefined
     );
   }
 }
