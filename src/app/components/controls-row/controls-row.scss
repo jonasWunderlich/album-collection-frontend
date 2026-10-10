@@ -38,9 +38,22 @@
   }
 }
 
-.reset-btn {
+.input-actions {
   position: absolute;
   right: 12px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.full-search {
+  cursor: pointer;
+  border: 0;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.reset-btn {
   cursor: pointer;
 }
 

@@ -43,8 +43,10 @@ body {
   min-height: 100vh;
 }
 
+.link-btn,
 a {
   color: var(--text-color-link);
+  background: none;
   text-decoration: none;
   transition: color 0.3s;
 
@@ -55,6 +57,19 @@ a {
 
   &.active {
     color: var(--text-color-link-active);
+  }
+}
+
+.reset-btn {
+  color: var(--text-color-link-active);
+  background: none;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--text-color-link-hover);
   }
 }
 
@@ -121,20 +136,6 @@ body.hide-info .album-poster .vinyl-overlay {
 .copy-toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
-}
-
-.reset-btn {
-  color: var(--text-color-link);
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  background: none;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    color: var(--text-color-link-hover);
-  }
 }
 
 .rotate-180 {

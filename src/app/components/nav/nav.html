@@ -17,7 +17,7 @@
     <div class="nav-title">
       <span class="nav-title-label">Records in</span>
       <span class="nav-title-value">{{ filterParams().releaseYear }}</span>
-      <button type="button" class="reset-btn" (click)="resetFilters('publisher')" aria-label="Suchfeld zurücksetzen">
+      <button type="button" class="reset-filter" (click)="resetFilters('publisher')" aria-label="Suchfeld zurücksetzen">
         <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
@@ -48,7 +48,12 @@
     <div class="nav-title">
       <span class="nav-title-label">Artist</span>
       <span class="nav-title-value">{{ filterParams().albumArtist }}</span>
-      <button type="button" class="reset-btn" (click)="resetFilters('albumArtist')" aria-label="Suchfeld zurücksetzen">
+      <button
+        type="button"
+        class="reset-filter"
+        (click)="resetFilters('albumArtist')"
+        aria-label="Suchfeld zurücksetzen"
+      >
         <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
@@ -58,7 +63,7 @@
     <div class="nav-title">
       <span class="nav-title-label">Label</span>
       <span class="nav-title-value">{{ filterParams().publisher }}</span>
-      <button type="button" class="reset-btn" (click)="resetFilters('publisher')" aria-label="Suchfeld zurücksetzen">
+      <button type="button" class="reset-filter" (click)="resetFilters('publisher')" aria-label="Suchfeld zurücksetzen">
         <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
@@ -70,7 +75,7 @@
       <span class="nav-title-value">
         {{ filterParams().genre }}
       </span>
-      <button type="button" class="reset-btn" (click)="resetFilters('genre')" aria-label="Suchfeld zurücksetzen">
+      <button type="button" class="reset-filter" (click)="resetFilters('genre')" aria-label="Suchfeld zurücksetzen">
         <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
@@ -80,7 +85,7 @@
     <div class="nav-title">
       <span class="nav-title-label">Style</span>
       <span class="nav-title-value">{{ filterParams().style }}</span>
-      <button type="button" class="reset-btn" (click)="resetFilters('style')" aria-label="Suchfeld zurücksetzen">
+      <button type="button" class="reset-filter" (click)="resetFilters('style')" aria-label="Suchfeld zurücksetzen">
         <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
@@ -90,7 +95,7 @@
     <div class="nav-title">
       <span class="nav-title-label">Country</span>
       <span class="nav-title-value">{{ filterParams().country }}</span>
-      <button type="button" class="reset-btn" (click)="resetFilters('country')" aria-label="Suchfeld zurücksetzen">
+      <button type="button" class="reset-filter" (click)="resetFilters('country')" aria-label="Suchfeld zurücksetzen">
         <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
@@ -100,7 +105,7 @@
     <div class="nav-title">
       <span class="nav-title-label">City</span>
       <span class="nav-title-value">{{ filterParams().city }}</span>
-      <button type="button" class="reset-btn" (click)="resetFilters('city')" aria-label="Suchfeld zurücksetzen">
+      <button type="button" class="reset-filter" (click)="resetFilters('city')" aria-label="Suchfeld zurücksetzen">
         <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
@@ -109,7 +114,7 @@
   @if (filterParams().owned) {
     <div class="nav-title">
       <span class="nav-title-label">My Vinyl</span>
-      <button type="button" class="reset-btn" (click)="resetFilters('owned')" aria-label="Suchfeld zurücksetzen">
+      <button type="button" class="reset-filter" (click)="resetFilters('owned')" aria-label="Suchfeld zurücksetzen">
         <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
@@ -118,7 +123,7 @@
   @if (filterParams().wishlist) {
     <div class="nav-title">
       <span class="nav-title-label">Wishlist</span>
-      <button type="button" class="reset-btn" (click)="resetFilters('wishlist')" aria-label="Suchfeld zurücksetzen">
+      <button type="button" class="reset-filter" (click)="resetFilters('wishlist')" aria-label="Suchfeld zurücksetzen">
         <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>
@@ -127,7 +132,7 @@
   @if (filterParams().favorite) {
     <div class="nav-title">
       <span class="nav-title-label">Some Favorites</span>
-      <button type="button" class="reset-btn" (click)="resetFilters('favorites')" aria-label="Suchfeld zurücksetzen">
+      <button type="button" class="reset-filter" (click)="resetFilters('favorites')" aria-label="Suchfeld zurücksetzen">
         <app-icon [cancel]="true">✖</app-icon>
       </button>
     </div>

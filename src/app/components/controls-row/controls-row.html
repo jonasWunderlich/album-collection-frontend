@@ -8,7 +8,15 @@
   />
 
   @if (filters().search) {
-    <button type="button" class="reset-btn" (click)="clearSearch()" aria-label="Suchfeld zurücksetzen">✖</button>
+    <div class="input-actions">
+      @if (hasFilters()) {
+        <button type="button" class="full-search link-btn" (click)="expandSearch()" aria-label="Ohne Filter suchen">
+          Ohne Filter suchen
+        </button>
+      }
+
+      <button type="button" class="reset-btn" (click)="clearSearch()" aria-label="Suchfeld zurücksetzen">✖</button>
+    </div>
   }
 </div>
 
