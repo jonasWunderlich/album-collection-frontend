@@ -17,7 +17,6 @@ export class ControlsRow {
   @Output() showInfosChange = new EventEmitter<boolean>();
 
   readonly filters = computed(() => this.albumFilterService.parsedQueryParams());
-  readonly showYearFilter = computed(() => !this.filters().releaseYear);
 
   updateSearch(event: Event): void {
     const search = (event.target as HTMLInputElement).value;

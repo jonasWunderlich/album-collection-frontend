@@ -19,7 +19,8 @@
     label="Rating"
     (click)="setSort(SortOptions.rating)"
   />
-  @if (showYearFilter()) {
+
+  @if (!filters().releaseYear) {
     <app-sort-button
       [active]="filters().sortBy === SortOptions.releaseYear"
       [direction]="filters().sortDir"
@@ -41,12 +42,14 @@
     (click)="setSort(SortOptions.lastPlayedDate)"
   />
 
-  <app-sort-button
-    [active]="filters().sortBy === SortOptions.artist"
-    [direction]="filters().sortDir"
-    label="Artist"
-    (click)="setSort(SortOptions.artist)"
-  />
+  @if (!filters().albumArtist) {
+    <app-sort-button
+      [active]="filters().sortBy === SortOptions.artist"
+      [direction]="filters().sortDir"
+      label="Artist"
+      (click)="setSort(SortOptions.artist)"
+    />
+  }
 
   <button type="button" class="filter-button" [class.active]="filters().tino" (click)="toggleFilter('tino')">
     Tino
