@@ -64,7 +64,7 @@ export class AlbumWall {
     }
   }
 
-  showInfos = signal(true);
+  showInfos = signal(false);
 
   private readonly location = inject(Location);
 
