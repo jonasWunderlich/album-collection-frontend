@@ -3,6 +3,7 @@
     (click)="setFilter(); $event.stopPropagation()"
     (keydown.enter)="setFilter(); $event.stopPropagation()"
     tabindex="0"
+    [attr.alt]="title"
   >
     <ng-content />
   </a>

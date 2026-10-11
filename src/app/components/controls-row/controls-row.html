@@ -14,7 +14,6 @@
           Ohne Filter suchen
         </button>
       }
-
       <button type="button" class="reset-btn" (click)="clearSearch()" aria-label="Suchfeld zurücksetzen">✖</button>
     </div>
   }
@@ -50,22 +49,35 @@
     (click)="setSort(SortOptions.lastPlayedDate)"
   />
 
-  @if (!filters().albumArtist) {
-    <app-sort-button
-      [active]="filters().sortBy === SortOptions.artist"
-      [direction]="filters().sortDir"
-      label="Artist"
-      (click)="setSort(SortOptions.artist)"
-    />
-  }
-
-  <button type="button" class="filter-button" [class.active]="filters().tino" (click)="toggleFilter('tino')">
+  <button
+    type="button"
+    class="filter-button"
+    aria-label="Filter albums listed in wire rewind"
+    [class.active]="filters().tino"
+    [attr.aria-pressed]="filters().tino"
+    (click)="toggleFilter('tino')"
+  >
     Tino
   </button>
-  <button type="button" class="filter-button" [class.active]="filters().wire" (click)="toggleFilter('wire')">
+  <button
+    type="button"
+    class="filter-button"
+    aria-label="Filter albums liked by tino"
+    [class.active]="filters().wire"
+    [attr.aria-pressed]="filters().wire"
+    (click)="toggleFilter('wire')"
+  >
     Wire
   </button>
-  <button type="button" class="filter-button" [class.active]="!showInfos" (click)="showInfosChange.emit(!showInfos)">
-    i
+  <button
+    type="button"
+    class="filter-button"
+    [class.active]="!showInfos"
+    aria-label="Show album meta data for all albums"
+    [attr.aria-pressed]="!showInfos"
+    (click)="showInfosChange.emit(!showInfos)"
+  >
+    ⓘ
+  </button>
   </button>
 </div>

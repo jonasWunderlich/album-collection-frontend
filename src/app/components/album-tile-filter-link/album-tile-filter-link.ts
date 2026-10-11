@@ -12,6 +12,7 @@ export class AlbumTileFilterLink {
   private readonly albumFilterService = inject(AlbumFilterService);
 
   @Input() filter!: string;
+  @Input() title?: string;
   @Input() value?: string | number;
   @Input() sortBy?: SortOptions;
 
