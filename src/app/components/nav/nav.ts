@@ -1,5 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Legend } from '../../legend/legend';
 import { AlbumFilterService } from '../../services/album-filter-service';
 import { AlbumMetaService } from '../../services/album-meta-service';
 import { AlbumTileFilterLink } from '../album-tile-filter-link/album-tile-filter-link';
@@ -8,7 +9,7 @@ import { SortOptions } from '../types';
 
 @Component({
   selector: 'app-nav',
-  imports: [RouterLink, AlbumTileFilterLink, Icon],
+  imports: [RouterLink, AlbumTileFilterLink, Icon, Legend],
   templateUrl: './nav.html',
   styleUrl: './nav.scss',
 })
@@ -16,6 +17,7 @@ export class Nav {
   readonly yearsAndDecades = inject(AlbumMetaService).data;
   readonly albumFilterService = inject(AlbumFilterService);
   menuHidden = true;
+  showLegend = false;
 
   public readonly filterParams = computed(() => {
     return this.albumFilterService.parsedQueryParams();

@@ -150,32 +150,39 @@
 
 @if (!menuHidden) {
   <div class="menu-dialog">
-    <h2 class="menu-header">Listen</h2>
-    <a [routerLink]="['/']" [queryParams]="{}" (click)="menuHidden = true">Alles</a>
-    <a [routerLink]="['/']" [queryParams]="{ owned: true }" (click)="menuHidden = true">Sammlung</a>
-    <a [routerLink]="['/']" [queryParams]="{ favorite: true }" (click)="menuHidden = true">Favoriten</a>
-    <a [routerLink]="['/']" [queryParams]="{ wishlist: true }" (click)="menuHidden = true">Wunschliste</a>
-    <a [routerLink]="['/']" [queryParams]="{ wishlist: true }" (click)="menuHidden = true">Wunschliste</a>
-    <a [routerLink]="['/']" [queryParams]="{ albumArtist: 'Wunderlich', hidden: true }" (click)="menuHidden = true"
-      >Sampler</a
-    >
+    <h2 class="menu-dialog-title">Listen</h2>
+    <div class="columns">
+      <a [routerLink]="['/']" [queryParams]="{}" (click)="menuHidden = true">Alles</a>
+      <a [routerLink]="['/']" [queryParams]="{ owned: true }" (click)="menuHidden = true">Sammlung</a>
+      <a [routerLink]="['/']" [queryParams]="{ favorite: true }" (click)="menuHidden = true">Favoriten</a>
+      <a [routerLink]="['/']" [queryParams]="{ wishlist: true }" (click)="menuHidden = true">Wunschliste</a>
+      <a [routerLink]="['/']" [queryParams]="{ wishlist: true }" (click)="menuHidden = true">Wunschliste</a>
+      <a [routerLink]="['/']" [queryParams]="{ albumArtist: 'Wunderlich', hidden: true }" (click)="menuHidden = true"
+        >Sampler</a
+      >
+    </div>
 
     @if (yearsAndDecades.isLoading()) {
       <p>Lade Dekaden...</p>
     } @else if (yearsAndDecades.error()) {
       <p>Fehler beim Laden!</p>
     } @else {
-      <h2 class="menu-header">Dekaden</h2>
-      @for (decade of yearsAndDecades.value().decades; track decade) {
-        <a (click)="setDecade(decade)" (keydown)="setDecade(decade)" tabindex="0">{{ decade }}s</a>
-      }
+      <h2 class="menu-dialog-title">Dekaden</h2>
+      <div class="columns">
+        @for (decade of yearsAndDecades.value().decades; track decade) {
+          <a (click)="setDecade(decade)" (keydown)="setDecade(decade)" tabindex="0">{{ decade }}s</a>
+        }
+      </div>
 
-      <h2 class="menu-header">Jahre</h2>
-      @for (releaseYear of yearsAndDecades.value().releaseYears; track releaseYear) {
-        <a (click)="setReleaseYear(releaseYear)" (keydown)="setReleaseYear(releaseYear)" tabindex="0">{{
-          releaseYear
-        }}</a>
-      }
+      <h2 class="menu-dialog-title">Jahre</h2>
+      <div class="columns">
+        @for (releaseYear of yearsAndDecades.value().releaseYears; track releaseYear) {
+          <a (click)="setReleaseYear(releaseYear)" (keydown)="setReleaseYear(releaseYear)" tabindex="0">
+            {{ releaseYear }}
+          </a>
+        }
+      </div>
     }
+    <app-legend />
   </div>
 }

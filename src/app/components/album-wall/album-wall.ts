@@ -71,7 +71,6 @@ export class AlbumWall {
   readonly showBackButton = computed(() => {
     return (
       window.history.length > 1 &&
-      this.showInfos() &&
       !this.filterParams().releaseYear &&
       !this.filterParams().decade &&
       this.albums().length > 0
