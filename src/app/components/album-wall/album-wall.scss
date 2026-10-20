@@ -37,14 +37,26 @@
 
 .album-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--padding-horizontal-md);
   padding-left: var(--padding-horizontal-md);
   padding-right: var(--padding-horizontal-md);
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
 }
 
-@media (max-width: 768px) {
+@media (min-width: 520px) {
   .album-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (min-width: 710px) {
+  .album-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+@media (min-width: 940px) {
+  .album-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   }
 }

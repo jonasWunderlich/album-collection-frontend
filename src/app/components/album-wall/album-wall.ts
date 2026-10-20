@@ -2,14 +2,12 @@ import { Location } from '@angular/common';
 import {
   Component,
   DestroyRef,
-  ElementRef,
   HostListener,
   computed,
   effect,
   inject,
   signal,
   untracked,
-  viewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlbumsService } from '../../api/api/albums.service';
@@ -33,14 +31,12 @@ export class AlbumWall {
   private readonly albumFilterService = inject(AlbumFilterService);
   private readonly albumService = inject(AlbumsService);
   private readonly destroyRef = inject(DestroyRef);
-  private observer?: IntersectionObserver;
 
-  readonly scrollAnchor = viewChild<ElementRef<HTMLDivElement>>('scrollAnchor');
   readonly albums = signal<Album[]>([]);
   readonly page = signal<number>(0);
   readonly isLoading = signal<boolean>(false);
   readonly isLastPage = signal<boolean>(false);
-  readonly pageSize = 23;
+  readonly pageSize = 40;
 
   private readonly initialised = signal(false);
   private readonly filterParams = computed(() => {
@@ -120,14 +116,25 @@ export class AlbumWall {
         this.resetAndFetch();
       });
     });
+  }
 
-    effect(() => {
-      const anchorEl = this.scrollAnchor()?.nativeElement;
+  // Lauscht auf Scroll-Events im Fenster
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    this.checkAndFetch();
+  }
 
-      if (anchorEl) {
-        this.setupIntersectionObserver(anchorEl);
-      }
-    });
+  private checkAndFetch(): void {
+    if (this.isLoading() || this.isLastPage()) return;
+
+    const threshold = 500; // Lade nach, wenn man sich 500px dem Ende nähert
+    const scrollPosition = window.innerHeight + window.scrollY;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    // Wenn der Abstand zum Ende kleiner/gleich dem Threshold ist (oder Bildschirm leer)
+    if (documentHeight - scrollPosition <= threshold) {
+      this.fetchAlbums();
+    }
   }
 
   fetchAlbums(): void {
@@ -188,42 +195,15 @@ export class AlbumWall {
           this.page.update(page => page + 1);
           this.isLoading.set(false);
 
-          // Prüfen, ob nach dem Rendern der Anker immer noch im Sichtbereich liegt
-          if (!lastPageReached) {
-            setTimeout(() => {
-              const anchorEl = this.scrollAnchor()?.nativeElement;
-              if (anchorEl) {
-                const rect = anchorEl.getBoundingClientRect();
-                if (rect.top <= window.innerHeight) {
-                  this.fetchAlbums();
-                }
-              }
-            });
-          }
+          // Direkt nach dem Rendern prüfen, ob der Bildschirm immer noch nicht voll ist
+          setTimeout(() => {
+            this.checkAndFetch();
+          });
         },
         error: err => {
           console.error('Error fetching albums:', err);
           this.isLoading.set(false);
         },
       });
-  }
-
-  private setupIntersectionObserver(element: HTMLElement): void {
-    this.observer?.disconnect();
-
-    this.observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !this.isLoading() && !this.isLastPage()) {
-          this.fetchAlbums();
-        }
-      },
-      { rootMargin: '500px 0px' },
-    );
-
-    this.observer.observe(element);
-
-    this.destroyRef.onDestroy(() => {
-      this.observer?.disconnect();
-    });
   }
 }
