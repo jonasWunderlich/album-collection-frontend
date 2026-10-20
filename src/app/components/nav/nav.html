@@ -3,7 +3,7 @@
 
   @if (noFiltersActive()) {
     <div class="nav-title">
-      <span class="nav-title-label">Complete</span>
+      <span class="nav-title-value">Complete</span>
     </div>
   }
 
@@ -11,7 +11,7 @@
   @if (filterParams().releaseYear) {
     @if (prevYear()) {
       <app-album-tile-filter-link filter="releaseYear" [value]="prevYear()" title="Records in the year before">
-        <span class="rotate-180"><app-icon>➜</app-icon></span>
+        <app-icon><span class="rotate-180">➜</span></app-icon>
       </app-album-tile-filter-link>
     }
     <div class="nav-title">
@@ -32,10 +32,13 @@
   @if (filterParams().decade) {
     @if (prevDecade()) {
       <app-album-tile-filter-link filter="decade" [value]="prevDecade()"
-        ><span class="rotate-180"><app-icon>➜</app-icon></span></app-album-tile-filter-link
+        ><app-icon><span class="rotate-180">➜</span></app-icon></app-album-tile-filter-link
       >
     }
     <span class="nav-title">{{ filterParams().decade }}s</span>
+    <button type="button" class="reset-filter" (click)="resetFilters('publisher')" aria-label="Suchfeld zurücksetzen">
+      <app-icon [cancel]="true">✖</app-icon>
+    </button>
 
     @if (nextDecade()) {
       <app-album-tile-filter-link filter="decade" [value]="nextDecade()" title="Records in the year after"
@@ -183,6 +186,5 @@
         }
       </div>
     }
-    <app-legend />
   </div>
 }

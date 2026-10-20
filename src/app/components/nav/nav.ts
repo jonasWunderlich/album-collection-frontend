@@ -1,6 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Legend } from '../../legend/legend';
 import { AlbumFilterService } from '../../services/album-filter-service';
 import { AlbumMetaService } from '../../services/album-meta-service';
 import { AlbumTileFilterLink } from '../album-tile-filter-link/album-tile-filter-link';
@@ -9,7 +8,7 @@ import { SortOptions } from '../types';
 
 @Component({
   selector: 'app-nav',
-  imports: [RouterLink, AlbumTileFilterLink, Icon, Legend],
+  imports: [RouterLink, AlbumTileFilterLink, Icon],
   templateUrl: './nav.html',
   styleUrl: './nav.scss',
 })
@@ -51,7 +50,7 @@ export class Nav {
     const releaseYear = Number(value);
     const sortBy = releaseYear === 2026 ? SortOptions.addedDate : SortOptions.rating;
 
-    this.albumFilterService.replaceFilters({
+    this.albumFilterService.updateFilters({
       releaseYear,
       sortBy,
       sortDir: 'desc',
