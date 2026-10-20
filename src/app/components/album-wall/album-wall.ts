@@ -40,7 +40,7 @@ export class AlbumWall {
   readonly page = signal<number>(0);
   readonly isLoading = signal<boolean>(false);
   readonly isLastPage = signal<boolean>(false);
-  readonly pageSize = 30;
+  readonly pageSize = 23;
 
   private readonly initialised = signal(false);
   private readonly filterParams = computed(() => {
@@ -187,6 +187,19 @@ export class AlbumWall {
           this.isLastPage.set(lastPageReached);
           this.page.update(page => page + 1);
           this.isLoading.set(false);
+
+          // Prüfen, ob nach dem Rendern der Anker immer noch im Sichtbereich liegt
+          if (!lastPageReached) {
+            setTimeout(() => {
+              const anchorEl = this.scrollAnchor()?.nativeElement;
+              if (anchorEl) {
+                const rect = anchorEl.getBoundingClientRect();
+                if (rect.top <= window.innerHeight) {
+                  this.fetchAlbums();
+                }
+              }
+            });
+          }
         },
         error: err => {
           console.error('Error fetching albums:', err);
