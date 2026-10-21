@@ -29,7 +29,7 @@ export class AlbumTileFilterLink {
   getDefaultSorting(filter: string, value?: string | number): Partial<AlbumFilter> {
     switch (filter) {
       case SortOptions.releaseYear:
-        if (value && value === 2026) {
+        if (value && value == 2026) {
           return {
             sortBy: SortOptions.addedDate,
             sortDir: 'desc',
