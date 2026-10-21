@@ -43,16 +43,9 @@ export class AlbumTileFilterLink {
           sortBy: SortOptions.releaseYear,
           sortDir: 'asc',
         };
-      case SortOptions.publisher:
-      case SortOptions.city:
-      case SortOptions.country:
-        return {
-          sortBy: SortOptions.releaseYear,
-          sortDir: 'desc',
-        };
       default:
         return {
-          sortBy: SortOptions.rating,
+          sortBy: SortOptions.releaseYear,
           sortDir: 'desc',
         };
     }
