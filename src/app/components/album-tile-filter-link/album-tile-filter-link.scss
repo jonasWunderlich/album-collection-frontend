@@ -1,4 +1,7 @@
 a {
   cursor: pointer;
-  user-select: none;
+
+  &.no-underline:hover {
+    text-decoration: none;
+  }
 }

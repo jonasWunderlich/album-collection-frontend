@@ -12,6 +12,18 @@ nav {
   padding: var(--padding-horizontal-md);
 }
 
+.home {
+  font-size: 30px;
+
+  &:hover {
+    filter: drop-shadow(0 0 8px #ffe100);
+  }
+
+  &.active {
+    filter: drop-shadow(0 0 8px var(--text-color-link-active));
+  }
+}
+
 .open-menu-dialog-btn {
   flex: 0;
   background: none;

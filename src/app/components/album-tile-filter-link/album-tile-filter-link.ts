@@ -13,6 +13,7 @@ export class AlbumTileFilterLink {
 
   @Input() filter!: string;
   @Input() title?: string;
+  @Input() noUnderline = false;
   @Input() value?: string | number;
   @Input() sortBy?: SortOptions;
 
