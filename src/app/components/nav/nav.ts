@@ -75,6 +75,8 @@ export class Nav {
   resetFilters(filter: string) {
     this.albumFilterService.replaceFilters({
       [filter]: undefined,
+      sortBy: SortOptions.lastPlayedDate,
+      sortDir: 'desc',
     });
   }
 
