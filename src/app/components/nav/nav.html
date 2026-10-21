@@ -1,144 +1,105 @@
 <nav>
-  <app-album-tile-filter-link filter="releaseYear" value="2026" title="Records 2026">Home</app-album-tile-filter-link>
+  <app-album-tile-filter-link filter="releaseYear" value="2026" title="Records 2026" [noUnderline]="true"
+    ><span class="home">🗞️</span></app-album-tile-filter-link
+  >
+
+  <!-- Previous Button -->
+
+  @if (filterParams().releaseYear && prevYear()) {
+    <app-album-tile-filter-link
+      filter="releaseYear"
+      [value]="prevYear()"
+      title="Records in the year before"
+      [noUnderline]="true"
+    >
+      <app-icon><span class="rotate-180">➜</span></app-icon>
+    </app-album-tile-filter-link>
+  }
+
+  @if (filterParams().decade && prevDecade()) {
+    <app-album-tile-filter-link filter="decade" [value]="prevDecade()" [noUnderline]="true"
+      ><app-icon><span class="rotate-180">➜</span></app-icon></app-album-tile-filter-link
+    >
+  }
+
+  <!-- Title for Active Filter -->
 
   @if (noFiltersActive()) {
-    <div class="nav-title">
-      <span class="nav-title-value">Complete</span>
-    </div>
+    <app-nav-active-filter label="Complete" />
   }
 
-  <!-- Years Navigation -->
   @if (filterParams().releaseYear) {
-    @if (prevYear()) {
-      <app-album-tile-filter-link filter="releaseYear" [value]="prevYear()" title="Records in the year before">
-        <app-icon><span class="rotate-180">➜</span></app-icon>
-      </app-album-tile-filter-link>
-    }
-    <div class="nav-title">
-      <span class="nav-title-label">Records in</span>
-      <span class="nav-title-value">{{ filterParams().releaseYear }}</span>
-      <button type="button" class="reset-filter" (click)="resetFilters('publisher')" aria-label="Suchfeld zurücksetzen">
-        <app-icon [cancel]="true">✖</app-icon>
-      </button>
-    </div>
-    @if (nextYear()) {
-      <app-album-tile-filter-link filter="releaseYear" [value]="nextYear()"
-        ><app-icon>➜</app-icon></app-album-tile-filter-link
-      >
-    }
+    <app-nav-active-filter
+      label="Records in"
+      [filter]="filterParams().releaseYear"
+      (clickRest)="resetFilters('publisher')"
+    />
   }
 
-  <!-- Decades Navigation -->
   @if (filterParams().decade) {
-    @if (prevDecade()) {
-      <app-album-tile-filter-link filter="decade" [value]="prevDecade()"
-        ><app-icon><span class="rotate-180">➜</span></app-icon></app-album-tile-filter-link
-      >
-    }
-    <span class="nav-title">{{ filterParams().decade }}s</span>
-    <button type="button" class="reset-filter" (click)="resetFilters('publisher')" aria-label="Suchfeld zurücksetzen">
-      <app-icon [cancel]="true">✖</app-icon>
-    </button>
-
-    @if (nextDecade()) {
-      <app-album-tile-filter-link filter="decade" [value]="nextDecade()" title="Records in the year after"
-        ><app-icon>➜</app-icon></app-album-tile-filter-link
-      >
-    }
+    <app-nav-active-filter
+      label="Records in"
+      [filter]="filterParams().decade"
+      (clickRest)="resetFilters('publisher')"
+    />
   }
 
   @if (filterParams().albumArtist) {
-    <div class="nav-title">
-      <span class="nav-title-label">Artist</span>
-      <span class="nav-title-value">{{ filterParams().albumArtist }}</span>
-      <button
-        type="button"
-        class="reset-filter"
-        (click)="resetFilters('albumArtist')"
-        aria-label="Suchfeld zurücksetzen"
-      >
-        <app-icon [cancel]="true">✖</app-icon>
-      </button>
-    </div>
+    <app-nav-active-filter
+      label="Artist"
+      [filter]="filterParams().albumArtist"
+      (clickRest)="resetFilters('albumArtist')"
+    />
   }
 
   @if (filterParams().publisher) {
-    <div class="nav-title">
-      <span class="nav-title-label">Label</span>
-      <span class="nav-title-value">{{ filterParams().publisher }}</span>
-      <button type="button" class="reset-filter" (click)="resetFilters('publisher')" aria-label="Suchfeld zurücksetzen">
-        <app-icon [cancel]="true">✖</app-icon>
-      </button>
-    </div>
+    <app-nav-active-filter label="Label" [filter]="filterParams().publisher" (clickRest)="resetFilters('publisher')" />
   }
 
   @if (filterParams().genre) {
-    <div class="nav-title">
-      <span class="nav-title-label"> Genre: </span>
-      <span class="nav-title-value">
-        {{ filterParams().genre }}
-      </span>
-      <button type="button" class="reset-filter" (click)="resetFilters('genre')" aria-label="Suchfeld zurücksetzen">
-        <app-icon [cancel]="true">✖</app-icon>
-      </button>
-    </div>
+    <app-nav-active-filter label="Genre" [filter]="filterParams().genre" (clickRest)="resetFilters('genre')" />
   }
 
   @if (filterParams().style) {
-    <div class="nav-title">
-      <span class="nav-title-label">Style</span>
-      <span class="nav-title-value">{{ filterParams().style }}</span>
-      <button type="button" class="reset-filter" (click)="resetFilters('style')" aria-label="Suchfeld zurücksetzen">
-        <app-icon [cancel]="true">✖</app-icon>
-      </button>
-    </div>
+    <app-nav-active-filter label="Style" [filter]="filterParams().style" (clickRest)="resetFilters('style')" />
   }
 
   @if (filterParams().country) {
-    <div class="nav-title">
-      <span class="nav-title-label">Country</span>
-      <span class="nav-title-value">{{ filterParams().country }}</span>
-      <button type="button" class="reset-filter" (click)="resetFilters('country')" aria-label="Suchfeld zurücksetzen">
-        <app-icon [cancel]="true">✖</app-icon>
-      </button>
-    </div>
+    <app-nav-active-filter label="Country" [filter]="filterParams().country" (clickRest)="resetFilters('country')" />
   }
 
   @if (filterParams().city) {
-    <div class="nav-title">
-      <span class="nav-title-label">City</span>
-      <span class="nav-title-value">{{ filterParams().city }}</span>
-      <button type="button" class="reset-filter" (click)="resetFilters('city')" aria-label="Suchfeld zurücksetzen">
-        <app-icon [cancel]="true">✖</app-icon>
-      </button>
-    </div>
+    <app-nav-active-filter label="City" [filter]="filterParams().city" (clickRest)="resetFilters('city')" />
   }
 
   @if (filterParams().owned) {
-    <div class="nav-title">
-      <span class="nav-title-label">My Vinyl</span>
-      <button type="button" class="reset-filter" (click)="resetFilters('owned')" aria-label="Suchfeld zurücksetzen">
-        <app-icon [cancel]="true">✖</app-icon>
-      </button>
-    </div>
+    <app-nav-active-filter filter="My Vinyl" (clickRest)="resetFilters('city')" />
   }
 
   @if (filterParams().wishlist) {
-    <div class="nav-title">
-      <span class="nav-title-label">Wishlist</span>
-      <button type="button" class="reset-filter" (click)="resetFilters('wishlist')" aria-label="Suchfeld zurücksetzen">
-        <app-icon [cancel]="true">✖</app-icon>
-      </button>
-    </div>
+    <app-nav-active-filter filter="Wishlist" (clickRest)="resetFilters('wishlist')" />
   }
 
   @if (filterParams().favorite) {
-    <div class="nav-title">
-      <span class="nav-title-label">Some Favorites</span>
-      <button type="button" class="reset-filter" (click)="resetFilters('favorites')" aria-label="Suchfeld zurücksetzen">
-        <app-icon [cancel]="true">✖</app-icon>
-      </button>
-    </div>
+    <app-nav-active-filter filter="Some Favorites" (clickRest)="resetFilters('favorites')" />
+  }
+
+  <!-- Next Button -->
+
+  @if (filterParams().releaseYear && nextYear()) {
+    <app-album-tile-filter-link filter="releaseYear" [value]="nextYear()" [noUnderline]="true"
+      ><app-icon>➜</app-icon></app-album-tile-filter-link
+    >
+  }
+
+  @if (filterParams().decade && nextDecade()) {
+    <app-album-tile-filter-link
+      filter="decade"
+      [value]="nextDecade()"
+      title="Records in the year after"
+      [noUnderline]="true"
+      ><app-icon>➜</app-icon></app-album-tile-filter-link
+    >
   }
 
   <button

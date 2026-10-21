@@ -1,5 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { NavActiveFilter } from '../../nav-active-filter/nav-active-filter';
 import { AlbumFilterService } from '../../services/album-filter-service';
 import { AlbumMetaService } from '../../services/album-meta-service';
 import { AlbumTileFilterLink } from '../album-tile-filter-link/album-tile-filter-link';
@@ -8,7 +9,7 @@ import { SortOptions } from '../types';
 
 @Component({
   selector: 'app-nav',
-  imports: [RouterLink, AlbumTileFilterLink, Icon],
+  imports: [RouterLink, AlbumTileFilterLink, Icon, NavActiveFilter],
   templateUrl: './nav.html',
   styleUrl: './nav.scss',
 })
