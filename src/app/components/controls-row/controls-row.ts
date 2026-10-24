@@ -14,7 +14,9 @@ export class ControlsRow {
   readonly SortOptions = SortOptions;
 
   @Input() showInfos = true;
+  @Input() showList = false;
   @Output() showInfosChange = new EventEmitter<boolean>();
+  @Output() showListChange = new EventEmitter<boolean>();
 
   readonly filters = computed(() => this.albumFilterService.parsedQueryParams());
   readonly hasFilters = computed(

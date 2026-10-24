@@ -58,6 +58,17 @@
   𝒊
 </button>
 
+<button
+  type="button"
+  class="filter-button show-list"
+  [class.active]="showList"
+  aria-label="Show album meta data for all albums"
+  [attr.aria-pressed]="!showList"
+  (click)="showListChange.emit(!showInfos)"
+>
+  ☰
+</button>
+
 <div class="search-container">
   <input
     type="text"

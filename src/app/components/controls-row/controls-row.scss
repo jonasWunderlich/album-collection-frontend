@@ -26,6 +26,16 @@
   }
 }
 
+@media (max-width: 768px) {
+  .show-list {
+    display: none;
+  }
+}
+
+.show-list {
+  padding: 0 14px;
+}
+
 .search-container {
   flex: 1;
   display: flex;
@@ -71,4 +81,3 @@
     cursor: pointer;
   }
 }
-

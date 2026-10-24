@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlbumsService } from '../../api/api/albums.service';
 import { Album } from '../../api/model/album';
 import { AlbumFilterService } from '../../services/album-filter-service';
+import { AlbumListItem } from '../album-list-item/album-list-item';
 import { AlbumTile } from '../album-tile/album-tile';
 import { ControlsRow } from '../controls-row/controls-row';
 import { Nav } from '../nav/nav';
@@ -20,7 +21,7 @@ import { ScrollTopButton } from '../scroll-top-button/scroll-top-button';
 
 @Component({
   selector: 'app-album-wall',
-  imports: [AlbumTile, ControlsRow, Nav, ScrollTopButton],
+  imports: [AlbumTile, ControlsRow, Nav, ScrollTopButton, AlbumListItem],
   templateUrl: './album-wall.html',
   styleUrl: './album-wall.scss',
 })
@@ -36,6 +37,8 @@ export class AlbumWall {
   readonly page = signal<number>(0);
   readonly isLoading = signal<boolean>(false);
   readonly isLastPage = signal<boolean>(false);
+  readonly showList = signal<boolean>(false);
+  readonly showInfos = signal(false);
   readonly pageSize = 40;
 
   private readonly initialised = signal(false);
@@ -59,8 +62,6 @@ export class AlbumWall {
       this.showInfos.set(!this.showInfos());
     }
   }
-
-  showInfos = signal(false);
 
   private readonly location = inject(Location);
 
