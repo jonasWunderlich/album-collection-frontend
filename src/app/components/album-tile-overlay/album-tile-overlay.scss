@@ -47,7 +47,6 @@
 .link-list {
   display: flex;
   flex-wrap: wrap;
-  line-break: anywhere;
 
   &.end {
     justify-content: flex-end;
