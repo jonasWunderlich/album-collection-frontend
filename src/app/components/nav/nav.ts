@@ -51,7 +51,7 @@ export class Nav {
     const releaseYear = Number(value);
     const sortBy = releaseYear === 2026 ? SortOptions.addedDate : SortOptions.rating;
 
-    this.albumFilterService.updateFilters({
+    this.albumFilterService.replaceFilters({
       releaseYear,
       sortBy,
       sortDir: 'desc',
