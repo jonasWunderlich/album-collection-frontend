@@ -24,6 +24,11 @@
   &.active {
     background: var(--text-color-link-active);
   }
+
+  &.negative {
+    background: var(--color-highlight);
+    color: var(--text-color-dark);
+  }
 }
 
 @media (max-width: 768px) {

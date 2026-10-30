@@ -27,6 +27,7 @@ export class ControlsRow {
       this.albumFilterService.parsedQueryParams().publisher !== undefined ||
       this.albumFilterService.parsedQueryParams().tino !== undefined ||
       this.albumFilterService.parsedQueryParams().wire !== undefined ||
+      this.albumFilterService.parsedQueryParams().reissue !== undefined ||
       this.albumFilterService.parsedQueryParams().genre !== undefined ||
       this.albumFilterService.parsedQueryParams().style !== undefined ||
       this.albumFilterService.parsedQueryParams().city !== undefined ||
@@ -54,10 +55,19 @@ export class ControlsRow {
     });
   }
 
-  toggleFilter(key: 'tino' | 'wire'): void {
+  toggleFilter(key: 'tino' | 'wire' | 'reissue'): void {
     const isActive = this.albumFilterService.parsedQueryParams()[key];
+    let updatedValue: boolean | null = null;
+    
+    const isUndefined = isActive == undefined || isActive == null;
+    
+    if (isUndefined) {
+      updatedValue = true;
+    } else if (isActive) {
+      updatedValue = false;
+    }
     this.albumFilterService.updateFilters({
-      [key]: !isActive ? 'true' : null,
+      [key]: updatedValue,
     });
   }
 }

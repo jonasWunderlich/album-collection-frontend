@@ -27,6 +27,9 @@
 </div>
 
 <div class="album-title">
+  @if (album.reissue) {
+    <span class="reissue-badge">♻ </span>
+  }
   @if (album.urlAlbum) {
     <a [href]="album.urlAlbum" target="_blank">{{ album.title }}</a>
   } @else {

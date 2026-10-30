@@ -38,6 +38,7 @@ export class AlbumFilterService {
       owned: params['owned'] === 'true' ? true : undefined,
       tino: params['tino'] === 'true' ? true : undefined,
       wire: params['wire'] === 'true' ? true : undefined,
+      reissue: params['reissue'] === 'true' ? true : params['reissue'] === 'false' ? false : undefined,
       wishlist: params['wishlist'] === 'true' ? true : undefined,
     };
   }

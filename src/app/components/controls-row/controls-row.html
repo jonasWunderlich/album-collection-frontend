@@ -30,6 +30,17 @@
 <button
   type="button"
   class="filter-button"
+  aria-label="Filter albums with archival material"
+  [class.active]="filters().reissue === true"
+  [class.negative]="filters().reissue === false"
+  [attr.aria-pressed]="filters().reissue"
+  (click)="toggleFilter('reissue')"
+>
+  Archival
+</button>
+<button
+  type="button"
+  class="filter-button"
   aria-label="Filter albums listed in wire rewind"
   [class.active]="filters().tino"
   [attr.aria-pressed]="filters().tino"

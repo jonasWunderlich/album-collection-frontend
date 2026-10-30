@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import {
   Component,
-  DestroyRef,
   HostListener,
   computed,
   effect,
@@ -31,7 +30,6 @@ export class AlbumWall {
 
   private readonly albumFilterService = inject(AlbumFilterService);
   private readonly albumService = inject(AlbumsService);
-  private readonly destroyRef = inject(DestroyRef);
 
   readonly albums = signal<Album[]>([]);
   readonly page = signal<number>(0);
@@ -165,7 +163,7 @@ export class AlbumWall {
         undefined, // rating
         undefined, // ratingMax
         undefined, // ratingMin
-        undefined, // reissue
+        p.reissue, // reissue
         undefined, // releaseDateFrom
         undefined, // releaseDateTo
         p.releaseYear, // releaseYear
