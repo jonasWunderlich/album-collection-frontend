@@ -49,3 +49,6 @@ src/app/api
 # Placeholder stuff
 public/placeholder.png
 public/cover
+
+# Password config (local only – do NOT commit!)
+src/password.config.ts
