@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { PASSWORD_CONFIG } from '../../password.config';
 
 const COOKIE_NAME = 'app_auth';
@@ -6,6 +6,7 @@ const COOKIE_NAME = 'app_auth';
 @Injectable({ providedIn: 'root' })
 export class PasswordService {
   private readonly configuredHash: Promise<string>;
+  readonly authenticated = signal(false);
 
   constructor() {
     this.configuredHash = this.sha256(PASSWORD_CONFIG.password);
@@ -16,7 +17,9 @@ export class PasswordService {
     const cookieHash = this.getCookie(COOKIE_NAME);
     if (!cookieHash) return false;
     const currentHash = await this.configuredHash;
-    return cookieHash === currentHash;
+    const result = cookieHash === currentHash;
+    this.authenticated.set(result);
+    return result;
   }
 
   /** Validates the entered password and, if correct, stores the hash as a cookie. */
@@ -28,6 +31,7 @@ export class PasswordService {
       const expires = new Date();
       expires.setFullYear(expires.getFullYear() + 1);
       document.cookie = `${COOKIE_NAME}=${enteredHash}; expires=${expires.toUTCString()}; path=/; SameSite=Strict`;
+      this.authenticated.set(true);
       return true;
     }
     return false;

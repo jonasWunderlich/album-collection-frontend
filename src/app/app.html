@@ -1,2 +1,4 @@
 <app-password-dialog />
-<app-album-wall />
+@if (authenticated()) {
+  <app-album-wall />
+}
