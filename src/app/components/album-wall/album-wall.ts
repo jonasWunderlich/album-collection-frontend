@@ -59,6 +59,10 @@ export class AlbumWall {
       event.preventDefault();
       this.showInfos.set(!this.showInfos());
     }
+    else if (event.key === 'l' || event.key === 'L') {
+      event.preventDefault();
+      this.showList.set(!this.showList());
+    }
   }
 
   private readonly location = inject(Location);
